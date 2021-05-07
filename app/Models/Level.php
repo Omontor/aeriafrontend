@@ -9,16 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Level extends Model
 {
-    use SoftDeletes;
-    use HasFactory;
+
 
     public $table = 'levels';
 
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
 
     protected $guarded = [
 
