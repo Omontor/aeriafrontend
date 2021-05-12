@@ -11,26 +11,19 @@ use App\Models\Game;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-//Import these lines in every controller that uses API
-use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Http;
 
 class AnalyticController extends Controller
 {
     public function index()
     {
-        //Connecting to API}
-        $client = new Client([
-            'base_uri' => env('API_URL'),
-            'timeout'  => 2.0,
-        ]);
-        $response =$response = Http::withoutVerifying()->get('https://localhost:5001/api/AeriaAnalytics/AllAnalytics', ['verify' => false]);
-        //Turn response into array
-        $analytics = $response->json([]);
-        return view('admin.analytics.index', compact('analytics'));
+        abort_if(Gate::denies('analytic_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $analytics = Analytic::with(['game'])->get();
+
+        $games = Game::get();
+
+        return view('admin.analytics.index', compact('analytics', 'games'));
     }
-
-
 
     public function create()
     {

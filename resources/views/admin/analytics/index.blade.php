@@ -1,83 +1,127 @@
 @extends('layouts.admin')
 @section('content')
-<div class="content">
-    @can('analytic_create')
-        <div style="margin-bottom: 10px;" class="row">
-            <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route('admin.analytics.create') }}">
-                    {{ trans('global.add') }} {{ trans('cruds.analytic.title_singular') }}
-                </a>
-            </div>
-        </div>
-    @endcan
-    <div class="row">
+@can('analytic_create')
+    <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    {{ trans('cruds.analytic.title_singular') }} {{ trans('global.list') }}
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class=" table table-bordered table-striped table-hover datatable datatable-Analytic">
-                            <thead>
-                                <tr>
-                                    <th width="10">
+            <a class="btn btn-success" href="{{ route('admin.analytics.create') }}">
+                {{ trans('global.add') }} {{ trans('cruds.analytic.title_singular') }}
+            </a>
+        </div>
+    </div>
+@endcan
+<div class="card">
+    <div class="card-header">
+        {{ trans('cruds.analytic.title_singular') }} {{ trans('global.list') }}
+    </div>
 
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.analytic.fields.id') }}
-                                    </th>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                       Actions
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-  
-                                    <td>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($analytics as $analytic)
-                                    <tr data-entry-id="{{ $analytic['id'] }}">
-                                        <td>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-Analytic">
+                <thead>
+                    <tr>
+                        <th width="10">
 
-                                        </td>
-                                        <td>
-                                            {{ $analytic['id'] ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $analytic['name'] ?? '' }}
-                                        </td>
-                  
-                                        <td>
-                                           Actions
-                                        </td>
+                        </th>
+                        <th>
+                            {{ trans('cruds.analytic.fields.id') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.analytic.fields.bvc') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.analytic.fields.game') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.analytic.fields.entry') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.analytic.fields.value') }}
+                        </th>
+                        <th>
+                            &nbsp;
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <select class="search">
+                                <option value>{{ trans('global.all') }}</option>
+                                @foreach($games as $key => $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($analytics as $key => $analytic)
+                        <tr data-entry-id="{{ $analytic->id }}">
+                            <td>
 
-                                    </tr>
-                                @endforeach    
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                            </td>
+                            <td>
+                                {{ $analytic->id ?? '' }}
+                            </td>
+                            <td>
+                                {{ $analytic->bvc ?? '' }}
+                            </td>
+                            <td>
+                                {{ $analytic->game->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $analytic->entry ?? '' }}
+                            </td>
+                            <td>
+                                {{ $analytic->value ?? '' }}
+                            </td>
+                            <td>
+                                @can('analytic_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.analytics.show', $analytic->id) }}">
+                                        {{ trans('global.view') }}
+                                    </a>
+                                @endcan
 
+                                @can('analytic_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.analytics.edit', $analytic->id) }}">
+                                        {{ trans('global.edit') }}
+                                    </a>
+                                @endcan
 
+                                @can('analytic_delete')
+                                    <form action="{{ route('admin.analytics.destroy', $analytic->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                    </form>
+                                @endcan
 
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
+
+
 @endsection
 @section('scripts')
 @parent

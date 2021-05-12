@@ -1,56 +1,122 @@
 @extends('layouts.admin')
 @section('content')
-<div class="content">
-    @can('game_create')
-        <div style="margin-bottom: 10px;" class="row">
-            <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route('admin.games.create') }}">
-                    {{ trans('global.add') }} {{ trans('cruds.game.title_singular') }}
-                </a>
-            </div>
-        </div>
-    @endcan
-    <div class="row">
+@can('game_create')
+    <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    {{ trans('cruds.game.title_singular') }} {{ trans('global.list') }}
-                </div>
-                <div class="panel-body">
-             
-                      <div class="row">
+            <a class="btn btn-success" href="{{ route('admin.games.create') }}">
+                {{ trans('global.add') }} {{ trans('cruds.game.title_singular') }}
+            </a>
+        </div>
+    </div>
+@endcan
+<div class="card">
+    <div class="card-header">
+        {{ trans('cruds.game.title_singular') }} {{ trans('global.list') }}
+    </div>
 
-                        @forelse($games as $game)
-                        <div class="col-sm-4">
-                         <div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="/img/slider-1.jpg" alt="Card image cap" width="200%"> 
-  <i>This image will change accordingly</i>
-  <hr>
-  <div class="card-body">
-    <h4>{{$game['name']}}</h4>
-    <p class="card-text">
-    AppId {{$game['appID']}}</p>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-Game">
+                <thead>
+                    <tr>
+                        <th width="10">
 
-    <a href="{{route('admin.games.view', $game['id'])}}" class="btn btn-primary">Vew Game</a>
-    <hr>
-  </div>
-  <br>
-</div>
-                        </div>
-                        @empty
+                        </th>
+                        <th>
+                            {{ trans('cruds.game.fields.id') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.game.fields.name') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.game.fields.app') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.game.fields.secret') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.game.fields.status') }}
+                        </th>
+                        <th>
+                            &nbsp;
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($games as $key => $game)
+                        <tr data-entry-id="{{ $game->id }}">
+                            <td>
 
-                        @endforelse 
-                        
-                      </div>
-                
-                </div>
-            </div>
+                            </td>
+                            <td>
+                                {{ $game->id ?? '' }}
+                            </td>
+                            <td>
+                                {{ $game->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $game->app ?? '' }}
+                            </td>
+                            <td>
+                                {{ $game->secret ?? '' }}
+                            </td>
+                            <td>
+                                {{ $game->status ?? '' }}
+                            </td>
+                            <td>
+                                @can('game_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.games.show', $game->id) }}">
+                                        {{ trans('global.view') }}
+                                    </a>
+                                @endcan
 
+                                @can('game_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.games.edit', $game->id) }}">
+                                        {{ trans('global.edit') }}
+                                    </a>
+                                @endcan
 
+                                @can('game_delete')
+                                    <form action="{{ route('admin.games.destroy', $game->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                    </form>
+                                @endcan
 
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
+
+
 @endsection
 @section('scripts')
 @parent
