@@ -19,28 +19,48 @@
                 <div class="panel-body">
              
                       <div class="row">
-
+@if(isset($games))
                         @forelse($games as $game)
                         <div class="col-sm-4">
                          <div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="/img/slider-1.jpg" alt="Card image cap" width="200%"> 
-  <i>This image will change accordingly</i>
+@switch($game['id'])
+    @case(5)
+          <img class="card-img-top" src="/img/american.jpg" alt="Card image cap" width="200%"> 
+        @break
+
+    @case(6)
+        <img class="card-img-top" src="/img/rescue.jpg" alt="Card image cap" width="200%"> 
+        @break
+    @case(7)
+          <img class="card-img-top" src="/img/herostorm.jpg" alt="Card image cap" width="200%"> 
+        @break
+        @case(8)
+          <img class="card-img-top" src="/img/copsvsrobbers.jpg" alt="Card image cap" width="200%"> 
+        @break
+       @case(9)
+          <img class="card-img-top" src="/img/designspace.jpg" alt="Card image cap" width="200%"> 
+        @break         
+    @default
+        <img class="card-img-top" src="/img/slider-1.jpg" alt="Card image cap" width="200%">  
+@endswitch
+
   <hr>
   <div class="card-body">
     <h4>{{$game['name']}}</h4>
     <p class="card-text">
     AppId {{$game['appID']}}</p>
 
-    <a href="{{route('admin.games.view', $game['id'])}}" class="btn btn-primary">Vew Game</a>
+    <a href="{{route('admin.games.view', $game['id'])}}" class="btn btn-block btn-primary">Vew Game</a>
     <hr>
   </div>
   <br>
 </div>
+
                         </div>
                         @empty
 
                         @endforelse 
-                        
+    @endif                    
                       </div>
                 
                 </div>

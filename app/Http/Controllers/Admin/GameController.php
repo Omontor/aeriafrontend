@@ -31,20 +31,22 @@ class GameController extends Controller
 
     public function view($index) {
 
-        $game = $index;
         $gameid = $index;
 
-        //Connecting to API
-        $client = new Client([
-            'base_uri' => env('API_URL'),
-            'timeout'  => 2.0,
-        ]);
+        $response1 = Http::withoutVerifying()->get('https://localhost:5001/api/Game/'.$index, ['verify' => false]);
+        //Turn response into array
+        $game = collect($response1->json());
+
         $response =$response = Http::withoutVerifying()->get('https://localhost:5001/api/AeriaMessages', ['verify' => false]);
         //Turn response into array
         $messages = $response->json([]);
 
 
-        return view('admin.games.show', compact('gameid', 'messages'));
+      $response2 = Http::withoutVerifying()->get('https://localhost:5001/api/AeriaAnalytics/AllAnalyticsPerGame/'.$index, ['verify' => false]);
+        //Turn response into array
+        $analytics = $response2->json([]);
+
+        return view('admin.games.show', compact('gameid', 'messages', 'game'));
     }
 
 }
