@@ -1,123 +1,118 @@
 @extends('layouts.admin')
 @section('content')
-<div class="content">
-    @can('level_create')
-        <div style="margin-bottom: 10px;" class="row">
-            <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route('admin.levels.create') }}">
-                    {{ trans('global.add') }} {{ trans('cruds.level.title_singular') }}
-                </a>
-            </div>
-        </div>
-    @endcan
-    <div class="row">
+@can('level_create')
+    <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    {{ trans('cruds.level.title_singular') }} {{ trans('global.list') }}
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class=" table table-bordered table-striped table-hover datatable datatable-Level">
-                            <thead>
-                                <tr>
-                                    <th width="10">
+            <a class="btn btn-success" href="{{ route('admin.levels.create') }}">
+                {{ trans('global.add') }} {{ trans('cruds.level.title_singular') }}
+            </a>
+        </div>
+    </div>
+@endcan
+<div class="card">
+    <div class="card-header">
+        {{ trans('cruds.level.title_singular') }} {{ trans('global.list') }}
+    </div>
 
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.level.fields.id') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.level.fields.name') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.level.fields.world') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.level.fields.name_in_build') }}
-                                    </th>
-                                    <th>
-                                        &nbsp;
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <select class="search">
-                                            <option value>{{ trans('global.all') }}</option>
-                                            @foreach($worlds as $key => $item)
-                                                <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($levels as $key => $level)
-                                    <tr data-entry-id="{{ $level->id }}">
-                                        <td>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-Level">
+                <thead>
+                    <tr>
+                        <th width="10">
 
-                                        </td>
-                                        <td>
-                                            {{ $level->id ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $level->name ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $level->world->name ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $level->name_in_build ?? '' }}
-                                        </td>
-                                        <td>
-                                            @can('level_show')
-                                                <a class="btn btn-xs btn-primary" href="{{ route('admin.levels.show', $level->id) }}">
-                                                    {{ trans('global.view') }}
-                                                </a>
-                                            @endcan
-
-                                            @can('level_edit')
-                                                <a class="btn btn-xs btn-info" href="{{ route('admin.levels.edit', $level->id) }}">
-                                                    {{ trans('global.edit') }}
-                                                </a>
-                                            @endcan
-
-                                            @can('level_delete')
-                                                <form action="{{ route('admin.levels.destroy', $level->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                </form>
-                                            @endcan
-
-                                        </td>
-
-                                    </tr>
+                        </th>
+                        <th>
+                            {{ trans('cruds.level.fields.id') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.level.fields.name') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.level.fields.world') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.level.fields.name_in_build') }}
+                        </th>
+                        <th>
+                            &nbsp;
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <select class="search">
+                                <option value>{{ trans('global.all') }}</option>
+                                @foreach($worlds as $key => $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
                                 @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                            </select>
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($levels as $key => $level)
+                        <tr data-entry-id="{{ $level->id }}">
+                            <td>
 
+                            </td>
+                            <td>
+                                {{ $level->id ?? '' }}
+                            </td>
+                            <td>
+                                {{ $level->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $level->world->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $level->name_in_build ?? '' }}
+                            </td>
+                            <td>
+                                @can('level_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.levels.show', $level->id) }}">
+                                        {{ trans('global.view') }}
+                                    </a>
+                                @endcan
 
+                                @can('level_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.levels.edit', $level->id) }}">
+                                        {{ trans('global.edit') }}
+                                    </a>
+                                @endcan
 
+                                @can('level_delete')
+                                    <form action="{{ route('admin.levels.destroy', $level->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                    </form>
+                                @endcan
+
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
+
+
 @endsection
 @section('scripts')
 @parent
