@@ -10,55 +10,14 @@
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
-                        <div class="form-group">
-                            <a class="btn btn-default" href="{{ route('admin.games.index') }}">
-                                {{ trans('global.back_to_list') }}
-                            </a>
-                        </div>
-                        <table class="table table-bordered table-striped">
-                            <tbody>
-                                <tr>
-                                    <th>
-                                        {{ trans('cruds.game.fields.id') }}
-                                    </th>
-                                    <td>
-                                        {{ $game->id }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        {{ trans('cruds.game.fields.name') }}
-                                    </th>
-                                    <td>
-                                        {{ $game->name }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        {{ trans('cruds.game.fields.app') }}
-                                    </th>
-                                    <td>
-                                        {{ $game->app }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        {{ trans('cruds.game.fields.secret') }}
-                                    </th>
-                                    <td>
-                                        {{ $game->secret }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        {{ trans('cruds.game.fields.status') }}
-                                    </th>
-                                    <td>
-                                        {{ $game->status }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+        @forelse($messages as $message)
+        @if($message['gameId'] == $gameid)
+           {{$message['id']}} {{$message['subject']}}<br>
+           @endif
+        @empty
+
+        @endforelse
+                  
                         <div class="form-group">
                             <a class="btn btn-default" href="{{ route('admin.games.index') }}">
                                 {{ trans('global.back_to_list') }}

@@ -28,6 +28,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Game
     Route::delete('games/destroy', 'GameController@massDestroy')->name('games.massDestroy');
     Route::resource('games', 'GameController');
+    Route::get('games/{game}', 'GameController@view')->name('games.view');
 
     // Message
     Route::delete('messages/destroy', 'MessageController@massDestroy')->name('messages.massDestroy');

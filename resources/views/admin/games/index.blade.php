@@ -17,91 +17,32 @@
                     {{ trans('cruds.game.title_singular') }} {{ trans('global.list') }}
                 </div>
                 <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class=" table table-bordered table-striped table-hover datatable datatable-Game">
-                            <thead>
-                                <tr>
-                                    <th width="10">
+             
+                      <div class="row">
 
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.game.fields.id') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.game.fields.name') }}
-                                    </th>
-                                    <th>
-                                        App ID
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.game.fields.secret') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.game.fields.status') }}
-                                    </th>
-                                    <th>
-                                        &nbsp;
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        @forelse($games as $game)
+                        <div class="col-sm-4">
+                         <div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="/img/slider-1.jpg" alt="Card image cap" width="200%"> 
+  <i>This image will change accordingly</i>
+  <hr>
+  <div class="card-body">
+    <h4>{{$game['name']}}</h4>
+    <p class="card-text">
+    AppId {{$game['appID']}}</p>
 
+    <a href="{{route('admin.games.view', $game['id'])}}" class="btn btn-primary">Vew Game</a>
+    <hr>
+  </div>
+  <br>
+</div>
+                        </div>
+                        @empty
 
-                                @foreach($games as $key => $game)
-                                    <tr data-entry-id="{{ $game->ID ?? '' }}">
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            {{ $game->ID ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $game->Name ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $game->AppId ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $game->Secret ?? '' }}
-                                        </td>
-                                        <td>
-                                          @if($game->Status == 1)
-                                          &#128994;
-                                          @else
-                                          &#128994;
-                                          @endif
-                                            
-                                        </td>
-                                        <td>
-                                           
-                                        </td>
-
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                        @endforelse 
+                        
+                      </div>
+                
                 </div>
             </div>
 
