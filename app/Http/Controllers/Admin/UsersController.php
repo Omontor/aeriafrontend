@@ -11,14 +11,17 @@ use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+//Import these lines in every controller that uses API
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class UsersController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $users = User::with(['roles'])->get();
+  $response = Http::withoutVerifying()->get('https://localhost:5001/api/Accounts/AllUsers', ['verify' => false]);
+        //Turn response into array
+        $users = $response->json([]);
 
         return view('admin.users.index', compact('users'));
     }

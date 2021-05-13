@@ -26,6 +26,7 @@ class GameController extends Controller
         $response = Http::withoutVerifying()->get('https://localhost:5001/api/Game/AllGames', ['verify' => false]);
         //Turn response into array
         $games = $response->json([]);
+
         return view('admin.games.index', compact('games'));
     }
 
@@ -37,7 +38,7 @@ class GameController extends Controller
         //Turn response into array
         $game = collect($response1->json());
 
-        $response =$response = Http::withoutVerifying()->get('https://localhost:5001/api/AeriaMessages', ['verify' => false]);
+        $response = Http::withoutVerifying()->get('https://localhost:5001/api/AeriaMessages', ['verify' => false]);
         //Turn response into array
         $messages = $response->json([]);
 
@@ -46,7 +47,14 @@ class GameController extends Controller
         //Turn response into array
         $analytics = $response2->json([]);
 
-        return view('admin.games.show', compact('gameid', 'messages', 'game'));
+
+   $httpworld = Http::withoutVerifying()->get('https://localhost:5001/api/World/GetAllWorldPerGame/6', ['verify' => false]);
+    $worldsarray = $httpworld->json([]);
+        //Turn response into array
+        $worlds = collect($worldsarray);
+     
+
+        return view('admin.games.show', compact('gameid', 'messages', 'game', 'worlds'));
     }
 
 }

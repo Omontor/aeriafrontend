@@ -9,6 +9,16 @@
                     {{ trans('global.dashboard') }}
                 </a>
             </li>
+
+        <li class="{{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
+            <a href="{{ route("admin.users.index") }}">
+                <i class="fa-fw fas fa-user">
+
+                </i>
+                <span>{{ trans('cruds.user.title') }}</span>
+
+            </a>
+        </li>
             @can('game_access')
                 <li class="{{ request()->is("admin/games") || request()->is("admin/games/*") ? "active" : "" }}">
                     <a href="{{ route("admin.games.index") }}">
@@ -107,17 +117,7 @@
                                 </a>
                             </li>
                         @endcan
-                        @can('user_access')
-                            <li class="{{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
-                                <a href="{{ route("admin.users.index") }}">
-                                    <i class="fa-fw fas fa-user">
 
-                                    </i>
-                                    <span>{{ trans('cruds.user.title') }}</span>
-
-                                </a>
-                            </li>
-                        @endcan
                     </ul>
                 </li>
             @endcan

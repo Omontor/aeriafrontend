@@ -4,7 +4,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        {{$game['name']}}
+        <a href="/admin/games" class="btn btn-md btn-primary">Back to all games</a>
       </h1>
       <ol class="breadcrumb"> 
         <li><a href="#">Active Users By Region</a></li>
@@ -20,7 +20,7 @@
           <!-- Profile Image -->
           <div class="box box-primary">
             <div class="box-body box-profile">
-
+ 
 
 @switch($game['id'])
     @case(5)
@@ -136,9 +136,6 @@
                         </script>
 
 <br>
-
-
-
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
               <li class="active"><a href="#activity" data-toggle="tab">Worlds</a></li>
@@ -146,8 +143,47 @@
               <li><a href="#settings" data-toggle="tab">Level Interfaces</a></li>
             </ul>
             <div class="tab-content">
-              <div class="active tab-pane" id="activity">
-                <!-- Worlds Tab -->
+              <div class="active tab-pane" id="activity">       
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Creation Date</th>
+
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                     @forelse($worlds as $world)
+                       @if($world['gameId'] == $gameid)
+                  <tr>
+                    <td>{{$world['id']}}</td>
+                    <td>{{$world['name']}}</td>
+                    <td>{{Carbon\Carbon::parse($world['creationDate'])->format('d-m-Y')}}<span>
+                     
+
+                    </span></td>
+             
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">
+                        
+                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
+
+</a>
+                      </div>
+                    </td>
+                  </tr>           
+                  @endif
+                    @empty
+                    <tr>
+                      <td>
+                        No data to show
+                      </td>
+                    </tr>
+                      @endforelse
+                  </tbody>
+                </table>
               </div>
 
               <!-- /.tab-pane -->
@@ -182,11 +218,7 @@
             <div class="box-header with-border">
               <h3 class="box-title">Latest Messages</h3>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-               
-              </div>
+       
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -194,79 +226,48 @@
                 <table class="table no-margin">
                   <thead>
                   <tr>
-                    <th>Order ID</th>
-                    <th>Item</th>
-                    <th>Status</th>
-                    <th>Popularity</th>
+                    <th>ID</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Country</th>
+                    <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
+                     @forelse($messages as $message)
+                       @if($message['gameId'] == $gameid)
                   <tr>
-                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                    <td>Call of Duty IV</td>
-                    <td><span class="label label-success">Shipped</span></td>
+                    <td><a href="pages/examples/invoice.html">{{$message['id']}}</a></td>
+                    <td><strong>{{strip_tags($message['subject'])}}</strong></td>
+                    <td><span>
+                      {{strip_tags($message['message'])}}
+                    </span></td>
                     <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                    <td>Samsung Smart TV</td>
-                    <td><span class="label label-warning">Pending</span></td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">{{$message['country']}}</div>
+                    </td>          
                     <td>
-                      <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">
+                        
+                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
+
+</a>
+                      </div>
                     </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>iPhone 6 Plus</td>
-                    <td><span class="label label-danger">Delivered</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>Samsung Smart TV</td>
-                    <td><span class="label label-info">Processing</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                    <td>Samsung Smart TV</td>
-                    <td><span class="label label-warning">Pending</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>iPhone 6 Plus</td>
-                    <td><span class="label label-danger">Delivered</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                    <td>Call of Duty IV</td>
-                    <td><span class="label label-success">Shipped</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                    </td>
-                  </tr>
+                  </tr>           
+                  @endif
+                    @empty
+                    <tr>
+                      <td>
+                        No data to show
+                      </td>
+                    </tr>
+                      @endforelse
                   </tbody>
                 </table>
               </div>
               <!-- /.table-responsive -->
             </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix">
-              <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-              <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
-            </div>
+
             <!-- /.box-footer -->
           </div>
         </div>
@@ -274,37 +275,4 @@
 </div>
 
 
-
-
-<div class="content">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Latest Messages
-                </div>
-                <div class="panel-body">
-                    <div class="form-group">
-        @forelse($messages as $message)
-        @if($message['gameId'] == $gameid)
-           {{$message['id']}} {{$message['subject']}}<br>
-           @endif
-        @empty
-
-        @endforelse
-                  
-                        <div class="form-group">
-                            <a class="btn btn-default" href="{{ route('admin.games.index') }}">
-                                {{ trans('global.back_to_list') }}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-        </div>
-    </div>
-</div>
 @endsection
