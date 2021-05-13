@@ -23,7 +23,7 @@ class GameController extends Controller
             'base_uri' => env('API_URL'),
             'timeout'  => 2.0,
         ]);
-        $response =$response = Http::withoutVerifying()->get('https://localhost:5001/api/Game/AllGames', ['verify' => false]);
+        $response = Http::withoutVerifying()->get('https://localhost:5001/api/Game/AllGames', ['verify' => false]);
         //Turn response into array
         $games = $response->json([]);
         return view('admin.games.index', compact('games'));
