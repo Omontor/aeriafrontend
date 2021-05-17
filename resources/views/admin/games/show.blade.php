@@ -1,4 +1,11 @@
     @extends('layouts.admin')
+    <style type="text/css">
+      div.dataTables_wrapper {
+
+        margin: 0 auto;
+        padding: 20px;
+    }
+    </style>
 @section('content')
 
     <!-- Content Header (Page header) -->
@@ -210,8 +217,140 @@
 
 <div class="content">
     <div class="row">
+        <div class="col-lg-12">
+        <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Cohort Data</h3>
+            </div>
+
+<table id="example1" class="display nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+                <th>Extn.</th>
+                <th>E-mail</th>
+                <th>E-mail</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+                <th>Extn.</th>
+                <th>E-mail</th>
+                <th>E-mail</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tiger</td>
+                <td>Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>2011/04/25</td>
+                <td>$320,800</td>
+                <td>5421</td>
+                <td>t.nixon@datatables.net</td>
+                <td>t.nixon@datatables.net</td>
+                <td>Tiger</td>
+                <td>Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>2011/04/25</td>
+                <td>$320,800</td>
+                <td>5421</td>
+                <td>t.nixon@datatables.net</td>
+                <td>t.nixon@datatables.net</td>
+            </tr>
+            
+
+        </tbody>
+    </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-lg-12">
+        <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Messages</h3>
+            </div>
+
+<table id="example" class="display nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+                <th>Extn.</th>
+                <th>E-mail</th>
+                <th>E-mail</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+                <th>Extn.</th>
+                <th>E-mail</th>
+                <th>E-mail</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tiger</td>
+                <td>Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>2011/04/25</td>
+                <td>$320,800</td>
+                <td>5421</td>
+                <td>t.nixon@datatables.net</td>
+                <td>t.nixon@datatables.net</td>
+                <td>Tiger</td>
+                <td>Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>2011/04/25</td>
+                <td>$320,800</td>
+                <td>5421</td>
+                <td>t.nixon@datatables.net</td>
+                <td>t.nixon@datatables.net</td>
+            </tr>
+            
+
+        </tbody>
+    </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="content">
+    <div class="row">
         <div class="col-lg-6">
-<div class="box box-info">
+        <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">General Dificulty</h3>
 
@@ -520,5 +659,21 @@
     </div>
 </div>
 
+@section('scripts')
+<script>
+ $(document).ready(function() {
+    $('#example').DataTable( {
+        "scrollX": true
+    } );
+} );
+</script>
+<script>
+ $(document).ready(function() {
+    $('#example1').DataTable( {
+        "scrollX": true
+    } );
+} );
+</script>
+@endsection
 
 @endsection

@@ -140,7 +140,7 @@
     },
     columnDefs: [{
         orderable: false,
-        className: 'select-checkbox',
+
         targets: 0
     }, {
         orderable: false,
@@ -148,12 +148,11 @@
         targets: -1
     }],
     select: {
-      style:    'multi+shift',
-      selector: 'td:first-child'
+      
     },
     order: [],
     scrollX: true,
-    pageLength: 100,
+    pageLength: 10,
     dom: 'lBfrtip<"actions">',
     buttons: [
       {
