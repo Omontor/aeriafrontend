@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+    @extends('layouts.admin')
 @section('content')
 
     <!-- Content Header (Page header) -->
@@ -208,6 +208,252 @@
 
     </section>
 
+<div class="content">
+    <div class="row">
+        <div class="col-lg-6">
+<div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">General Dificulty</h3>
+
+       
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Cohort</th>
+                    <th>Death per level</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                     @forelse($messages as $message)
+                       @if($message['gameId'] == $gameid)
+                  <tr>
+                    <td><a href="pages/examples/invoice.html">{{$message['id']}}</a></td>
+                    <td><strong>{{strip_tags($message['subject'])}}</strong></td>
+                    <td><span>
+                      {{strip_tags($message['message'])}}
+                    </span></td>
+         
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">
+                        
+                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
+
+</a>
+                      </div>
+                    </td>
+                  </tr>           
+                  @endif
+                    @empty
+                    <tr>
+                      <td>
+                        No data to show
+                      </td>
+                    </tr>
+                      @endforelse
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+
+            <!-- /.box-footer -->
+          </div>
+        </div>
+
+<div class="col-lg-6">
+<div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">General Monetization</h3>
+
+       
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Cohort</th>
+                    <th>Imp per level</th>
+                    <th>Free Box claims</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                     @forelse($messages as $message)
+                       @if($message['gameId'] == $gameid)
+                  <tr>
+                    <td><a href="pages/examples/invoice.html">{{$message['id']}}</a></td>
+                    <td><strong>{{strip_tags($message['subject'])}}</strong></td>
+                    <td><span>
+                      {{strip_tags($message['message'])}}
+                    </span></td>
+                    <td><span>
+                      {{strip_tags($message['message'])}}
+                    </span></td>
+         
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">
+                        
+                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
+
+</a>
+                      </div>
+                    </td>
+                  </tr>           
+                  @endif
+                    @empty
+                    <tr>
+                      <td>
+                        No data to show
+                      </td>
+                    </tr>
+                      @endforelse
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+
+            <!-- /.box-footer -->
+          </div>
+        </div>
+
+<div class="col-lg-12">
+<div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">General Engagement</h3>
+
+       
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>Initial Retention</th>
+                    <th>Current Retention</th>
+                    <th>Curren Retention 30 Days</th>
+                    <th>Progression Depth top 25%</th>
+                    <th>Users Finished</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                     @forelse($messages as $message)
+                       @if($message['gameId'] == $gameid)
+                  <tr>
+                    <td><a href="pages/examples/invoice.html">{{$message['id']}}</a></td>
+                    <td><strong>{{strip_tags($message['subject'])}}</strong></td>
+                    <td><span>
+                     0
+                    </span></td>
+                    <td><span>
+                      0
+                    </span></td>         
+                    <td><span>
+                     0
+                    </span></td>                    
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">
+                        
+                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
+
+</a>
+                      </div>
+                    </td>
+                  </tr>           
+                  @endif
+                    @empty
+                    <tr>
+                      <td>
+                        No data to show
+                      </td>
+                    </tr>
+                      @endforelse
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+
+            <!-- /.box-footer -->
+          </div>
+        </div>
+
+<div class="col-lg-12">
+<div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Level Progression</h3>
+
+       
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>Load Screen</th>
+                    <th>Privacy Policy</th>
+                    <th>Tutorial Start</th>
+                    <th>Tutorial End</th>
+                    <th>Main Menu</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                     @forelse($messages as $message)
+                       @if($message['gameId'] == $gameid)
+                  <tr>
+                    <td><a href="pages/examples/invoice.html">{{$message['id']}}</a></td>
+                    <td><strong>{{strip_tags($message['subject'])}}</strong></td>
+                    <td><span>
+                      0
+                    </span></td>
+                    <td><span>
+                      0
+                    </span></td>      
+                    <td><span>
+                      0
+                    </span></td>                    
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">
+                        
+                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
+
+</a>
+                      </div>
+                    </td>
+                  </tr>           
+                  @endif
+                    @empty
+                    <tr>
+                      <td>
+                        No data to show
+                      </td>
+                    </tr>
+                      @endforelse
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+
+            <!-- /.box-footer -->
+          </div>
+        </div>
+
+    </div>
+</div>
 
 
 
