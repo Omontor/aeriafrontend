@@ -10,11 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class World extends Model
 {
 
-    public $table = 'worlds';
-
-
-    protected $fillable = [
-
-    ];
+    protected $connection = 'mysql2';
+    public $table = 'aeria_world';
+    
+  public function levels()
+    {
+        return $this->hasMany(Level::class);
+    }
 
 }

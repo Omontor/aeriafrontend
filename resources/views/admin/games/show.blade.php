@@ -8,6 +8,7 @@
     </style>
 @section('content')
 
+
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
@@ -156,21 +157,31 @@
                   <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Levels</th>
                     <th>Creation Date</th>
-
                     <th>Actions</th>
                   </tr>
                   </thead>
+
+
+
                   <tbody>
                      @forelse($worlds as $world)
-                       @if($world['gameId'] == $gameid)
+               
                   <tr>
-                    <td>{{$world['id']}}</td>
-                    <td>{{$world['name']}}</td>
-                    <td>{{Carbon\Carbon::parse($world['creationDate'])->format('d-m-Y')}}<span>
-                     
+                    <td>{{$world->ID}}</td>
+                    <td>{{$world->Name}}</td>
+                    <td>
+                      @forelse( \App\Models\Level::where('WorldID', $world->ID)->get() as $test)
+                      <ul>
+                        <li>{{$test->ID}} {{$test->Name}} </li>
+                      </ul>
+                      @empty
+                      No levels in this world
+                      @endforelse
+                    </td>
+                    <td>{{Carbon\Carbon::parse($world['creationDate'])->format('d-m-Y')}}</td>
 
-                    </span></td>
              
                     <td>
                       <div class="sparkbar" data-color="#00a65a" data-height="20">
@@ -181,7 +192,7 @@
                       </div>
                     </td>
                   </tr>           
-                  @endif
+               
                     @empty
                     <tr>
                       <td>
@@ -197,11 +208,90 @@
               <div class="tab-pane" id="timeline">
                 
       <!-- Levels Tab -->
+      <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>World</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                     @forelse(\App\Models\Level::where('WorldID', $world->ID)->get() as $level)
+               
+                  <tr>
+                    <td>{{$level->ID}}</td>
+                    <td>{{$level->Name}}</td>
+                    <td>{{$level->world->name}}</td>
+                    <td>{{Carbon\Carbon::parse($world->CreationDate)->format('d-m-Y')}}</td>             
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">
+                        
+                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
+
+</a>
+                      </div>
+                    </td>
+                  </tr>           
+               
+                    @empty
+                    <tr>
+                      <td>
+                        No data to show
+                      </td>
+                    </tr>
+                      @endforelse
+                  </tbody>
+                </table>
               </div>
               <!-- /.tab-pane -->
 
               <div class="tab-pane" id="settings">
                 <!-- Level Interfaces Tab -->
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+
+
+
+
+                  @forelse($worlds as $world)
+                   @forelse(\App\Models\LevelInterface::where('WorldID', $world->ID)->get() as $item)
+               
+                  <tr>
+                    <td>{{$item->ID}}</td>
+                    <td>{{$item->Name}}</td>
+                    <td>{{Carbon\Carbon::parse($world->CreationDate)->format('d-m-Y')}}</td>             
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">
+                        
+                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
+
+</a>
+                      </div>
+                    </td>
+                  </tr>           
+               
+                    @empty
+                    <tr>
+                      <td>
+                        No data to show
+                      </td>
+                    </tr>
+                      @endforelse
+                      @empty
+                      @endforelse
+                  </tbody>
+                </table>
               </div>
               <!-- /.tab-pane -->
             </div>
@@ -226,52 +316,241 @@
 <table id="example1" class="display nowrap" style="width:100%">
         <thead>
             <tr>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start date</th>
-                <th>Salary</th>
-                <th>Extn.</th>
-                <th>E-mail</th>
-                <th>E-mail</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start date</th>
-                <th>Salary</th>
-                <th>Extn.</th>
-                <th>E-mail</th>
-                <th>E-mail</th>
+                <th>Cohort ID</th>
+                <th>End Date</th>
+                <th>Deaths by Level</th>
+                <th>Impressions per Level</th>
+                <th>Free Box Claims</th>
+                <th>Initial Retention</th>
+                <th>7 Day Retention</th>
+                <th>30 Day Retention</th>
+                <th>Still Active Users</th>
+                <th>Progression Depth</th>
+                <th>Users who Finished</th>
+                <th>Load Screen</th>
+                <th>Privacy Policy</th>
+                <th>Tutorial Start</th>
+                <th>Tutrial End</th>
+                <th>Main Menu</th>
+
             </tr>
         </thead>
         <tbody>
+            @forelse($cohortdata as $data)
+
             <tr>
-                <td>Tiger</td>
-                <td>Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
-                <td>5421</td>
-                <td>t.nixon@datatables.net</td>
-                <td>t.nixon@datatables.net</td>
-                <td>Tiger</td>
-                <td>Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
-                <td>5421</td>
-                <td>t.nixon@datatables.net</td>
-                <td>t.nixon@datatables.net</td>
+                <td>{{$data->ID}}</td>
+                <td>{{ \Carbon\Carbon::today()->subDay()->diffForHumans() }} </td>
+                <td> 5</td>
+                <td>10</td>
+                <td>100</td>
+                <td>50</td>
+                <td>10</td>
+                <td>25</td>
+                <td>789</td>
+                <td>260</td>
+                <td>600</td>
+                <td>40</td>
+                <td>500</td>
+                <td>1250</td>
+                <td>1200</td>
+                <td>100</td>
+    
             </tr>
-            
+            @empty
+            <tr>No data to show</tr>
+            @endforelse
+
+        </tbody>
+    </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="content">
+    <div class="row">
+        <div class="col-lg-12">
+        <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Segments</h3>
+            </div>
+
+<table id="example2" class="display nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>Segment Name</th>
+                <th>Totals</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($cohortdata as $data)
+
+            <tr>
+                <td>{{$data->ID}}</td>
+                <td>{{$data->IAP}}</td>
+    
+            </tr>
+            @empty
+            <tr>No data to show</tr>
+            @endforelse
+
+        </tbody>
+    </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="row">
+        <div class="col-lg-12">
+        <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Level View</h3>
+            </div>
+
+<table id="example3" class="display nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>Level</th>
+                <th>Average Time to Finish Level</th>
+                <th>Depth of first death</th>
+                <th>First time play % got 1 stars</th>      
+                <th>First time play % got 2 stars</th>
+                <th>First time play % got 3 stars</th>
+                <th>Average number of Deaths per play</th>
+                <th>% finish the level</th>
+                <th>Number of users that have started this level at least once</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($cohortdata as $data)
+
+            <tr>
+                <td>{{($loop->index)+1}}</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+    
+            </tr>
+            @empty
+            <tr>No data to show</tr>
+            @endforelse
+
+        </tbody>
+    </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-lg-12">
+        <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Resources Spent</h3>
+            </div>
+
+<table id="example4" class="display nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>World</th>
+                <th>Cubes Spent</th>
+                <th>% Use of cubes - Weapons upgrade</th>
+                <th>% Use of cubes - Ammo</th>      
+                <th>% Use of cubes - Health</th>
+                <th>% Use of cubes - Gear</th>
+                <th>Number of Gems spent</th>
+                <th>% Gems converted in Cubes</th>
+                <th>Use of gems for Energy and Sim</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($cohortdata as $data)
+
+            <tr>
+                <td>{{($loop->index)+1}}</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+    
+            </tr>
+            @empty
+            <tr>No data to show</tr>
+            @endforelse
+
+        </tbody>
+    </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="row">
+        <div class="col-lg-12">
+        <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Monetisation</h3>
+            </div>
+
+<table id="example5" class="display nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>Number of users that have started this level at least once</th>
+                <th>Revenue per User</th>
+                <th>% of revenues from Ads</th>
+                <th>% of revenues from IAP</th>      
+                <th>Number of ads seen per user that started the world</th>
+                <th>% Ads from Deaths</th>
+                <th>% Ads from Ammo</th>
+                <th>% Ads from Loot Multiplyer</th>
+                <th>% of user that did at least 1 IAP</th>
+                <th>IAP for gems</th>
+                <th>IAP Main Menu Promotions</th>
+                <th>IAP - Shop Special offers</th>
+     
+
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($cohortdata as $data)
+
+            <tr>
+                <td>{{($loop->index)+1}}</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+    
+            </tr>
+            @empty
+            <tr>No data to show</tr>
+            @endforelse
 
         </tbody>
     </table>
@@ -292,51 +571,29 @@
 <table id="example" class="display nowrap" style="width:100%">
         <thead>
             <tr>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start date</th>
-                <th>Salary</th>
-                <th>Extn.</th>
-                <th>E-mail</th>
-                <th>E-mail</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start date</th>
-                <th>Salary</th>
-                <th>Extn.</th>
-                <th>E-mail</th>
-                <th>E-mail</th>
+                <th>ID</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Country</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
+          @forelse($messages as $message)
+            @if($message['gameId'] == $gameid)
             <tr>
-                <td>Tiger</td>
-                <td>Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
-                <td>5421</td>
-                <td>t.nixon@datatables.net</td>
-                <td>t.nixon@datatables.net</td>
-                <td>Tiger</td>
-                <td>Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
-                <td>5421</td>
-                <td>t.nixon@datatables.net</td>
-                <td>t.nixon@datatables.net</td>
+                <td>{{$message['id']}}</td>
+                <td>{{strip_tags($message['subject'])}}</td>
+                <td>{!!$message['message']!!}</td>
+                <td>{{$message['country']}}</td>
+                <td></td>
+
             </tr>
+            @else
+            @endif
+            @empty
+            <tr>No data to show</tr>
+            @endforelse
             
 
         </tbody>
@@ -345,319 +602,6 @@
       </div>
     </div>
   </div>
-
-
-<div class="content">
-    <div class="row">
-        <div class="col-lg-6">
-        <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">General Dificulty</h3>
-
-       
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin">
-                  <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Cohort</th>
-                    <th>Death per level</th>
-                    <th>Actions</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                     @forelse($messages as $message)
-                       @if($message['gameId'] == $gameid)
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">{{$message['id']}}</a></td>
-                    <td><strong>{{strip_tags($message['subject'])}}</strong></td>
-                    <td><span>
-                      {{strip_tags($message['message'])}}
-                    </span></td>
-         
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">
-                        
-                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
-
-</a>
-                      </div>
-                    </td>
-                  </tr>           
-                  @endif
-                    @empty
-                    <tr>
-                      <td>
-                        No data to show
-                      </td>
-                    </tr>
-                      @endforelse
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-
-            <!-- /.box-footer -->
-          </div>
-        </div>
-
-<div class="col-lg-6">
-<div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">General Monetization</h3>
-
-       
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin">
-                  <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Cohort</th>
-                    <th>Imp per level</th>
-                    <th>Free Box claims</th>
-                    <th>Actions</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                     @forelse($messages as $message)
-                       @if($message['gameId'] == $gameid)
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">{{$message['id']}}</a></td>
-                    <td><strong>{{strip_tags($message['subject'])}}</strong></td>
-                    <td><span>
-                      {{strip_tags($message['message'])}}
-                    </span></td>
-                    <td><span>
-                      {{strip_tags($message['message'])}}
-                    </span></td>
-         
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">
-                        
-                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
-
-</a>
-                      </div>
-                    </td>
-                  </tr>           
-                  @endif
-                    @empty
-                    <tr>
-                      <td>
-                        No data to show
-                      </td>
-                    </tr>
-                      @endforelse
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-
-            <!-- /.box-footer -->
-          </div>
-        </div>
-
-<div class="col-lg-12">
-<div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">General Engagement</h3>
-
-       
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin">
-                  <thead>
-                  <tr>
-                    <th>Initial Retention</th>
-                    <th>Current Retention</th>
-                    <th>Curren Retention 30 Days</th>
-                    <th>Progression Depth top 25%</th>
-                    <th>Users Finished</th>
-                    <th>Actions</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                     @forelse($messages as $message)
-                       @if($message['gameId'] == $gameid)
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">{{$message['id']}}</a></td>
-                    <td><strong>{{strip_tags($message['subject'])}}</strong></td>
-                    <td><span>
-                     0
-                    </span></td>
-                    <td><span>
-                      0
-                    </span></td>         
-                    <td><span>
-                     0
-                    </span></td>                    
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">
-                        
-                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
-
-</a>
-                      </div>
-                    </td>
-                  </tr>           
-                  @endif
-                    @empty
-                    <tr>
-                      <td>
-                        No data to show
-                      </td>
-                    </tr>
-                      @endforelse
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-
-            <!-- /.box-footer -->
-          </div>
-        </div>
-
-<div class="col-lg-12">
-<div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Level Progression</h3>
-
-       
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin">
-                  <thead>
-                  <tr>
-                    <th>Load Screen</th>
-                    <th>Privacy Policy</th>
-                    <th>Tutorial Start</th>
-                    <th>Tutorial End</th>
-                    <th>Main Menu</th>
-                    <th>Actions</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                     @forelse($messages as $message)
-                       @if($message['gameId'] == $gameid)
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">{{$message['id']}}</a></td>
-                    <td><strong>{{strip_tags($message['subject'])}}</strong></td>
-                    <td><span>
-                      0
-                    </span></td>
-                    <td><span>
-                      0
-                    </span></td>      
-                    <td><span>
-                      0
-                    </span></td>                    
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">
-                        
-                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
-
-</a>
-                      </div>
-                    </td>
-                  </tr>           
-                  @endif
-                    @empty
-                    <tr>
-                      <td>
-                        No data to show
-                      </td>
-                    </tr>
-                      @endforelse
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-
-            <!-- /.box-footer -->
-          </div>
-        </div>
-
-    </div>
-</div>
-
-
-
-<div class="content">
-    <div class="row">
-        <div class="col-lg-12">
-<div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Latest Messages</h3>
-
-       
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin">
-                  <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Subject</th>
-                    <th>Message</th>
-                    <th>Country</th>
-                    <th>Actions</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                     @forelse($messages as $message)
-                       @if($message['gameId'] == $gameid)
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">{{$message['id']}}</a></td>
-                    <td><strong>{{strip_tags($message['subject'])}}</strong></td>
-                    <td><span>
-                      {{strip_tags($message['message'])}}
-                    </span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">{{$message['country']}}</div>
-                    </td>          
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">
-                        
-                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
-
-</a>
-                      </div>
-                    </td>
-                  </tr>           
-                  @endif
-                    @empty
-                    <tr>
-                      <td>
-                        No data to show
-                      </td>
-                    </tr>
-                      @endforelse
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-
-            <!-- /.box-footer -->
-          </div>
-        </div>
-    </div>
-</div>
 
 @section('scripts')
 <script>
@@ -670,6 +614,37 @@
 <script>
  $(document).ready(function() {
     $('#example1').DataTable( {
+        "scrollX": true
+    } );
+} );
+</script>
+<script>
+ $(document).ready(function() {
+    $('#example2').DataTable( {
+        "scrollX": true
+    } );
+} );
+</script>
+
+<script>
+ $(document).ready(function() {
+    $('#example3').DataTable( {
+        "scrollX": true
+    } );
+} );
+</script>
+
+<script>
+ $(document).ready(function() {
+    $('#example4').DataTable( {
+        "scrollX": true
+    } );
+} );
+</script>
+
+<script>
+ $(document).ready(function() {
+    $('#example5').DataTable( {
         "scrollX": true
     } );
 } );

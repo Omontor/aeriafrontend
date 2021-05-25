@@ -7,7 +7,12 @@ use App\Http\Requests\MassDestroyGameRequest;
 use App\Http\Requests\StoreGameRequest;
 use App\Http\Requests\UpdateGameRequest;
 use App\Models\Game;
+use App\Models\Level;
+use App\Models\World;
+use App\Models\Cohort;
+use App\Models\CohortGroup;
 use Gate;
+
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 //Import these lines in every controller that uses API
@@ -48,13 +53,33 @@ class GameController extends Controller
         $analytics = $response2->json([]);
 
 
-   $httpworld = Http::withoutVerifying()->get('https://localhost:5001/api/World/GetAllWorldPerGame/6', ['verify' => false]);
+   $httpworld = Http::withoutVerifying()->get('https://localhost:5001/api/World/GetAllWorldPerGame/'.$index, ['verify' => false]);
     $worldsarray = $httpworld->json([]);
         //Turn response into array
-        $worlds = collect($worldsarray);
+    //    $worlds = collect($worldsarray);
      
 
-        return view('admin.games.show', compact('gameid', 'messages', 'game', 'worlds'));
+
+ $httcohortgroup = Http::withoutVerifying()->get('https://localhost:5001/api/Game/GetCohorts/'.$index, ['verify' => false]);
+    $cohortgroupsarray = $httcohortgroup->json([]);
+        //Turn response into array
+        $cohortgroups = collect($cohortgroupsarray);
+     
+ $httplevels = Http::withoutVerifying()->get('https://localhost:5001/api/Game/GetCohorts/'.$index, ['verify' => false]);
+    $levelsarray = $httcohortgroup->json([]);
+        //Turn response into array
+        $levels = collect($cohortgroupsarray);
+     
+
+
+        //Eloquents
+
+        $cohortdata = Cohort::where('GameID', $index)->get();
+        $worlds = World::where('GameId', $index)->get();
+        $cohortgroups = CohortGroup::where('GameID', $index)->get();
+
+
+        return view('admin.games.show', compact('gameid', 'messages', 'game', 'worlds', 'cohortdata', 'cohortgroups'));
     }
 
 }

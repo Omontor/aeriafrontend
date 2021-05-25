@@ -10,13 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Level extends Model
 {
 
+    protected $connection = 'mysql2';
+    public $table = 'aeria_level';
 
-    public $table = 'levels';
-
-
-    protected $guarded = [
-
-    ];
-
+  public function world()
+    {
+        return $this->belongsTo('\App\Models\World','WorldID');
+    }
    
 }
