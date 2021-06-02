@@ -30,61 +30,7 @@
                     </a>
                 </li>
             @endcan
-            @can('message_access')
-                <li class="{{ request()->is("admin/messages") || request()->is("admin/messages/*") ? "active" : "" }}">
-                    <a href="{{ route("admin.messages.index") }}">
-                        <i class="fa-fw fas fa-comments">
-
-                        </i>
-                        <span>{{ trans('cruds.message.title') }}</span>
-
-                    </a>
-                </li>
-            @endcan
-            @can('world_access')
-                <li class="{{ request()->is("admin/worlds") || request()->is("admin/worlds/*") ? "active" : "" }}">
-                    <a href="{{ route("admin.worlds.index") }}">
-                        <i class="fa-fw fas fa-globe">
-
-                        </i>
-                        <span>{{ trans('cruds.world.title') }}</span>
-
-                    </a>
-                </li>
-            @endcan
-            @can('level_access')
-                <li class="{{ request()->is("admin/levels") || request()->is("admin/levels/*") ? "active" : "" }}">
-                    <a href="{{ route("admin.levels.index") }}">
-                        <i class="fa-fw fas fa-dice">
-
-                        </i>
-                        <span>{{ trans('cruds.level.title') }}</span>
-
-                    </a>
-                </li>
-            @endcan
-            @can('analytic_access')
-                <li class="{{ request()->is("admin/analytics") || request()->is("admin/analytics/*") ? "active" : "" }}">
-                    <a href="{{ route("admin.analytics.index") }}">
-                        <i class="fa-fw fas fa-chart-line">
-
-                        </i>
-                        <span>{{ trans('cruds.analytic.title') }}</span>
-
-                    </a>
-                </li>
-            @endcan
-            @can('custom_key_access')
-                <li class="{{ request()->is("admin/custom-keys") || request()->is("admin/custom-keys/*") ? "active" : "" }}">
-                    <a href="{{ route("admin.custom-keys.index") }}">
-                        <i class="fa-fw fab fa-keycdn">
-
-                        </i>
-                        <span>{{ trans('cruds.customKey.title') }}</span>
-
-                    </a>
-                </li>
-            @endcan
+           
             @can('user_management_access')
                 <li class="treeview">
                     <a href="#">

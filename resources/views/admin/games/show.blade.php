@@ -1,3 +1,5 @@
+
+
     @extends('layouts.admin')
     <style type="text/css">
       div.dataTables_wrapper {
@@ -30,7 +32,7 @@
             <div class="box-body box-profile">
  
 
-@switch($game['id'])
+@switch($gameid)
     @case(5)
           <img class="card-img-top" src="/img/american.jpg" alt="Card image cap" width="100%"> 
         @break
@@ -51,7 +53,7 @@
         <img class="card-img-top" src="/img/slider-1.jpg" alt="Card image cap" width="100%">  
 @endswitch
 <hr>
-              <h3 class="profile-username text-center">{{$game['name']}}</h3>
+              <h3 class="profile-username text-center">{{$game->first()->Name}}</h3>
 
               <p class="text-muted text-center">Last updated: {{\Carbon\Carbon::now()->diffForHumans()}}</p>
 
@@ -59,13 +61,13 @@
                 <li class="list-group-item">
                   <b>App ID</b>
                   <br> 
-                  <a>{{$game['appID']}}</a>
+                  <a>{{$game->first()->AppId}}</a>
                   <br>
                 </li>
                 <li class="list-group-item">
                   <b>App Secret</b>
                   <br> 
-                  <a>{{$game['secret']}}</a>
+                  <a>{{$game->first()->Secret}}</a>
                   <br>
                 </li>
                 <li class="list-group-item">
@@ -148,7 +150,7 @@
             <ul class="nav nav-tabs">
               <li class="active"><a href="#activity" data-toggle="tab">Worlds</a></li>
               <li><a href="#timeline" data-toggle="tab">Levels</a></li>
-              <li><a href="#settings" data-toggle="tab">Level Interfaces</a></li>
+     
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="activity">       
@@ -169,6 +171,7 @@
                      @forelse($worlds as $world)
                
                   <tr>
+
                     <td>{{$world->ID}}</td>
                     <td>{{$world->Name}}</td>
                     <td>
@@ -224,7 +227,7 @@
                   <tr>
                     <td>{{$level->ID}}</td>
                     <td>{{$level->Name}}</td>
-                    <td>{{$level->world->name}}</td>
+                    <td>{{\App\Models\World::where('ID', $level->WorldID)->first()->Name}}</td>
                     <td>{{Carbon\Carbon::parse($world->CreationDate)->format('d-m-Y')}}</td>             
                     <td>
                       <div class="sparkbar" data-color="#00a65a" data-height="20">
@@ -248,51 +251,7 @@
               </div>
               <!-- /.tab-pane -->
 
-              <div class="tab-pane" id="settings">
-                <!-- Level Interfaces Tab -->
-                <table class="table no-margin">
-                  <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Created At</th>
-                    <th>Actions</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-
-
-
-
-                  @forelse($worlds as $world)
-                   @forelse(\App\Models\LevelInterface::where('WorldID', $world->ID)->get() as $item)
-               
-                  <tr>
-                    <td>{{$item->ID}}</td>
-                    <td>{{$item->Name}}</td>
-                    <td>{{Carbon\Carbon::parse($world->CreationDate)->format('d-m-Y')}}</td>             
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">
-                        
-                        <a href="#" class="btn btn-xs btn-primary"><i class="fas fa-eye"></i>
-
-</a>
-                      </div>
-                    </td>
-                  </tr>           
-               
-                    @empty
-                    <tr>
-                      <td>
-                        No data to show
-                      </td>
-                    </tr>
-                      @endforelse
-                      @empty
-                      @endforelse
-                  </tbody>
-                </table>
-              </div>
+              
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
@@ -305,7 +264,52 @@
 
     </section>
 
+{{$usergamedata}}
+
 <div class="content">
+    <div class="row">
+        <div class="col-lg-12">
+        <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Compare Cohorts</h3>
+
+            </div>
+                <div class="box-body box-profile">
+                    <div class="col-lg-6">   
+                        <select class="form-control" control-id="ControlID-24">
+                             @forelse($cohortdata as $data)
+
+                          <option>{{$data->NameID}}</option>
+                            @empty
+                            No data to show
+                            @endforelse
+                        </select>
+                        </div>       
+                        <div class="col-lg-6">   
+                        <select class="form-control" control-id="ControlID-24">
+                        @forelse($cohortdata as $data)
+                          <option>{{$data->NameID}}</option>
+                            @empty
+                            No data to show
+                            @endforelse
+                        </select>
+                        </div>  
+                        <br>
+                        <hr>
+                        <div class="col-lg-2">
+                        </div>
+                        <div class="col-lg-8"><a href="{{route('admin.games.compare')}}" class="btn btn-block btn-primary">Compare Cohorts</a></div>
+                            <div class="col-lg-2">
+                        </div>
+                        <br>
+                        <br>
+                      </div>
+        </div>
+    </div>
+</div>
+
+
+
     <div class="row">
         <div class="col-lg-12">
         <div class="box box-info">
@@ -316,21 +320,21 @@
 <table id="example1" class="display nowrap" style="width:100%">
         <thead>
             <tr>
-                <th>Cohort ID</th>
+       
                 <th>End Date</th>
-                <th>Deaths by Level</th>
-                <th>Impressions per Level</th>
-                <th>Free Box Claims</th>
-                <th>Initial Retention</th>
-                <th>7 Day Retention</th>
-                <th>30 Day Retention</th>
-                <th>Still Active Users</th>
-                <th>Progression Depth</th>
-                <th>Users who Finished</th>
-                <th>Load Screen</th>
-                <th>Privacy Policy</th>
-                <th>Tutorial Start</th>
-                <th>Tutrial End</th>
+                <th>Deaths</th>
+                <th>Impressions</th>
+                <th>Boxes</th>
+                <th>Retention</th>
+                <th>7DR</th>
+                <th>30DR</th>
+                <th>Users</th>
+                <th>Depth</th>
+                <th>Finished</th>
+                <th>LS</th>
+                <th>PP</th>
+                <th>Tut. Start</th>
+                <th>Tut. End</th>
                 <th>Main Menu</th>
 
             </tr>
@@ -339,15 +343,16 @@
             @forelse($cohortdata as $data)
 
             <tr>
-                <td>{{$data->ID}}</td>
                 <td>{{ \Carbon\Carbon::today()->subDay()->diffForHumans() }} </td>
+
                 <td> 5</td>
                 <td>10</td>
                 <td>100</td>
                 <td>50</td>
                 <td>10</td>
                 <td>25</td>
-                <td>789</td>
+                <!-- Users -->
+                <td> {{\App\Models\UserCohort::where('CohortGroupID', $data->ID)->first()->count()}} </td>
                 <td>260</td>
                 <td>600</td>
                 <td>40</td>

@@ -9,7 +9,7 @@ class Game extends Model
 {
     use HasFactory;
     protected $connection = 'mysql2';
-    public $table = 'aeria_usergamedata';
+    public $table = 'aeria_gameid';
 
 
 
