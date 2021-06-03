@@ -263,8 +263,10 @@
       <!-- /.row -->
 
     </section>
+{{$insanedeaths->first()->Name}}
 
 {{$usergamedata}}
+
 
 <div class="content">
     <div class="row">

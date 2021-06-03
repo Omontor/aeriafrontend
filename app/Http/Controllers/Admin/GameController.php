@@ -14,6 +14,7 @@ use App\Models\CohortGroup;
 use App\Models\UserCohort;
 use App\Models\Message;
 use App\Models\UserGameData;
+use App\Models\CustomKey;
 use Gate;
 
 use Illuminate\Http\Request;
@@ -88,9 +89,14 @@ $gameid = $index;
         $cohortgroups = CohortGroup::where('GameID', $index)->get();
         $cohortusers = UserCohort::all();
         $usergamedata = UserGameData::where('GameID', $index)->get();
-  
+        $customkeys = CustomKey::where('AnalyticID', $index)->get();
 
-        return view('admin.games.show', compact('gameid', 'messages', 'game', 'worlds', 'cohortdata', 'cohortgroups', 'cohortusers', 'usergamedata'));
+        $insanedeaths = CustomKey::where('AnalyticID', $index)->where('Name', 'insaneDeaths')->get();
+        $insanetime = CustomKey::where('AnalyticID', $index)->where('Name', 'insaneTime')->get();
+
+        
+
+        return view('admin.games.show', compact('gameid', 'messages', 'game', 'worlds', 'cohortdata', 'cohortgroups', 'cohortusers', 'usergamedata', 'customkeys', 'insanedeaths', 'insanedeaths'));
     }
 
 
