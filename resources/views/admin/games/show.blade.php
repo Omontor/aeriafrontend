@@ -80,72 +80,6 @@
         </div>
         <!-- /.col -->
         <div class="col-md-8">
-
- 
-
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript">
-    var markers = [
- 
-        {     
-        "title": 'test',
-        "lat": '19.38476904761318',
-        "lng": '-99.16648936441923',
-        "description": 'test'
-    },
-    
-    ];
-    window.onload = function () {
-        LoadMap();
-    }
-    function LoadMap() {
-        var mapOptions = {
-            center: new google.maps.LatLng(markers[0].lat, markers[0].lng),
-            // zoom: 8, //Not required.
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var infoWindow = new google.maps.InfoWindow();
-        var map = new google.maps.Map(document.getElementById("dvMap"), mapOptions);
- 
-        //Create LatLngBounds object.
-        var latlngbounds = new google.maps.LatLngBounds();
- 
-        for (var i = 0; i < markers.length; i++) {
-            var data = markers[i]
-            var myLatlng = new google.maps.LatLng(data.lat, data.lng);
-            var marker = new google.maps.Marker({
-                position: myLatlng,
-                map: map,
-                title: data.title
-            });
-            (function (marker, data) {
-                google.maps.event.addListener(marker, "click", function (e) {
-                    infoWindow.setContent("<div style = 'width:200px;min-height:40px'>" + data.description + "</div>");
-                    infoWindow.open(map, marker);
-                });
-            })(marker, data);
- 
-            //Extend each marker's position in LatLngBounds object.
-            latlngbounds.extend(marker.position);
-        }
- 
-        //Get the boundaries of the Map.
-        var bounds = new google.maps.LatLngBounds();
- 
-        //Center map and adjust Zoom based on the position of all markers.
-        map.setCenter(latlngbounds.getCenter());
-        map.fitBounds(latlngbounds);
-    }
-</script>
-<div id="dvMap" style="width: 100%; height: 400px">
-</div>
-
-
-<script async defer
-                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-VZUr01EdXUPZfUcj_UilKvo1DjmfGG0&callback=initMap">
-                        </script>
-
-<br>
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
               <li class="active"><a href="#activity" data-toggle="tab">Worlds</a></li>
@@ -258,14 +192,43 @@
           </div>
           <!-- /.nav-tabs-custom -->
         </div>
+
+
+        <div class="col-lg-8">
+        <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Segments</h3>
+            </div>
+
+<table id="example2" class="display nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>Segment Name</th>
+                <th>Totals</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($cohorts as $data)
+
+            <tr>
+                <td>{{$data->ID}}</td>
+                <td>{{$data->IAP}}</td>
+    
+            </tr>
+            @empty
+            <tr>No data to show</tr>
+            @endforelse
+
+        </tbody>
+    </table>
+        </div>
+      </div>
         <!-- /.col -->
       </div>
       <!-- /.row -->
 
     </section>
-{{$insanedeaths->first()->Name}}
-
-{{$usergamedata}}
 
 
 <div class="content">
@@ -279,7 +242,7 @@
                 <div class="box-body box-profile">
                     <div class="col-lg-6">   
                         <select class="form-control" control-id="ControlID-24">
-                             @forelse($cohortdata as $data)
+                             @forelse($cohorts as $data)
 
                           <option>{{$data->NameID}}</option>
                             @empty
@@ -289,7 +252,7 @@
                         </div>       
                         <div class="col-lg-6">   
                         <select class="form-control" control-id="ControlID-24">
-                        @forelse($cohortdata as $data)
+                        @forelse($cohorts as $data)
                           <option>{{$data->NameID}}</option>
                             @empty
                             No data to show
@@ -323,38 +286,43 @@
         <thead>
             <tr>
        
-                <th>End Date</th>
-                <th>Deaths</th>
-                <th>Impressions</th>
-                <th>Boxes</th>
-                <th>Retention</th>
-                <th>7DR</th>
-                <th>30DR</th>
-                <th>Users</th>
-                <th>Depth</th>
-                <th>Finished</th>
-                <th>LS</th>
+                <th style="max-width: 50px;">End Date</th>
+                <th style="max-width: 50px;">Deaths</th>
+                <th style="max-width: 50px;">Imp</th>
+                <th style="max-width: 50px;">Boxes</th>
+                <th style="max-width: 60px;">Retention</th>
+                <th style="max-width: 50px;">7DR</th>
+                <th style="max-width: 50px;">30DR</th>
+                <th style="max-width: 50px;">Users</th>
+                <th style="max-width: 50px;">Depth</th>
+                <th style="max-width: 50px;">Finished</th>
+                <th style="max-width: 50px;">LS</th>
                 <th>PP</th>
                 <th>Tut. Start</th>
                 <th>Tut. End</th>
-                <th>Main Menu</th>
+                <th>Main <br> Menu</th>
 
             </tr>
         </thead>
         <tbody>
-            @forelse($cohortdata as $data)
+            @forelse($cohorts as $cohort)
 
             <tr>
                 <td>{{ \Carbon\Carbon::today()->subDay()->diffForHumans() }} </td>
 
-                <td> 5</td>
-                <td>10</td>
-                <td>100</td>
+                <td>
+                    100
+                </td>
+                <td>
+                {{\App\Models\UserGameData::sum('ShowedAds')}}
+                </td>
+                <td>  
+                {{\App\Models\UserGameData::sum('ShowedAds')}}</td>
                 <td>50</td>
                 <td>10</td>
                 <td>25</td>
                 <!-- Users -->
-                <td> {{\App\Models\UserCohort::where('CohortGroupID', $data->ID)->first()->count()}} </td>
+                <td> {{\App\Models\UserCohort::where('CohortGroupID', $cohort->ID)->count()}} </td>
                 <td>260</td>
                 <td>600</td>
                 <td>40</td>
@@ -362,6 +330,7 @@
                 <td>1250</td>
                 <td>1200</td>
                 <td>100</td>
+
     
             </tr>
             @empty
@@ -375,41 +344,6 @@
     </div>
   </div>
 
-
-  <div class="content">
-    <div class="row">
-        <div class="col-lg-12">
-        <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Segments</h3>
-            </div>
-
-<table id="example2" class="display nowrap" style="width:100%">
-        <thead>
-            <tr>
-                <th>Segment Name</th>
-                <th>Totals</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($cohortdata as $data)
-
-            <tr>
-                <td>{{$data->ID}}</td>
-                <td>{{$data->IAP}}</td>
-    
-            </tr>
-            @empty
-            <tr>No data to show</tr>
-            @endforelse
-
-        </tbody>
-    </table>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="content">
     <div class="row">
@@ -423,19 +357,19 @@
         <thead>
             <tr>
                 <th>Level</th>
-                <th>Average Time to Finish Level</th>
-                <th>Depth of first death</th>
-                <th>First time play % got 1 stars</th>      
-                <th>First time play % got 2 stars</th>
-                <th>First time play % got 3 stars</th>
-                <th>Average number of Deaths per play</th>
-                <th>% finish the level</th>
-                <th>Number of users that have started this level at least once</th>
+                <th>Avg. time to finish</th>
+                <th>First death</th>
+                <th>1 stars</th>      
+                <th>2 stars</th>
+                <th>3 stars</th>
+                <th>Deaths per play</th>
+                <th>% finish</th>
+                <th>Once</th>
 
             </tr>
         </thead>
         <tbody>
-            @forelse($cohortdata as $data)
+            @forelse($cohorts as $data)
 
             <tr>
                 <td>{{($loop->index)+1}}</td>
@@ -485,7 +419,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($cohortdata as $data)
+            @forelse($cohorts as $data)
 
             <tr>
                 <td>{{($loop->index)+1}}</td>
@@ -538,7 +472,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($cohortdata as $data)
+            @forelse($cohorts as $data)
 
             <tr>
                 <td>{{($loop->index)+1}}</td>
@@ -621,14 +555,22 @@
 <script>
  $(document).ready(function() {
     $('#example1').DataTable( {
-        "scrollX": true
+        "scrollX": true,
+        'buttons': [
+ 
+    'colvis',
+],
     } );
 } );
 </script>
 <script>
  $(document).ready(function() {
     $('#example2').DataTable( {
-        "scrollX": true
+        "scrollX": true,
+        'buttons': [
+ 
+    'colvis',
+],
     } );
 } );
 </script>
@@ -636,7 +578,11 @@
 <script>
  $(document).ready(function() {
     $('#example3').DataTable( {
-        "scrollX": true
+        "scrollX": true,
+        'buttons': [
+ 
+    'colvis',
+],
     } );
 } );
 </script>
@@ -644,7 +590,11 @@
 <script>
  $(document).ready(function() {
     $('#example4').DataTable( {
-        "scrollX": true
+        "scrollX": true,
+        'buttons': [
+ 
+    'colvis',
+],
     } );
 } );
 </script>
@@ -652,7 +602,11 @@
 <script>
  $(document).ready(function() {
     $('#example5').DataTable( {
-        "scrollX": true
+        "scrollX": true,
+        'buttons': [
+ 
+    'colvis',
+],
     } );
 } );
 </script>

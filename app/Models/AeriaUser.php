@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserGameData extends Model
+class AeriaUser extends Model
 {
     use HasFactory;
     protected $connection = 'mysql2';
-    public $table = 'aeria_usergamedata';    
+    public $table = 'aspnetusers';    
 
 
-    public function user()
+
+    public function gamedata()
     {
-        return $this->belongsTo(AeriaUser::class);
+        return $this->hasMany(UserGameData::class);
     }
 }

@@ -84,7 +84,7 @@ $gameid = $index;
         //Eloquents
         $game = Game::where('ID', "6")->get();
         $messages = Message::where('gameID', $index)->get();
-        $cohortdata = Cohort::where('GameID', $index)->get();
+        $cohorts = Cohort::where('GameID', $index)->get();
         $worlds = World::where('GameId', $index)->get();
         $cohortgroups = CohortGroup::where('GameID', $index)->get();
         $cohortusers = UserCohort::all();
@@ -94,9 +94,10 @@ $gameid = $index;
         $insanedeaths = CustomKey::where('AnalyticID', $index)->where('Name', 'insaneDeaths')->get();
         $insanetime = CustomKey::where('AnalyticID', $index)->where('Name', 'insaneTime')->get();
 
-        
 
-        return view('admin.games.show', compact('gameid', 'messages', 'game', 'worlds', 'cohortdata', 'cohortgroups', 'cohortusers', 'usergamedata', 'customkeys', 'insanedeaths', 'insanedeaths'));
+
+
+        return view('admin.games.show', compact('gameid', 'messages', 'game', 'worlds', 'cohorts', 'cohortgroups', 'cohortusers', 'usergamedata', 'customkeys', 'insanedeaths', 'insanedeaths' ));
     }
 
 
