@@ -1,6 +1,4 @@
-
-
-    @extends('layouts.admin')
+@extends('layouts.admin')
     <style type="text/css">
       div.dataTables_wrapper {
 
@@ -8,6 +6,17 @@
         padding: 20px;
     }
     </style>
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="/plugins/sweetalert2/sweetalert2.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+
 @section('content')
 
 
@@ -53,6 +62,10 @@
               <h3 class="profile-username text-center">{{$game->first()->Name}}</h3>
 
               <p class="text-muted text-center">Last updated: {{\Carbon\Carbon::now()->diffForHumans()}}</p>
+
+                      
+       <p>  <b>Users</b> <a class="pull-right">1</a></p>
+            
             </div>
             <!-- /.box-body -->
           </div>
@@ -76,24 +89,14 @@
                   <a>{{$game->first()->Secret}}</a>
                   <br>
                 </li>
-                <li class="list-group-item">
-         <b>Users</b> <a class="pull-right">1</a>
-                </li>
+    
               </ul>
             </div>
 
         </div>
-      </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-
-    </section>
 
 
-<div class="content">
-    <div class="row">
-        <div class="col-lg-12">
+        
         <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">Compare Cohorts</h3>
@@ -130,44 +133,417 @@
                         <br>
                       </div>
         </div>
-    </div>
-</div>
 
 
 
+      </div>
+
+
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+    </section>
+
+
+<div class="content">
     <div class="row">
         <div class="col-lg-12">
-        <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Cohort Data</h3>
-            </div>
-
-<table id="example1" class="display nowrap" style="width:100%">
-        <thead>
-            <tr>
-       
-                <th style="max-width: 50px;">End Date</th>
+            <div class="box box-info">
+            <div class="card">
+              <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                  <li class="nav-item"><a class="nav-link  btn btn-primary" href="#activity" data-toggle="tab" style="color:white;">Cohort View</a></li>
+                  <li class="nav-item"><a class="nav-link btn btn-primary" href="#timeline" data-toggle="tab" style="color:white;">Segments</a></li>
+                  <li class="nav-item"><a class="nav-link btn btn-primary" href="#settings" data-toggle="tab" style="color:white;">Level</a></li>  
+                  <li class="nav-item"><a class="nav-link btn btn-primary" href="#settings" data-toggle="tab" style="color:white;">Resources Spent</a></li>
+                  <li class="nav-item"><a class="nav-link btn btn-primary" href="#settings" data-toggle="tab" style="color:white;">Monetization</a></li>
+                </ul>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="activity">
+                  
+                   <table id="example1" class="display nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                <th style="max-width: 20px;">ID</th>
+                <th style="max-width: 60px;">End <br> Date</th>
                 <th style="max-width: 50px;">Deaths</th>
-                <th style="max-width: 50px;">Imp</th>
-                <th style="max-width: 50px;">Boxes</th>
-                <th style="max-width: 60px;">Retention</th>
-                <th style="max-width: 50px;">7DR</th>
-                <th style="max-width: 50px;">30DR</th>
-                <th style="max-width: 50px;">Users</th>
+                <th style="max-width: 30px;">Imp</th>
+                <th style="max-width: 40px;">Boxes</th>
+                <th style="max-width: 30px;">Ret.</th>
+                <th style="max-width: 30px;">7 <br> DR</th>
+                <th style="max-width: 30px;">30 <br>DR</th>
+                <th style="max-width: 40px;">Users</th>
                 <th style="max-width: 50px;">Depth</th>
-                <th style="max-width: 50px;">Finished</th>
-                <th style="max-width: 50px;">LS</th>
-                <th>PP</th>
-                <th>Tut. Start</th>
-                <th>Tut. End</th>
-                <th>Main <br> Menu</th>
+                <th style="max-width: 40px;">Finish</th>
+                <th style="max-width: 30px;">LS</th>
+                <th style="max-width: 30px;">PP</th>
+                <th style="max-width: 30px;">Tut. <br> Start</th>
+                <th style="max-width: 30px;">Tut. <br>End</th>
+                <th style="max-width: 30px;">Main <br> Menu</th>
+                <th style="color:  white; background-color: blue; max-width: 20px;">Avg. <br>ttf</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">First <br> Death</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">1 Star</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">2 Stars</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">3 Stars</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">DPP</th>
+                <th style="color:  white; background-color: blue; max-width: 50px;">Finish <br> Level</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">Start <br>Once</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 20px;">Avg. <br>ttf</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">First <br> Death</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">1 Star</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">2 Stars</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">3 Stars</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">DPP</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 50px;">Finish <br> Level</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">Start <br>Once</th><th style="color:  white; background-color: blue; max-width: 20px;">Avg. <br>ttf</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">First <br> Death</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">1 Star</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">2 Stars</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">3 Stars</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">DPP</th>
+                <th style="color:  white; background-color: blue; max-width: 50px;">Finish <br> Level</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">Start <br>Once</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 20px;">Avg. <br>ttf</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">First <br> Death</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">1 Star</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">2 Stars</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">3 Stars</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">DPP</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 50px;">Finish <br> Level</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">Start <br>Once</th><th style="color:  white; background-color: blue; max-width: 20px;">Avg. <br>ttf</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">First <br> Death</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">1 Star</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">2 Stars</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">3 Stars</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">DPP</th>
+                <th style="color:  white; background-color: blue; max-width: 50px;">Finish <br> Level</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">Start <br>Once</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 20px;">Avg. <br>ttf</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">First <br> Death</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">1 Star</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">2 Stars</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">3 Stars</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">DPP</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 50px;">Finish <br> Level</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">Start <br>Once</th>
+
+                <th style="color:  white; background-color: blue; max-width: 20px;">Avg. <br>ttf</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">First <br> Death</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">1 Star</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">2 Stars</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">3 Stars</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">DPP</th>
+                <th style="color:  white; background-color: blue; max-width: 50px;">Finish <br> Level</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">Start <br>Once</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 20px;">Avg. <br>ttf</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">First <br> Death</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">1 Star</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">2 Stars</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">3 Stars</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">DPP</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 50px;">Finish <br> Level</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">Start <br>Once</th> <th style="color:  white; background-color: blue; max-width: 20px;">Avg. <br>ttf</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">First <br> Death</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">1 Star</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">2 Stars</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">3 Stars</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">DPP</th>
+                <th style="color:  white; background-color: blue; max-width: 50px;">Finish <br> Level</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">Start <br>Once</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 20px;">Avg. <br>ttf</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">First <br> Death</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">1 Star</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">2 Stars</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">3 Stars</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">DPP</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 50px;">Finish <br> Level</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">Start <br>Once</th> <th style="color:  white; background-color: blue; max-width: 20px;">Avg. <br>ttf</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">First <br> Death</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">1 Star</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">2 Stars</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">3 Stars</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">DPP</th>
+                <th style="color:  white; background-color: blue; max-width: 50px;">Finish <br> Level</th>
+                <th style="color:  white; background-color: blue; max-width: 30px;">Start <br>Once</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 20px;">Avg. <br>ttf</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">First <br> Death</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">1 Star</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">2 Stars</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">3 Stars</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">DPP</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 50px;">Finish <br> Level</th>
+                <th style="color:  white; background-color: darkcyan; max-width: 30px;">Start <br>Once</th>
 
             </tr>
         </thead>
         <tbody>
-            @forelse($cohorts as $cohort)
+              @foreach(range(1, 99) as $y)
 
             <tr>
+                <td>{{$loop->index + 1}} </td>
+                <td>{{ \Carbon\Carbon::today()->subDays($loop->index)->diffForHumans() }} </td>
+
+                <td>
+                    100
+                </td>
+                <td>
+                {{\App\Models\UserGameData::sum('ShowedAds')}}
+                </td>
+                <td>  
+                {{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>50</td>
+                <td>10</td>
+                <td>25</td>
+                <!-- Users -->
+                <td> 1</td>
+                <td>260</td>
+                <td>600</td>
+                <td>40</td>
+                <td>500</td>
+                <td>1250</td>
+                <td>1200</td>
+                <td>100</td>  
+
+                <td>1 </td>
+                <td>{{ \Carbon\Carbon::today()->subDay()->diffForHumans() }} </td>
+                <td>100</td>
+                <td>{{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>{{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>50</td>
+                <td>10</td>
+                <td>25</td>
+                <td> 1</td>
+                <td>260</td>
+                <td>600</td>
+                <td>40</td>
+                <td>500</td>
+                <td>1250</td>
+                <td>1200</td>
+                <td>100</td>
+<td>1 </td>
+                <td>{{ \Carbon\Carbon::today()->subDay()->diffForHumans() }} </td>
+                <td>100</td>
+                <td>{{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>{{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>50</td>
+                <td>10</td>
+                <td>25</td>
+                <td> 1</td>
+                <td>260</td>
+                <td>600</td>
+                <td>40</td>
+                <td>500</td>
+                <td>1250</td>
+                <td>1200</td>
+                <td>100</td>
+<td>1 </td>
+                <td>{{ \Carbon\Carbon::today()->subDay()->diffForHumans() }} </td>
+                <td>100</td>
+                <td>{{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>{{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>50</td>
+                <td>10</td>
+                <td>25</td>
+                <td> 1</td>
+                <td>260</td>
+                <td>600</td>
+                <td>40</td>
+                <td>500</td>
+                <td>1250</td>
+                <td>1200</td>
+                <td>100</td>
+<td>1 </td>
+                <td>{{ \Carbon\Carbon::today()->subDay()->diffForHumans() }} </td>
+                <td>100</td>
+                <td>{{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>{{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>50</td>
+                <td>10</td>
+                <td>25</td>
+                <td> 1</td>
+                <td>260</td>
+                <td>600</td>
+                <td>40</td>
+                <td>500</td>
+                <td>1250</td>
+                <td>1200</td>
+                <td>100</td>
+<td>1 </td>
+                <td>{{ \Carbon\Carbon::today()->subDay()->diffForHumans() }} </td>
+                <td>100</td>
+                <td>{{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>{{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>50</td>
+                <td>10</td>
+                <td>25</td>
+                <td> 1</td>
+                <td>260</td>
+                <td>600</td>
+                <td>40</td>
+                <td>500</td>
+                <td>1250</td>
+                <td>1200</td>
+                <td>100</td>
+<td>1 </td>
+                <td>{{ \Carbon\Carbon::today()->subDay()->diffForHumans() }} </td>
+                <td>100</td>
+                <td>{{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>{{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>50</td>
+                <td>10</td>
+                <td>25</td>
+                <td> 1</td>
+                <td>260</td>
+                <td>600</td>
+                <td>40</td>
+                <td>500</td>
+                <td>1250</td>
+                <td>1200</td>
+                <td>100</td>
+
+    
+            </tr>
+           @endforeach
+
+        </tbody>
+    </table>
+                  </div>
+                  <!-- /.tab-pane -->
+                  <div class="tab-pane" id="timeline">
+                    <!-- The timeline -->
+                    <table id="example2" class="display nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                <th style="max-width: 20px;">Cohort</th>
+                <th style="max-width: 60px;">End <br> Date</th>
+                <th style="max-width: 50px;">Spender</th>
+                <th style="max-width: 30px;">Ads <br> Lover</th>
+                <th style="max-width: 40px;">Hyper <br> Active</th>
+                <th style="max-width: 30px;">Vip <br>Cooling</th>
+                <th style="max-width: 30px;">Vip<br> Cold</th>
+                <th style="max-width: 30px;">Cooling <br>User</th>
+                <th style="max-width: 40px;">Cold <br> User</th>
+                <th style="max-width: 50px;">VIP <br> Dead</th>
+                <th style="max-width: 40px;">Dead <br> User</th>
+                <th style="max-width: 30px;">Newbie</th>
+                <th style="max-width: 30px;">Veteran</th>
+                <th style="max-width: 30px;">Casual <br> User</th>
+                <th style="max-width: 30px;">Referall</th>
+                <th style="max-width: 30px;">Leaderboard</th>
+                <th style="max-width: 20px;">End of <br>Road</th>
+
+                
+            </tr>
+        </thead>
+        <tbody>
+              @foreach(range(1, 31) as $y)
+
+            <tr>
+                <td>{{$loop->index + 1}} </td>
+                <td>{{ \Carbon\Carbon::today()->subDays($loop->index)->diffForHumans() }} </td>
+
+                <td>
+                    100
+                </td>
+                <td>
+                {{\App\Models\UserGameData::sum('ShowedAds')}}
+                </td>
+                <td>  
+                {{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>50</td>
+                <td>10</td>
+                <td>25</td>
+                <!-- Users -->
+                <td> 1</td>
+                <td>260</td>
+                <td>600</td>
+                <td>40</td>
+                <td>500</td>
+                <td>1250</td>
+                <td>1200</td>
+                <td>100</td>    
+                <td>1 </td>
+
+
+    
+            </tr>
+           @endforeach
+
+        </tbody>
+    </table>
+                  </div>
+                  <!-- /.tab-pane -->
+
+                  <div class="tab-pane" id="settings">
+                <table id="example3" class="display nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                <th style="max-width: 20px;">ID</th>
+                <th style="max-width: 60px;">End <br> Date</th>
+                <th style="max-width: 50px;">Deaths</th>
+                <th style="max-width: 30px;">Imp</th>
+                <th style="max-width: 40px;">Boxes</th>
+                <th style="max-width: 30px;">Ret.</th>
+                <th style="max-width: 30px;">7 <br> DR</th>
+                <th style="max-width: 30px;">30 <br>DR</th>
+                <th style="max-width: 40px;">Users</th>
+                <th style="max-width: 50px;">Depth</th>
+                <th style="max-width: 40px;">Finish</th>
+                <th style="max-width: 30px;">LS</th>
+                <th style="max-width: 30px;">PP</th>
+                <th style="max-width: 30px;">Tut. <br> Start</th>
+                <th style="max-width: 30px;">Tut. <br>End</th>
+                <th style="max-width: 30px;">Main <br> Menu</th>
+   <th style="max-width: 20px;">ID</th>
+                <th style="max-width: 60px;">End <br> Date</th>
+                <th style="max-width: 50px;">Deaths</th>
+                <th style="max-width: 30px;">Imp</th>
+                <th style="max-width: 40px;">Boxes</th>
+                <th style="max-width: 30px;">Ret.</th>
+                <th style="max-width: 30px;">7 <br> DR</th>
+                <th style="max-width: 30px;">30 <br>DR</th>
+                <th style="max-width: 40px;">Users</th>
+                <th style="max-width: 50px;">Depth</th>
+                <th style="max-width: 40px;">Finish</th>
+                <th style="max-width: 30px;">LS</th>
+                <th style="max-width: 30px;">PP</th>
+                <th style="max-width: 30px;">Tut. <br> Start</th>
+                <th style="max-width: 30px;">Tut. <br>End</th>
+                <th style="max-width: 30px;">Main <br> Menu</th>
+
+            </tr>
+        </thead>
+        <tbody>
+              @foreach(range(1, 31) as $y)
+
+            <tr>
+                <td>{{$loop->index + 1}} </td>
+                <td>{{ \Carbon\Carbon::today()->subDays($loop->index)->diffForHumans() }} </td>
+
+                <td>
+                    100
+                </td>
+                <td>
+                {{\App\Models\UserGameData::sum('ShowedAds')}}
+                </td>
+                <td>  
+                {{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>50</td>
+                <td>10</td>
+                <td>25</td>
+                <!-- Users -->
+                <td> 1</td>
+                <td>260</td>
+                <td>600</td>
+                <td>40</td>
+                <td>500</td>
+                <td>1250</td>
+                <td>1200</td>
+                <td>100</td>    
+                <td>1 </td>
                 <td>{{ \Carbon\Carbon::today()->subDay()->diffForHumans() }} </td>
 
                 <td>
@@ -182,7 +558,7 @@
                 <td>10</td>
                 <td>25</td>
                 <!-- Users -->
-                <td> {{\App\Models\UserCohort::where('CohortGroupID', $cohort->ID)->count()}} </td>
+                <td> 1</td>
                 <td>260</td>
                 <td>600</td>
                 <td>40</td>
@@ -193,17 +569,22 @@
 
     
             </tr>
-            @empty
-            <tr>No data to show</tr>
-            @endforelse
+           @endforeach
 
         </tbody>
     </table>
+                  </div>
+                  <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+              </div><!-- /.card-body -->
+            </div>
         </div>
-      </div>
+        </div>
+
+
     </div>
   </div>
-
 
 
 
@@ -273,6 +654,9 @@
     } );
 } );
 </script>
+
+
+
 @endsection
 
 @endsection

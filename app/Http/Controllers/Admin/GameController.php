@@ -82,7 +82,7 @@ $gameid = $index;
     
 
         //Eloquents
-        $game = Game::where('ID', "6")->get();
+        $game = Game::where('ID', "10")->get();
         $messages = Message::where('gameID', $index)->get();
         $cohorts = Cohort::where('GameID', $index)->get();
         $worlds = World::where('GameId', $index)->get();
