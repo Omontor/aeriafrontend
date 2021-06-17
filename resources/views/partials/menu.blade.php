@@ -42,6 +42,31 @@
 
                     </a>
                 </li>
+
+<li class="treeview">
+                    <a href="#">
+                        <i class="fa-fw fas fa-cogs">
+
+                        </i>
+                        <span>System Mangement</span>
+                        <span class="pull-right-container"><i class="fa fa-fw fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+        
+                            <li class="{{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "active" : "" }}">
+                                <a href="{{ route("admin.custom-keys.index") }}">
+                                    <i class="fa-fw fas fa-puzzle-piece">
+
+                                    </i>
+                                    <span>Custom Keys</span>
+
+                                </a>
+                            </li>
+
+                    </ul>
+                </li>
+
+
             @endcan
            
             @can('user_management_access')

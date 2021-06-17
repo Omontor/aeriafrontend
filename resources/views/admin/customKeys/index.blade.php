@@ -31,73 +31,34 @@
                                         {{ trans('cruds.customKey.fields.name') }}
                                     </th>
                                     <th>
-                                        {{ trans('cruds.customKey.fields.analytic') }}
-                                    </th>
+                                        level
+                                    </th> 
+
                                     <th>
-                                        &nbsp;
+                                        Actions
                                     </th>
+                               
                                 </tr>
                                 <tr>
                                     <td>
                                     </td>
                                     <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                                       ID
                                     </td>
                                     <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                                      Name
                                     </td>
                                     <td>
-                                        <select class="search">
-                                            <option value>{{ trans('global.all') }}</option>
-                                            @foreach($analytics as $key => $item)
-                                                <option value="{{ $item->bvc }}">{{ $item->bvc }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
+                                        Level
+                                    </td> 
                                     <td>
+                                        Actions
                                     </td>
+                                  
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($customKeys as $key => $customKey)
-                                    <tr data-entry-id="{{ $customKey->id }}">
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            {{ $customKey->id ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $customKey->name ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $customKey->analytic->bvc ?? '' }}
-                                        </td>
-                                        <td>
-                                            @can('custom_key_show')
-                                                <a class="btn btn-xs btn-primary" href="{{ route('admin.custom-keys.show', $customKey->id) }}">
-                                                    {{ trans('global.view') }}
-                                                </a>
-                                            @endcan
-
-                                            @can('custom_key_edit')
-                                                <a class="btn btn-xs btn-info" href="{{ route('admin.custom-keys.edit', $customKey->id) }}">
-                                                    {{ trans('global.edit') }}
-                                                </a>
-                                            @endcan
-
-                                            @can('custom_key_delete')
-                                                <form action="{{ route('admin.custom-keys.destroy', $customKey->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                </form>
-                                            @endcan
-
-                                        </td>
-
-                                    </tr>
-                                @endforeach
+                                
                             </tbody>
                         </table>
                     </div>

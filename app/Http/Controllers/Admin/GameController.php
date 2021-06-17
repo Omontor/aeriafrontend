@@ -38,26 +38,26 @@ class GameController extends Controller
 
     $gameid = $index;
     //Game
-    $httpgame = Http::withoutVerifying()->get('https://localhost:5001/api/Game/'.$index, ['verify' => false]);
+    $httpgame = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Game/'.$index, ['verify' => false]);
     $game = collect($httpgame->json());
     //Messages
-    $httpmessages = Http::withoutVerifying()->get('https://localhost:5001/api/AeriaMessages', ['verify' => false]);
+    $httpmessages = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/AeriaMessages', ['verify' => false]);
     $messages = $httpmessages->json([]);
 
-    $httpanalytics = Http::withoutVerifying()->get('https://localhost:5001/api/AeriaAnalytics/AllAnalyticsPerGame/'.$index, ['verify' => false]);
+    $httpanalytics = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/AeriaAnalytics/AllAnalyticsPerGame/'.$index, ['verify' => false]);
         $analytics = $httpanalytics->json([]);
 
-    $httpworld = Http::withoutVerifying()->get('https://localhost:5001/api/World/GetAllWorldPerGame/'.$index, ['verify' => false]);
+    $httpworld = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/World/GetAllWorldPerGame/'.$index, ['verify' => false]);
     $worldsarray = $httpworld->json([]);
 
 
 
- $httcohortgroup = Http::withoutVerifying()->get('https://localhost:5001/api/Game/GetCohorts/'.$index, ['verify' => false]);
+ $httcohortgroup = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Game/GetCohorts/'.$index, ['verify' => false]);
     $cohortgroupsarray = $httcohortgroup->json([]);
         //Turn response into array
         $cohortgroups = collect($cohortgroupsarray);
      
- $httplevels = Http::withoutVerifying()->get('https://localhost:5001/api/Game/GetCohorts/'.$index, ['verify' => false]);
+ $httplevels = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Game/GetCohorts/'.$index, ['verify' => false]);
     $levelsarray = $httcohortgroup->json([]);
         //Turn response into array
         $levels = collect($cohortgroupsarray);
@@ -76,7 +76,7 @@ class GameController extends Controller
         $index = 6;
         $cohortdata = Cohort::where('GameID', 6)->get();
 
-    $response1 = Http::withoutVerifying()->get('https://localhost:5001/api/Game/'.$index, ['verify' => false]);
+    $response1 = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Game/'.$index, ['verify' => false]);
         //Turn response into array
         $game = collect($response1->json());
 

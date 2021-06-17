@@ -11,18 +11,15 @@ use App\Models\CustomKey;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class CustomKeyController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('custom_key_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $customKeys = CustomKey::with(['analytic'])->get();
-
-        $analytics = Analytic::get();
-
-        return view('admin.customKeys.index', compact('customKeys', 'analytics'));
+      
+        return view('admin.customKeys.index');
     }
 
     public function create()
