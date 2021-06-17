@@ -34,8 +34,7 @@
 
       <div class="row">
         <div class="col-lg-12">
-            <h1>{{$game->first()->Name}}</h1>
-        
+            <h1>{{$game['name']}}</h1>
         <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">Filters</h3>
@@ -132,9 +131,9 @@
                 <div class="box-body box-profile">
                     <div class="col-lg-6">   
                         <select class="form-control" control-id="ControlID-24">
-                             @forelse($cohorts as $data)
+                             @forelse($cohortgroups as $data)
 
-                          <option>{{$data->NameID}}</option>
+                          <option></option>
                             @empty
                             No data to show
                             @endforelse
@@ -142,8 +141,8 @@
                         </div>       
                         <div class="col-lg-6">   
                         <select class="form-control" control-id="ControlID-24">
-                        @forelse($cohorts as $data)
-                          <option>{{$data->NameID}}</option>
+                        @forelse($cohortgroups as $data)
+                          <option></option>
                             @empty
                             No data to show
                             @endforelse

@@ -27,42 +27,29 @@ class GameController extends Controller
 {
     public function index()
     {       
-        //Connecting to API
-        $client = new Client([
-            'base_uri' => env('API_URL'),
-            'timeout'  => 2.0,
-        ]);
-        $response = Http::withoutVerifying()->get('https://localhost:5001/api/Game/AllGames', ['verify' => false]);
-        //Turn response into array
-        $games = $response->json([]);
+       
+        $httpgames = Http::withoutVerifying()->get('https://localhost:5001/api/Game/AllGames', ['verify' => false]);
+        $games = $httpgames->json([]);
 
         return view('admin.games.index', compact('games'));
     }
 
     public function view($index) {
 
-$gameid = $index;
- /*
-         
-        $response1 = Http::withoutVerifying()->get('https://localhost:5001/api/Game/'.$index, ['verify' => false]);
-        //Turn response into array
-        $game = collect($response1->json());
+    $gameid = $index;
+    //Game
+    $httpgame = Http::withoutVerifying()->get('https://localhost:5001/api/Game/'.$index, ['verify' => false]);
+    $game = collect($httpgame->json());
+    //Messages
+    $httpmessages = Http::withoutVerifying()->get('https://localhost:5001/api/AeriaMessages', ['verify' => false]);
+    $messages = $httpmessages->json([]);
 
-        $response = Http::withoutVerifying()->get('https://localhost:5001/api/AeriaMessages', ['verify' => false]);
-        //Turn response into array
-        $messages = $response->json([]);
+    $httpanalytics = Http::withoutVerifying()->get('https://localhost:5001/api/AeriaAnalytics/AllAnalyticsPerGame/'.$index, ['verify' => false]);
+        $analytics = $httpanalytics->json([]);
 
-
-      $response2 = Http::withoutVerifying()->get('https://localhost:5001/api/AeriaAnalytics/AllAnalyticsPerGame/'.$index, ['verify' => false]);
-        //Turn response into array
-        $analytics = $response2->json([]);
-
-
-   $httpworld = Http::withoutVerifying()->get('https://localhost:5001/api/World/GetAllWorldPerGame/'.$index, ['verify' => false]);
+    $httpworld = Http::withoutVerifying()->get('https://localhost:5001/api/World/GetAllWorldPerGame/'.$index, ['verify' => false]);
     $worldsarray = $httpworld->json([]);
-        //Turn response into array
-    //    $worlds = collect($worldsarray);
-     
+
 
 
  $httcohortgroup = Http::withoutVerifying()->get('https://localhost:5001/api/Game/GetCohorts/'.$index, ['verify' => false]);
@@ -77,27 +64,10 @@ $gameid = $index;
      
 
 
-*/
-     
-    
 
-        //Eloquents
-        $game = Game::where('ID', "10")->get();
-        $messages = Message::where('gameID', $index)->get();
-        $cohorts = Cohort::where('GameID', $index)->get();
-        $worlds = World::where('GameId', $index)->get();
-        $cohortgroups = CohortGroup::where('GameID', $index)->get();
-        $cohortusers = UserCohort::all();
-        $usergamedata = UserGameData::where('GameID', $index)->get();
-        $customkeys = CustomKey::where('AnalyticID', $index)->get();
+  
 
-        $insanedeaths = CustomKey::where('AnalyticID', $index)->where('Name', 'insaneDeaths')->get();
-        $insanetime = CustomKey::where('AnalyticID', $index)->where('Name', 'insaneTime')->get();
-
-
-
-
-        return view('admin.games.show', compact('gameid', 'messages', 'game', 'worlds', 'cohorts', 'cohortgroups', 'cohortusers', 'usergamedata', 'customkeys', 'insanedeaths', 'insanedeaths' ));
+        return view('admin.games.show', compact('game','messages', 'analytics', 'worldsarray', 'cohortgroups', 'levels'));
     }
 
 
