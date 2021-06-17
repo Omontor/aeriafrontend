@@ -9,12 +9,11 @@ class HomeController
 {
     public function index()
     {
-    	$httpgames = Http::withoutVerifying()->get('https://localhost:5001/api/Game/AllGames', ['verify' => false]);
+    	$httpgames = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Game/AllGames', ['verify' => false]);
         $games = $httpgames->json([]);
         $gamescount = count($games);
 
-
-        $httpusers = Http::withoutVerifying()->get('https://localhost:5001/api/Accounts/AllUsers', ['verify' => false]);
+        $httpusers = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Accounts/AllUsers', ['verify' => false]);
         $users = $httpusers->json([]);
         $userscount = count($users);
 

@@ -15,10 +15,23 @@
                 <i class="fa-fw fas fa-user">
 
                 </i>
-                <span>{{ trans('cruds.user.title') }}</span>
+                <span>Admins</span>
+
+            </a>
+        </li>        
+
+
+        <li class="{{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
+            <a href="{{ route("admin.users.players") }}">
+                <i class="fa-fw fas fa-users">
+
+                </i>
+                <span>Players</span>
 
             </a>
         </li>
+
+
             @can('game_access')
                 <li class="{{ request()->is("admin/games") || request()->is("admin/games/*") ? "active" : "" }}">
                     <a href="{{ route("admin.games.index") }}">
@@ -37,7 +50,7 @@
                         <i class="fa-fw fas fa-users">
 
                         </i>
-                        <span>{{ trans('cruds.userManagement.title') }}</span>
+                        <span>Admin Management</span>
                         <span class="pull-right-container"><i class="fa fa-fw fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">

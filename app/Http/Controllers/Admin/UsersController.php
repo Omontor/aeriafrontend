@@ -11,17 +11,25 @@ use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-//Import these lines in every controller that uses API
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 
 class UsersController extends Controller
 {
+
+    public function players  () {
+
+
+     $httpusers = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Accounts/AllUsers', ['verify' => false]);
+        $users = collect($httpusers->json([]));
+
+        return view('admin.users.players', compact('users'));
+    }
+
     public function index()
     {
-  $response = Http::withoutVerifying()->get('https://localhost:5001/api/Accounts/AllUsers', ['verify' => false]);
-        //Turn response into array
-        $users = $response->json([]);
+        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $users = User::with(['roles'])->get();
 
         return view('admin.users.index', compact('users'));
     }
