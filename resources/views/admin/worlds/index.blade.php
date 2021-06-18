@@ -46,7 +46,7 @@
                                     <td>
                                         <select class="search">
                                             <option value>{{ trans('global.all') }}</option>
-                                            @foreach($games as $key => $item)
+                                            @foreach($worlds as $key => $item)
                                                 <option value="{{ $item->name }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
@@ -59,6 +59,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                           
                                 @foreach($worlds as $key => $world)
                                     <tr data-entry-id="{{ $world->id }}">
                                         <td>
@@ -68,7 +69,7 @@
                                             {{ $world->id ?? '' }}
                                         </td>
                                         <td>
-                                            {{ $world->game->name ?? '' }}
+                                            {{ $game->name ?? '' }}
                                         </td>
                                         <td>
                                             {{ $world->name ?? '' }}

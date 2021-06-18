@@ -9,21 +9,41 @@ use App\Http\Requests\UpdateWorldRequest;
 use App\Models\Game;
 use App\Models\World;
 use Gate;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Client;
+
 
 class WorldController extends Controller
 {
-    public function index()
+
+public function view($value)
     {
-        abort_if(Gate::denies('world_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+      
+        $client = new Client([
+            'base_uri' => env('REMOTE_URL'),
+            'timeout'  => 2.0,
+            'verify' => false
 
-        $worlds = World::with(['game'])->get();
+        ]);
 
-        $games = Game::get();
+        $response = $client->request('GET', '/api/World/GetAllWorldPerGame/'.$value);
+        $worlds = json_decode($response->getBody()->getContents());
+        
+        
 
-        return view('admin.worlds.index', compact('worlds', 'games'));
+        $response2 = $client->request('GET', '/api/Game/'.$value);
+        $game = json_decode($response2->getBody()->getContents());
+
+        return view('admin.worlds.index', compact('worlds', 'game'));
     }
+
+
+
+
+
+
+
 
     public function create()
     {

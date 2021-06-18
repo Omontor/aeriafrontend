@@ -16,20 +16,26 @@ use App\Models\Message;
 use App\Models\UserGameData;
 use App\Models\CustomKey;
 use Gate;
-
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-//Import these lines in every controller that uses API
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Client;
+
+
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Http;
 
 class GameController extends Controller
 {
     public function index()
     {       
-       
-        $httpgames = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Game/AllGames', ['verify' => false]);
-        $games = $httpgames->json([]);
+        $client = new Client([
+            'base_uri' => env('REMOTE_URL'),
+            'timeout'  => 2.0,
+            'verify' => false
+
+        ]);
+
+        $response = $client->request('GET', '/api/Game/AllGames');
+        $games = json_decode($response->getBody()->getContents());
 
         return view('admin.games.index', compact('games'));
     }
