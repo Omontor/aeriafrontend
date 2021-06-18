@@ -83,4 +83,12 @@ class GameController extends Controller
         return view('admin.games.compare', compact('cohortdata', 'game'));
     }
 
+
+ public function create()
+    {
+        abort_if(Gate::denies('game_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return view('admin.games.create');
+    }
+
 }

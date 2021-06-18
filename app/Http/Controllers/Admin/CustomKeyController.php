@@ -9,33 +9,85 @@ use App\Http\Requests\UpdateCustomKeyRequest;
 use App\Models\Analytic;
 use App\Models\CustomKey;
 use Gate;
-use Illuminate\Http\Request;
+
 use Symfony\Component\HttpFoundation\Response;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Psr7\Request;
 
 class CustomKeyController extends Controller
 {
     public function index()
     {
       
+        $client = new Client([
+            'base_uri' => env('REMOTE_URL'),
+            'timeout'  => 2.0,
+            'verify' => false
+
+        ]);
+
+        $response = $client->request('GET', '/api/AeriaAnalytics/AllAnalytics');
+        $analytics = json_decode($response->getBody()->getContents());
+
         return view('admin.customKeys.index');
     }
 
     public function create()
     {
-        abort_if(Gate::denies('custom_key_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+       
+$client = new Client([
+    'base_uri' => env('REMOTE_URL'),
+    'timeout'  => 2.0,
+    'verify' => false
 
-        $analytics = Analytic::all()->pluck('bvc', 'id')->prepend(trans('global.pleaseSelect'), '');
+]);
+
+$response = $client->request('GET', '/api/AeriaAnalytics/AllAnalytics');
+$analytics = json_decode($response->getBody()->getContents());
+
+
 
         return view('admin.customKeys.create', compact('analytics'));
     }
 
     public function store(StoreCustomKeyRequest $request)
     {
-        $customKey = CustomKey::create($request->all());
 
-        return redirect()->route('admin.custom-keys.index');
+     
+        $client = new Client([
+            'base_uri' => env('REMOTE_URL'),
+            'timeout'  => 2.0,
+            'verify' => false
+
+        ]);
+
+        try {
+
+      
+ $r = $client->post(
+    env('REMOTE_URL').'/api/AeriaCustomKeys/create',
+    array(
+        'paeriaCustomKey' => array(
+            'Name' => $request->name,
+            'AnalyticId' => $request->analytic_id,
+        )
+    )
+);
+
+
+    return $r;   
+          return redirect()->route('admin.custom-keys.index')->with('success', 'Custom Key Created Successfully');  
+        } 
+
+
+        catch (Exception $e) {
+
+            return redirect()->route('admin.custom-keys.index')->with('error', $e);  
+        }
+
+
+        
     }
 
     public function edit(CustomKey $customKey)

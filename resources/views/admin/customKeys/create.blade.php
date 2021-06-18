@@ -22,8 +22,8 @@
                         <div class="form-group {{ $errors->has('analytic') ? 'has-error' : '' }}">
                             <label for="analytic_id">{{ trans('cruds.customKey.fields.analytic') }}</label>
                             <select class="form-control select2" name="analytic_id" id="analytic_id">
-                                @foreach($analytics as $id => $entry)
-                                    <option value="{{ $id }}" {{ old('analytic_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                                @foreach($analytics as $analytic)
+                                    <option value="{{ $analytic->id }}" {{ old('analytic_id') == $analytic->id ? 'selected' : '' }}>{{ $analytic->name }}</option>
                                 @endforeach
                             </select>
                             @if($errors->has('analytic'))
@@ -32,7 +32,7 @@
                             <span class="help-block">{{ trans('cruds.customKey.fields.analytic_helper') }}</span>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-danger" type="submit">
+                            <button class="btn btn-primary" type="submit">
                                 {{ trans('global.save') }}
                             </button>
                         </div>

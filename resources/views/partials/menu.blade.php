@@ -33,6 +33,18 @@
 
 
             @can('game_access')
+               
+
+<li class="treeview">
+                    <a href="#">
+                        <i class="fa-fw fas fa-cogs">
+
+                        </i>
+                        <span>Games Mangement</span>
+                        <span class="pull-right-container"><i class="fa fa-fw fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+        
                 <li class="{{ request()->is("admin/games") || request()->is("admin/games/*") ? "active" : "" }}">
                     <a href="{{ route("admin.games.index") }}">
                         <i class="fa-fw fas fa-gamepad">
@@ -41,7 +53,33 @@
                         <span>{{ trans('cruds.game.title') }}</span>
 
                     </a>
+                </li>      
+
+
+                <li class="{{ request()->is("admin/worlds") || request()->is("admin/worlds/*") ? "active" : "" }}">
+                    <a href="{{ route("admin.worlds.index") }}">
+                        <i class="fa-fw fas fa-globe">
+
+                        </i>
+                        <span>Worlds</span>
+
+                    </a>
                 </li>
+
+
+     <li class="{{ request()->is("admin/levels") || request()->is("admin/levels/*") ? "active" : "" }}">
+                    <a href="{{ route("admin.levels.index") }}">
+                        <i class="fa-fw fas fa-map-signs">
+
+                        </i>
+                        <span>Levels</span>
+
+                    </a>
+                </li>
+
+                    </ul>
+                </li>
+
 
 <li class="treeview">
                     <a href="#">
