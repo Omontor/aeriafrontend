@@ -229,6 +229,13 @@
                 <th style="max-width: 25px;">TutE <br> <a href="#" data-toggle="tooltip" title="Tutorial End"><i class="fas fa-info-circle"></i></a></th>
                 <th style="max-width: 30px;">Menu <br> <a href="#" data-toggle="tooltip" title="Main Menu"><i class="fas fa-info-circle"></i></a></th>
                 
+                <!-- Dynamic columns-->
+
+
+                <!-- Dynamic columns-->
+
+
+                
 
 
 

@@ -13,9 +13,9 @@
                         @csrf
                         <div class="form-group {{ $errors->has('game') ? 'has-error' : '' }}">
                             <label for="game_id">{{ trans('cruds.world.fields.game') }}</label>
-                            <select class="form-control select2" name="game_id" id="game_id">
-                                @foreach($games as $id => $entry)
-                                    <option value="{{ $id }}" {{ old('game_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                            <select class="form-control select2" name="game" id="game">
+                                @foreach($games as $game)
+                                    <option value="{{ $game->id }}" {{ old('game') == $game->id ? 'selected' : '' }}>{{ $game->name }}</option>
                                 @endforeach
                             </select>
                             @if($errors->has('game'))
@@ -32,7 +32,7 @@
                             <span class="help-block">{{ trans('cruds.world.fields.name_helper') }}</span>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-danger" type="submit">
+                            <button class="btn btn-primary" type="submit">
                                 {{ trans('global.save') }}
                             </button>
                         </div>

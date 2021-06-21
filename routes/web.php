@@ -46,6 +46,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('levels', 'LevelController');
 
     // World
+     Route::get('worlds/create', 'WorldController@create')->name('worlds.create');
      Route::get('worlds/{game}', 'WorldController@view')->name('worlds.view');
 
     Route::delete('worlds/destroy', 'WorldController@massDestroy')->name('worlds.massDestroy');

@@ -33,16 +33,32 @@
 
 
             @can('game_access')
-               
-         <li class="{{ request()->is("admin/games") || request()->is("admin/games/*") ? "active" : "" }}">
-                    <a href="{{ route("admin.games.index") }}">
-                        <i class="fa-fw fas fa-gamepad">
+    
+
+<li class="treeview">
+                    <a href="#">
+                        <i class="fa-fw fas fa-dice">
 
                         </i>
-                        <span>{{ trans('cruds.game.title') }}</span>
-
+                        <span>Game Mangement</span>
+                        <span class="pull-right-container"><i class="fa fa-fw fa-angle-left pull-right"></i></span>
                     </a>
-                </li>    
+                    <ul class="treeview-menu">
+        
+                            <li class="{{ request()->is("admin/games") || request()->is("admin/games/*") ? "active" : "" }}">
+                    <a href="{{ route("admin.games.index") }}">
+                                    <i class="fa-fw fas fa-gamepad">
+
+                                    </i>
+                                    <span>Games</span>
+
+                                </a>
+                            </li>
+
+                    </ul>
+                </li>
+
+
 <li class="treeview">
                     <a href="#">
                         <i class="fa-fw fas fa-cogs">
@@ -65,6 +81,8 @@
 
                     </ul>
                 </li>
+
+
 
 
             @endcan

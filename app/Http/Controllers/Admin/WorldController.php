@@ -10,8 +10,9 @@ use App\Models\Game;
 use App\Models\World;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
-use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Redirect;
 
 
 class WorldController extends Controller
@@ -29,9 +30,6 @@ public function view($value)
 
         $response = $client->request('GET', '/api/World/GetAllWorldPerGame/'.$value);
         $worlds = json_decode($response->getBody()->getContents());
-        
-        
-
         $response2 = $client->request('GET', '/api/Game/'.$value);
         $game = json_decode($response2->getBody()->getContents());
 
@@ -42,23 +40,59 @@ public function view($value)
 
 
 
-
-
-
     public function create()
     {
-        abort_if(Gate::denies('world_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $games = Game::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+             $client = new Client([
+            'base_uri' => env('REMOTE_URL'),
+            'timeout'  => 2.0,
+            'verify' => false
+
+        ]);
+
+        $response = $client->request('GET', '/api/Game/AllGames');
+        $games = json_decode($response->getBody()->getContents());
 
         return view('admin.worlds.create', compact('games'));
     }
 
-    public function store(StoreWorldRequest $request)
-    {
-        $world = World::create($request->all());
 
-        return redirect()->route('admin.worlds.index');
+
+
+    public function store(Request $request)
+    {
+
+
+
+    $client = new Client([
+                'base_uri' => env('REMOTE_URL'),
+                'timeout'  => 2.0,
+                'verify' => false
+
+            ]);
+
+
+    try {
+        
+    $response = $client->request('POST', '/api/World/Create', 
+        ['json' => 
+            [
+            'name' => $request->name,
+            'GameId' => $request->game 
+            ]
+
+         ]);
+    return redirect::to(url('/admin/worlds/'.$request->game))->with('success', 'World Created Successfully');
+
+    } 
+
+    catch (Exception $e) {
+        
+         return redirect::to(url('/admin/worlds/'.$request->game))->with('error', $e);
+
+    }
+
+
     }
 
     public function edit(World $world)
@@ -81,12 +115,29 @@ public function view($value)
 
     public function show(World $world)
     {
+
+
+
+        $client = new Client([
+            'base_uri' => env('REMOTE_URL'),
+            'timeout'  => 2.0,
+            'verify' => false
+
+        ]);
+
+        $response = $client->request('GET', '/api/Game/'.$world);
+        $game = json_decode($response->getBody()->getContents());
+
+
         abort_if(Gate::denies('world_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $world->load('game');
 
-        return view('admin.worlds.show', compact('world'));
+        return view('admin.worlds.show', compact('world', 'game'));
     }
+
+
+
 
     public function destroy(World $world)
     {

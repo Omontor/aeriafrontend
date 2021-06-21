@@ -28,6 +28,9 @@
                                         {{ trans('cruds.world.fields.id') }}
                                     </th>
                                     <th>
+                                        Game
+                                    </th>
+                                    <th>
                                        Levels
                                     </th>
                                     <th>
@@ -37,17 +40,7 @@
                                         &nbsp;
                                     </th>
                                 </tr>
-                                <tr>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-               
-                               
-                                    <td>
-                                    </td>
-                                </tr>
+                                
                             </thead>
                             <tbody>
                            
@@ -60,7 +53,10 @@
                                             {{ $world->id ?? '' }}
                                         </td>
                                         <td>
-                                               <a class="btn btn-xs btn-success" href="{{ route('admin.worlds.show', $world->id) }}">
+                                            {{$game->name}}
+                                        </td>
+                                        <td>
+                                               <a class="btn btn-xs btn-success" href="{{ route('admin.levels.show', $world->id) }}">
                                                     Levels
                                                 </a>
                                         </td>
@@ -69,13 +65,6 @@
                                         </td>
                                         <td>
                                             
-                                             
-
-                                                <a class="btn btn-xs btn-primary" href="{{ route('admin.worlds.show', $world->id) }}">
-                                                    {{ trans('global.view') }}
-                                                </a>
-                                          
-
                                             @can('world_edit')
                                                 <a class="btn btn-xs btn-info" href="{{ route('admin.worlds.edit', $world->id) }}">
                                                     {{ trans('global.edit') }}
