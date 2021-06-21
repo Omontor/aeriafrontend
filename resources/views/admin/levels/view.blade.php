@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 @section('content')
 <div class="content">
-    @can('world_create')
+    @can('level_create')
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route('admin.worlds.create') }}">
-                    {{ trans('global.add') }} {{ trans('cruds.world.title_singular') }}
+                <a class="btn btn-success" href="{{ route('admin.levels.create') }}">
+                    {{ trans('global.add') }} {{ trans('cruds.level.title_singular') }}
                 </a>
             </div>
         </div>
@@ -14,24 +14,27 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {{ trans('cruds.world.title_singular') }} {{ trans('global.list') }}
+                    {{ trans('cruds.level.title_singular') }} {{ trans('global.list') }}
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
-                        <table class=" table table-bordered table-striped table-hover datatable datatable-World">
+                        <table class=" table table-bordered table-striped table-hover datatable datatable-Level">
                             <thead>
                                 <tr>
                                     <th width="10">
 
                                     </th>
                                     <th>
-                                        {{ trans('cruds.world.fields.id') }}
+                                        {{ trans('cruds.level.fields.id') }}
                                     </th>
                                     <th>
-                                       Levels
+                                        {{ trans('cruds.level.fields.name') }}
                                     </th>
                                     <th>
-                                        {{ trans('cruds.world.fields.name') }}
+                                        {{ trans('cruds.level.fields.world') }}
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.level.fields.name_in_build') }}
                                     </th>
                                     <th>
                                         &nbsp;
@@ -43,47 +46,57 @@
                                     <td>
                                         <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                                     </td>
-               
-                               
+                                    <td>
+                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                                    </td>
+                                    <td>
+                                        <select class="search">
+                                            <option value>{{ trans('global.all') }}</option>
+                                            @foreach($worlds as $key => $item)
+                                                <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                                    </td>
                                     <td>
                                     </td>
                                 </tr>
                             </thead>
                             <tbody>
-                           
-                                @foreach($worlds as $key => $world)
-                                    <tr data-entry-id="{{ $world->id }}">
+                                @foreach($levels as $key => $level)
+                                    <tr data-entry-id="{{ $level->id }}">
                                         <td>
 
                                         </td>
                                         <td>
-                                            {{ $world->id ?? '' }}
+                                            {{ $level->id ?? '' }}
                                         </td>
                                         <td>
-                                               <a class="btn btn-xs btn-success" href="{{ route('admin.worlds.show', $world->id) }}">
-                                                    Levels
-                                                </a>
+                                            {{ $level->name ?? '' }}
                                         </td>
                                         <td>
-                                            {{ $world->name ?? '' }}
+                                            {{ $level->world->name ?? '' }}
                                         </td>
                                         <td>
-                                            
-                                             
-
-                                                <a class="btn btn-xs btn-primary" href="{{ route('admin.worlds.show', $world->id) }}">
+                                            {{ $level->name_in_build ?? '' }}
+                                        </td>
+                                        <td>
+                                            @can('level_show')
+                                                <a class="btn btn-xs btn-primary" href="{{ route('admin.levels.show', $level->id) }}">
                                                     {{ trans('global.view') }}
                                                 </a>
-                                          
+                                            @endcan
 
-                                            @can('world_edit')
-                                                <a class="btn btn-xs btn-info" href="{{ route('admin.worlds.edit', $world->id) }}">
+                                            @can('level_edit')
+                                                <a class="btn btn-xs btn-info" href="{{ route('admin.levels.edit', $level->id) }}">
                                                     {{ trans('global.edit') }}
                                                 </a>
                                             @endcan
 
-                                            @can('world_delete')
-                                                <form action="{{ route('admin.worlds.destroy', $world->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            @can('level_delete')
+                                                <form action="{{ route('admin.levels.destroy', $level->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                     <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -111,11 +124,11 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('world_delete')
+@can('level_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.worlds.massDestroy') }}",
+    url: "{{ route('admin.levels.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -146,7 +159,7 @@
     order: [[ 1, 'desc' ]],
     pageLength: 100,
   });
-  let table = $('.datatable-World:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  let table = $('.datatable-Level:not(.ajaxTable)').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();

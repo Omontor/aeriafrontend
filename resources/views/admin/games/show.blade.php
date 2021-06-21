@@ -34,7 +34,7 @@
 
       <div class="row">
         <div class="col-lg-12">
-            <h1>{{$game['name']}}</h1>
+            <h1>{{$game->name}}</h1>
         <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">Filters</h3>
@@ -44,18 +44,26 @@
 
                              <div class="col-lg-5">  
      From:
-                                 <select class="form-control" control-id="ControlID-24">
-                        
-                          <option>Date Start</option>
+                                <div class="input-group date" data-provide="datepicker">
+    <input type="text" class="form-control">
+    <div class="input-group-addon">
+        <span class="glyphicon glyphicon-th"></span>
+    </div>
+</div>
+    
                           
                         </select>
                     </div>                              
 
                     <div class="col-lg-5">  
      To:
-                                 <select class="form-control" control-id="ControlID-24">
+                               <div class="input-group date" data-provide="datepicker2">
+    <input type="text" class="form-control">
+    <div class="input-group-addon">
+        <span class="glyphicon glyphicon-th"></span>
+    </div>
+</div>
                          
-                          <option>Date End</option>
                         </select>
                     </div> 
 <div class="col-lg-2">  
@@ -131,9 +139,11 @@
                 <div class="box-body box-profile">
                     <div class="col-lg-6">   
                         <select class="form-control" control-id="ControlID-24">
-                             @forelse($cohortgroups as $data)
+                             @forelse($cohorts as $data)
 
-                          <option></option>
+                          <option>
+                              {{$data->id}}
+                          </option>
                             @empty
                             No data to show
                             @endforelse
@@ -141,8 +151,11 @@
                         </div>       
                         <div class="col-lg-6">   
                         <select class="form-control" control-id="ControlID-24">
-                        @forelse($cohortgroups as $data)
-                          <option></option>
+
+                        @forelse($cohorts as $data)
+                          <option>
+                                {{$data->id}}
+                          </option>
                             @empty
                             No data to show
                             @endforelse
@@ -222,7 +235,7 @@
             </tr>
         </thead>
         <tbody>
-              @foreach(range(1, 99) as $y)
+              @foreach($cohorts as $cohort)
 
             <tr>
                 <td>{{$loop->index + 1}} </td>
@@ -443,6 +456,14 @@ $(document).ready(function(){
 });
 </script>
 
+
+<script>
+    $('.datepicker').datepicker();
+</script>
+
+<script>
+    $('.datepicker2').datepicker();
+</script>
 
 @endsection
 

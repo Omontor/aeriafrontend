@@ -16,8 +16,9 @@ use App\Models\Message;
 use App\Models\UserGameData;
 use App\Models\CustomKey;
 use Gate;
-use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Redirect;
 
 
 use Symfony\Component\HttpFoundation\Response;
@@ -40,41 +41,38 @@ class GameController extends Controller
         return view('admin.games.index', compact('games'));
     }
 
+
+
+
+
     public function view($index) {
 
     $gameid = $index;
-    //Game
-    $httpgame = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Game/'.$index, ['verify' => false]);
-    $game = collect($httpgame->json());
-    //Messages
-    $httpmessages = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/AeriaMessages', ['verify' => false]);
-    $messages = $httpmessages->json([]);
+    $client = new Client([
+                'base_uri' => env('REMOTE_URL'),
+                'timeout'  => 2.0,
+                'verify' => false
 
-    $httpanalytics = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/AeriaAnalytics/AllAnalyticsPerGame/'.$index, ['verify' => false]);
-        $analytics = $httpanalytics->json([]);
+            ]);
 
-    $httpworld = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/World/GetAllWorldPerGame/'.$index, ['verify' => false]);
-    $worldsarray = $httpworld->json([]);
+    $response = $client->request('GET', '/api/Game/'.$gameid);
+    $game = json_decode($response->getBody()->getContents());
 
 
+   $httpcohort = $client->request('GET', '/api/Game/GetCohorts/'.$gameid);
+    $cohorts = json_decode($httpcohort->getBody()->getContents());
 
- $httcohortgroup = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Game/GetCohorts/'.$index, ['verify' => false]);
-    $cohortgroupsarray = $httcohortgroup->json([]);
-        //Turn response into array
-        $cohortgroups = collect($cohortgroupsarray);
-     
- $httplevels = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Game/GetCohorts/'.$index, ['verify' => false]);
-    $levelsarray = $httcohortgroup->json([]);
-        //Turn response into array
-        $levels = collect($cohortgroupsarray);
-     
+  $httpworlds = $client->request('GET', '/world/GetAllWorldPerGame/'.$gameid);
+    $worlds = json_decode($httpcohort->getBody()->getContents());
 
-
-
-  
-
-        return view('admin.games.show', compact('game','messages', 'analytics', 'worldsarray', 'cohortgroups', 'levels'));
+    return view('admin.games.show', compact('game', 'cohorts'));
+    
     }
+
+
+
+
+
 
 
     public function compare () {
@@ -97,4 +95,38 @@ class GameController extends Controller
         return view('admin.games.create');
     }
 
+    public function store (Request $request) {
+ 
+
+
+    $client = new Client([
+                'base_uri' => env('REMOTE_URL'),
+                'timeout'  => 2.0,
+                'verify' => false
+
+            ]);
+
+
+    try {
+        
+    $response = $client->request('POST', '/api/Game/Create', 
+        ['json' => 
+            [
+            'name' => $request->name   
+            ]
+
+         ]);
+    return redirect::route('admin.games.index')->with('success', 'Game Created Successfully');
+
+    } 
+
+
+    catch (Exception $e) {
+        
+         return redirect::route('admin.games.index')->with('error', $e);
+
+    }
+
+  
+    }
 }

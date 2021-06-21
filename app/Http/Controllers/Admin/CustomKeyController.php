@@ -30,7 +30,7 @@ class CustomKeyController extends Controller
         $response = $client->request('GET', '/api/AeriaAnalytics/AllAnalytics');
         $analytics = json_decode($response->getBody()->getContents());
 
-        return view('admin.customKeys.index');
+        return view('admin.customKeys.index',compact('analytics'));
     }
 
     public function create()
@@ -43,8 +43,8 @@ $client = new Client([
 
 ]);
 
-$response = $client->request('GET', '/api/AeriaAnalytics/AllAnalytics');
-$analytics = json_decode($response->getBody()->getContents());
+    $response = $client->request('GET', '/api/AeriaAnalytics/AllAnalytics');
+    $analytics = json_decode($response->getBody()->getContents());
 
 
 
@@ -64,19 +64,28 @@ $analytics = json_decode($response->getBody()->getContents());
 
         try {
 
-      
- $r = $client->post(
-    env('REMOTE_URL').'/api/AeriaCustomKeys/create',
-    array(
-        'paeriaCustomKey' => array(
-            'Name' => $request->name,
-            'AnalyticId' => $request->analytic_id,
-        )
-    )
-);
+    
+        $response = $client->request('POST', '/api/AeriaCustomKeys/create', [
+           'json' => [
+    'id' => 0,
+    'name' => 'test',
+    'aid' => 0
+],
+'headers' => [
+    'Accept' => 'application/json',
+    'Content-Type' => 'application/json',
+]
+        ]);
 
 
-    return $r;   
+
+
+
+        $result = json_decode($response->getBody());
+        print_r($result);
+
+
+
           return redirect()->route('admin.custom-keys.index')->with('success', 'Custom Key Created Successfully');  
         } 
 

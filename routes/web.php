@@ -41,6 +41,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('messages', 'MessageController');
 
     // Level
+     Route::get('level/{world}', 'LevelController@view')->name('levels.view');
     Route::delete('levels/destroy', 'LevelController@massDestroy')->name('levels.massDestroy');
     Route::resource('levels', 'LevelController');
 

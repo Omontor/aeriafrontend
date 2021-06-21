@@ -14,6 +14,28 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LevelController extends Controller
 {
+
+
+    public function view ($value) {
+
+
+        $client = new Client([
+            'base_uri' => env('REMOTE_URL'),
+            'timeout'  => 2.0,
+            'verify' => false
+
+        ]);
+
+        $response = $client->request('GET', '/api/World/GetAllWorldPerGame/'.$value);
+        $worlds = json_decode($response->getBody()->getContents());
+
+        $response2 = $client->request('GET', '/api/Game/'.$value);
+        $game = json_decode($response2->getBody()->getContents());
+
+
+         return view('admin.levels.view', compact('worlds', 'game'));
+    }
+
     public function index()
     {
         abort_if(Gate::denies('level_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
