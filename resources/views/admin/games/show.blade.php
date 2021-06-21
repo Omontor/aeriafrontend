@@ -35,6 +35,7 @@
       <div class="row">
         <div class="col-lg-12">
             <h1>{{$game->name}}</h1>
+
         <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">Filters</h3>

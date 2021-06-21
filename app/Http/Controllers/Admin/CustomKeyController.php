@@ -9,11 +9,12 @@ use App\Http\Requests\UpdateCustomKeyRequest;
 use App\Models\Analytic;
 use App\Models\CustomKey;
 use Gate;
-
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
-use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Client;
+use Redirect;
+
 
 class CustomKeyController extends Controller
 {
@@ -51,53 +52,40 @@ $client = new Client([
         return view('admin.customKeys.create', compact('analytics'));
     }
 
-    public function store(StoreCustomKeyRequest $request)
+
+
+    public function store(Request $request)
     {
 
-     
-        $client = new Client([
-            'base_uri' => env('REMOTE_URL'),
-            'timeout'  => 2.0,
-            'verify' => false
+                $client = new Client([
+                        'base_uri' => env('REMOTE_URL'),
+                        'timeout'  => 2.0,
+                        'verify' => false
 
-        ]);
+                    ]);
+            try { 
+            $response = $client->request('POST', '/api/AeriaCustomKeys/Create', 
+                ['json' => 
+                    [
+                    'name' => $request->name,
+                    'AnalyticId' => $request->analytic_id,  
+                    ]
 
-        try {
+                 ]);
+            return redirect::route('admin.customkeys.index')->with('success', 'Custom Key Created Successfully');
+            } 
+            catch (Exception $e) {
+                
+                 return redirect::route('admin.customkeys.index')->with('error', $e);
 
-    
-        $response = $client->request('POST', '/api/AeriaCustomKeys/create', [
-           'json' => [
-    'id' => 0,
-    'name' => 'test',
-    'aid' => 0
-],
-'headers' => [
-    'Accept' => 'application/json',
-    'Content-Type' => 'application/json',
-]
-        ]);
-
-
-
-
-
-        $result = json_decode($response->getBody());
-        print_r($result);
-
-
-
-          return redirect()->route('admin.custom-keys.index')->with('success', 'Custom Key Created Successfully');  
-        } 
-
-
-        catch (Exception $e) {
-
-            return redirect()->route('admin.custom-keys.index')->with('error', $e);  
-        }
-
+            }
+ 
 
         
     }
+
+
+
 
     public function edit(CustomKey $customKey)
     {

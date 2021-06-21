@@ -59,13 +59,17 @@ class GameController extends Controller
     $game = json_decode($response->getBody()->getContents());
 
 
-   $httpcohort = $client->request('GET', '/api/Game/GetCohorts/'.$gameid);
+    $httpcohort = $client->request('GET', '/api/Game/GetCohorts/'.$gameid);
     $cohorts = json_decode($httpcohort->getBody()->getContents());
 
-  $httpworlds = $client->request('GET', '/world/GetAllWorldPerGame/'.$gameid);
+    $httpworlds = $client->request('GET', '/api/world/GetAllWorldPerGame/'.$gameid);
     $worlds = json_decode($httpcohort->getBody()->getContents());
 
-    return view('admin.games.show', compact('game', 'cohorts'));
+    $userdata = [];
+
+    
+
+    return view('admin.games.show', compact('game', 'cohorts', 'userdata'));
     
     }
 
@@ -96,36 +100,30 @@ class GameController extends Controller
     }
 
     public function store (Request $request) {
- 
+         
 
 
-    $client = new Client([
-                'base_uri' => env('REMOTE_URL'),
-                'timeout'  => 2.0,
-                'verify' => false
+            $client = new Client([
+                        'base_uri' => env('REMOTE_URL'),
+                        'timeout'  => 2.0,
+                        'verify' => false
 
-            ]);
+                    ]);
+            try { 
+            $response = $client->request('POST', '/api/Game/Create', 
+                ['json' => 
+                    [
+                    'name' => $request->name   
+                    ]
 
+                 ]);
+            return redirect::route('admin.games.index')->with('success', 'Game Created Successfully');
+            } 
+            catch (Exception $e) {
+                
+                 return redirect::route('admin.games.index')->with('error', $e);
 
-    try {
-        
-    $response = $client->request('POST', '/api/Game/Create', 
-        ['json' => 
-            [
-            'name' => $request->name   
-            ]
-
-         ]);
-    return redirect::route('admin.games.index')->with('success', 'Game Created Successfully');
-
-    } 
-
-
-    catch (Exception $e) {
-        
-         return redirect::route('admin.games.index')->with('error', $e);
-
-    }
+            }
 
   
     }

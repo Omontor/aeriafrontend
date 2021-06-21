@@ -6,6 +6,10 @@
             <div class="col-lg-12">
                 <a class="btn btn-success" href="{{ route('admin.worlds.create') }}">
                     {{ trans('global.add') }} {{ trans('cruds.world.title_singular') }}
+                </a>  
+
+                <a class="btn btn-primary" href="{{ route('admin.games.index') }}">
+                    Back to Games
                 </a>
             </div>
         </div>
