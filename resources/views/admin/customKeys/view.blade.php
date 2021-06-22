@@ -4,6 +4,10 @@
     @can('custom_key_create')
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
+                <a class="btn btn-primary" href="{{ route('admin.analytics.index') }}">
+                    Back to Analytics
+                </a>
+
                 <a class="btn btn-success" href="{{ route('admin.customkeys.create') }}">
                     {{ trans('global.add') }} {{ trans('cruds.customKey.title_singular') }}
                 </a>
