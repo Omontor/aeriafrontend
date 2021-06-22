@@ -63,13 +63,19 @@ class GameController extends Controller
     $cohorts = json_decode($httpcohort->getBody()->getContents());
 
     $httpworlds = $client->request('GET', '/api/world/GetAllWorldPerGame/'.$gameid);
-    $worlds = json_decode($httpcohort->getBody()->getContents());
+    $worlds = json_decode($httpworlds->getBody()->getContents());
+
+
+    $httpanalytics = $client->request('GET', '/api/AeriaAnalytics/AllAnalyticsPerGame/'.$gameid);
+    $analytics = json_decode($httpanalytics->getBody()->getContents());
+    
+    $httpanalytics2 = $client->request('GET', '/api/AeriaAnalytics/AllAnalyticsPerGame/'.$gameid);
+    $keys = json_decode($httpanalytics2->getBody()->getContents('keys'));
 
     $userdata = [];
 
-    
 
-    return view('admin.games.show', compact('game', 'cohorts', 'userdata'));
+    return view('admin.games.show', compact('game', 'cohorts', 'userdata', 'analytics', 'keys', 'worlds'));
     
     }
 

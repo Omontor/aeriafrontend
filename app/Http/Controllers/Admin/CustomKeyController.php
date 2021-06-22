@@ -64,19 +64,20 @@ $client = new Client([
 
                     ]);
             try { 
-            $response = $client->request('POST', '/api/AeriaCustomKeys/Create', 
+            $response = $client->request('POST', '/api/AeriaCustomKeys/create', 
                 ['json' => 
                     [
+                    'id'=> 0,   
                     'name' => $request->name,
-                    'AnalyticId' => $request->analytic_id,  
+                    'aid' => $request->analytic_id,  
                     ]
 
                  ]);
-            return redirect::route('admin.customkeys.index')->with('success', 'Custom Key Created Successfully');
+            return redirect::route('admin.custom-keys.index')->with('success', 'Custom Key Created Successfully');
             } 
             catch (Exception $e) {
                 
-                 return redirect::route('admin.customkeys.index')->with('error', $e);
+                 return redirect::route('admin.custom-keys.index')->with('error', $e);
 
             }
  

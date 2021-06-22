@@ -39,7 +39,6 @@
         <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">Filters</h3>
-
             </div>
                 <div class="box-body box-profile">
 
@@ -230,8 +229,12 @@
                 <th style="max-width: 25px;">TutE <br> <a href="#" data-toggle="tooltip" title="Tutorial End"><i class="fas fa-info-circle"></i></a></th>
                 <th style="max-width: 30px;">Menu <br> <a href="#" data-toggle="tooltip" title="Main Menu"><i class="fas fa-info-circle"></i></a></th>
                 
-                <!-- Dynamic columns-->
+                <!-- Dynamic columns Worlds-->
 
+                @forelse($worlds as $world)
+                <th style="background-color: blue; color: white;">{{$loop->index + 1}} <br> <a href="#" data-toggle="tooltip" title="{{$world->id}}"><i class="fas fa-info-circle"></i></a></th>
+                @empty
+                @endforelse
 
                 <!-- Dynamic columns-->
 
@@ -268,7 +271,20 @@
                 <td>500</td>
                 <td>1250</td>
                 <td>1200</td>
-                <td>100</td>  
+                <td>100</td> 
+
+
+                <!-- Dynamic columns-->
+
+                @forelse($worlds as $world)
+                <td>
+                    {{$world->name}}
+                </td>
+                @empty
+                @endforelse
+
+                <!-- Dynamic columns-->
+
 
 
     
