@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 @section('content')
 <div class="content">
-    @can('analytic_create')
+    @can('custom_key_create')
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route('admin.analytics.create') }}">
-                    {{ trans('global.add') }} {{ trans('cruds.analytic.title_singular') }}
+                <a class="btn btn-success" href="{{ route('admin.customkeys.create') }}">
+                    {{ trans('global.add') }} {{ trans('cruds.customKey.title_singular') }}
                 </a>
             </div>
         </div>
@@ -14,61 +14,49 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {{ trans('cruds.analytic.title_singular') }} {{ trans('global.list') }}
+                    {{ trans('cruds.customKey.title_singular') }} {{ trans('global.list') }}
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
-                        <table class=" table table-bordered table-striped table-hover datatable datatable-Analytic">
+                        <table class=" table table-bordered table-striped table-hover datatable datatable-CustomKey">
                             <thead>
                                 <tr>
                                     <th width="10">
 
                                     </th>
                                     <th>
-                                        {{ trans('cruds.analytic.fields.id') }}
+                                        {{ trans('cruds.customKey.fields.id') }}
                                     </th>
                                     <th>
-                                        Name
+                                        {{ trans('cruds.customKey.fields.name') }}
                                     </th>
+                                    
                                     <th>
-                                       Actions
+                                        Actions
                                     </th>
+                               
                                 </tr>
-                                <tr>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-                                    <td>
-                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                                    </td>
-  
-                                    <td>
-                                    </td>
-                                </tr>
+ 
                             </thead>
                             <tbody>
-                            @foreach($analytics as $analytic)
-                                    <tr data-entry-id="{{ $analytic['id'] }}">
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            {{ $analytic['id'] ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $analytic['name'] ?? '' }}
-                                        </td>
-                  
-                                        <td>
-                                            <a href="{{route('admin.custom-keys.view', $analytic['id'])}}" class="btn btn-xs btn-primary">
-                                         Show Custom Keys
-                                     </a>
-                                        </td>
-
-                                    </tr>
-                                @endforeach    
+                            @forelse($keys as $key)
+                                        <tr>
+                                    <td>
+                                    </td>
+                                    <td>
+                                       {{$key->id}}
+                                    </td>
+                                    <td>
+                                      {{$key->name}}
+                                    </td>
+            
+                                    <td>
+                                       <a href="#" class="btn btn-xs btn-success">Edit</a>
+                                    </td>
+                                  
+                                </tr>
+                            @empty
+                            @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -86,11 +74,11 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('analytic_delete')
+@can('custom_key_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.analytics.massDestroy') }}",
+    url: "{{ route('admin.custom-keys.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -121,7 +109,7 @@
     order: [[ 1, 'desc' ]],
     pageLength: 100,
   });
-  let table = $('.datatable-Analytic:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  let table = $('.datatable-CustomKey:not(.ajaxTable)').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();

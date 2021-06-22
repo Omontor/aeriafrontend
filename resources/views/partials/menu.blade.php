@@ -70,11 +70,11 @@
                     <ul class="treeview-menu">
         
                             <li class="{{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "active" : "" }}">
-                                <a href="{{ route("admin.custom-keys.index") }}">
+                                <a href="{{ route("admin.analytics.index") }}">
                                     <i class="fa-fw fas fa-puzzle-piece">
 
                                     </i>
-                                    <span>Custom Keys</span>
+                                    <span>Analytics</span>
 
                                 </a>
                             </li>

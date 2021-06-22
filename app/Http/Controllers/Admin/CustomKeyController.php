@@ -53,7 +53,6 @@ $client = new Client([
     }
 
 
-
     public function store(Request $request)
     {
 
@@ -85,6 +84,22 @@ $client = new Client([
         
     }
 
+
+
+    public function view ($index){
+
+  $client = new Client([
+            'base_uri' => env('REMOTE_URL'),
+            'timeout'  => 2.0,
+            'verify' => false
+
+        ]);
+
+        $response = $client->request('GET', '/api/AeriaCustomKeys/AllKeys/'.$index);
+        $keys = json_decode($response->getBody()->getContents());
+        return view('admin.customKeys.view', compact('keys'));
+
+    }
 
 
 

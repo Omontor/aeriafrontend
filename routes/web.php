@@ -57,7 +57,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('analytics/destroy', 'AnalyticController@massDestroy')->name('analytics.massDestroy');
     Route::resource('analytics', 'AnalyticController');
 
+
+    Route::get('customkeys/create', 'CustomKeyController@create')->name('customkeys.create');
     // Custom Key
+    Route::get('custom-keys/{analytic}', 'CustomKeyController@view')->name('custom-keys.view');
+    
     Route::delete('custom-keys/destroy', 'CustomKeyController@massDestroy')->name('custom-keys.massDestroy');
     Route::resource('custom-keys', 'CustomKeyController');
 });

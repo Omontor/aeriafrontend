@@ -32,6 +32,7 @@
                             <span class="help-block">{{ trans('cruds.customKey.fields.analytic_helper') }}</span>
                         </div>
                         <div class="form-group">
+                              <a href="{{ url()->previous() }}" class="btn btn-primary">Back to Custom Keys</a>
                             <button class="btn btn-primary" type="submit">
                                 {{ trans('global.save') }}
                             </button>
