@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 //Import these lines in every controller that uses API
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
+use Redirect;
 
 class AnalyticController extends Controller
 {
@@ -34,18 +35,49 @@ class AnalyticController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('analytic_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $games = Game::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+          $client = new Client([
+            'base_uri' => env('REMOTE_URL'),
+            'timeout'  => 2.0,
+            'verify' => false
+
+        ]);
+     $response = $client->request('GET', '/api/Game/AllGames');
+        $games = json_decode($response->getBody()->getContents());
 
         return view('admin.analytics.create', compact('games'));
     }
 
-    public function store(StoreAnalyticRequest $request)
+    public function store(Request $request)
     {
-        $analytic = Analytic::create($request->all());
+      
 
-        return redirect()->route('admin.analytics.index');
+
+  $client = new Client([
+                        'base_uri' => env('REMOTE_URL'),
+                        'timeout'  => 2.0,
+                        'verify' => false
+
+                    ]);
+            try { 
+            $response = $client->request('POST', '/api/AeriaAnalytics/create', 
+                ['json' => 
+                    [
+                    'id'=> 0,   
+                    'name' => $request->name,
+                    ]
+
+                 ]);
+            return redirect::route('admin.analytics.index')->with('success', 'Analytic Created Successfully');
+            } 
+            catch (Exception $e) {
+                
+                 return redirect::route('admin.analytics.index')->with('error', $e);
+
+            }
+
+
+
     }
 
     public function edit(Analytic $analytic)
