@@ -9,32 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CustomKey extends Model
 {
-    use SoftDeletes;
-    use HasFactory;
-
-    public $table = 'custom_keys';
-
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
-    protected $fillable = [
-        'name',
-        'analytic_id',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
-    public function analytic()
-    {
-        return $this->belongsTo(Analytic::class, 'analytic_id');
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
-    }
+    protected $table = 'customkeys';
+   protected $guarded = [];
 }

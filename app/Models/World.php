@@ -10,12 +10,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class World extends Model
 {
 
-    protected $connection = 'mysql2';
-    public $table = 'aeria_world';
-    
-  public function levels()
-    {
-        return $this->hasMany('\App\Models\Level','ID');
-    }
-
+    protected $guarded = [];
 }

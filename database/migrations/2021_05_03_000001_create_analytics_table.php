@@ -10,9 +10,8 @@ class CreateAnalyticsTable extends Migration
     {
         Schema::create('analytics', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('bvc')->nullable();
-            $table->string('entry')->nullable();
-            $table->string('value')->nullable();
+            $table->string('remote_id');
+            $table->string('name')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -249,34 +249,39 @@
               @foreach($cohorts as $cohort)
 
             <tr>
-                <td>{{$loop->index + 1}} </td>
-                <td>{{ \Carbon\Carbon::today()->subDays($loop->index)->format('d/m/Y') }} </td>
 
-                <td>
-                    100
-                </td>
+                <td>{{$loop->index + 1}} </td>
+                <td>0</td>
+                <td>0</td>
                 <td>
                 {{\App\Models\UserGameData::sum('ShowedAds')}}
                 </td>
                 <td>  
                 {{\App\Models\UserGameData::sum('ShowedAds')}}</td>
-                <td>50</td>
-                <td>10</td>
-                <td>25</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
                 <!-- Users -->
-                <td> 1</td>
-                <td>260</td>
-                <td>600</td>
-                <td>40</td>
-                <td>500</td>
-                <td>1250</td>
-                <td>1200</td>
-                <td>100</td> 
+                <td> 0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td> 
 
 
                 <!-- Dynamic columns-->
 
                 @forelse($worlds as $world)
+
+
+
+
+
+
+
                 <td>
                     {{$world->name}}
                 </td>

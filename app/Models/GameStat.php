@@ -5,10 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cohort extends Model
+class GameStat extends Model
 {
     use HasFactory;
-
-    
-    protected $guarded = [];
 }

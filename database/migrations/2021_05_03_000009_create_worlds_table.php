@@ -10,7 +10,9 @@ class CreateWorldsTable extends Migration
     {
         Schema::create('worlds', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->nullable();
+            $table->string('game_id');
+            $table->string('name');
+            $table->string('remote_id');
             $table->timestamps();
             $table->softDeletes();
         });

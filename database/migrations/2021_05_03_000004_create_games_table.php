@@ -11,9 +11,9 @@ class CreateGamesTable extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('app');
+            $table->string('appid');
             $table->string('secret')->nullable();
-            $table->string('status')->nullable();
+            $table->string('remote_id');
             $table->timestamps();
             $table->softDeletes();
         });

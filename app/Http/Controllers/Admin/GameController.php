@@ -68,21 +68,10 @@ class GameController extends Controller
 
     $httpanalytics = $client->request('GET', '/api/AeriaAnalytics/AllAnalyticsPerGame/'.$gameid);
     $analytics = json_decode($httpanalytics->getBody()->getContents());
-    
-    $httpanalytics2 = $client->request('GET', '/api/AeriaAnalytics/AllAnalyticsPerGame/'.$gameid);
-    $keys = json_decode($httpanalytics2->getBody()->getContents('keys'));
 
-    $userdata = [];
-
-
-    return view('admin.games.show', compact('game', 'cohorts', 'userdata', 'analytics', 'keys', 'worlds'));
+    return view('admin.games.show', compact('game', 'cohorts', 'analytics', 'worlds'));
     
     }
-
-
-
-
-
 
 
     public function compare () {
