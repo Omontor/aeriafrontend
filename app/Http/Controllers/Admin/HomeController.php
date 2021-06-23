@@ -10,6 +10,8 @@ use App\Models\Analytic;
 use App\Models\CustomKey;
 use App\Models\World;
 use App\Models\Player;
+use App\Models\UserData;
+
 
 class HomeController
 {
@@ -82,8 +84,41 @@ class HomeController
         $newcohort->name = $value->nameId;
         $newcohort->status = $value->status;
         $newcohort->save();
+
+
         
         }
+
+        $allcohorts = Cohort::all();
+
+              /*Fill User Data*/
+        
+                foreach ($allcohorts as $key => $value2) {
+                $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2);
+                $userdata = json_decode($userdataresponse->getBody()->getContents());
+
+                foreach ($userdata as $key => $value3) {
+
+                $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
+                $newuserdata->remote_id = $value3->id;
+                $newuserdata->platform = $value3->platform;
+                $newuserdata->last_activity = $value3->lastActivity;
+                $newuserdata->days_playing = $value3->daysPlaying;
+                $newuserdata->iap = $value3->iap;
+                $newuserdata->watched_ads = $value3->watchedAds;
+                $newuserdata->showed_ads = $value3->showedAds;
+                $newuserdata->star_group = $value3->starGroup;
+                $newuserdata->sessions_played = $value3->sessionsPlayed;
+                $newuserdata->days_played = $value3->daysPlayed;
+                $newuserdata->first_time = $value3->firsTime;
+                $newuserdata->save();
+
+
+
+                    }
+                
+            }
+
 
 
         /*Fill Analytics */ 
@@ -102,7 +137,7 @@ class HomeController
         }
 
 
-     /*Fill Players */ 
+         /*Fill Players */ 
 
         $playersresponse = $client->request('GET', '/api/Accounts/AllUsers');
         $players = json_decode($playersresponse->getBody()->getContents());
@@ -113,6 +148,10 @@ class HomeController
         $newplayer->username = $value->username;
         $newplayer->email = $value->email;
         $newplayer->save();
+
+
+
+
         
         }
 
