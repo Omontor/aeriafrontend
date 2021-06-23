@@ -9,6 +9,7 @@ use App\Models\Cohort;
 use App\Models\Analytic;
 use App\Models\CustomKey;
 use App\Models\World;
+use App\Models\Player;
 
 class HomeController
 {
@@ -97,6 +98,21 @@ class HomeController
         $newanalytic->remote_id = $value->id;
         $newanalytic->name = $value->name;
         $newanalytic->save();
+        
+        }
+
+
+     /*Fill Players */ 
+
+        $playersresponse = $client->request('GET', '/api/Accounts/AllUsers');
+        $players = json_decode($playersresponse->getBody()->getContents());
+
+        foreach ($players as $player => $value) {
+
+        $newplayer = Player::firstOrNew(['email' => $value->email]);
+        $newplayer->username = $value->username;
+        $newplayer->email = $value->email;
+        $newplayer->save();
         
         }
 
