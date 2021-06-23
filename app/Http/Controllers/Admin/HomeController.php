@@ -94,12 +94,13 @@ class HomeController
               /*Fill User Data*/
         
                 foreach ($allcohorts as $key => $value2) {
-                $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2);
+                $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
                 $userdata = json_decode($userdataresponse->getBody()->getContents());
-
+     
                 foreach ($userdata as $key => $value3) {
 
                 $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
+                $newuserdata->cohort_id = $value2->remote_id;
                 $newuserdata->remote_id = $value3->id;
                 $newuserdata->platform = $value3->platform;
                 $newuserdata->last_activity = $value3->lastActivity;

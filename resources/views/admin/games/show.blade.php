@@ -142,7 +142,7 @@
                              @forelse($cohorts as $data)
 
                           <option>
-                              {{$data->id}}
+                              {{$data->name}}
                           </option>
                             @empty
                             No data to show
@@ -154,7 +154,7 @@
 
                         @forelse($cohorts as $data)
                           <option>
-                                {{$data->id}}
+                                {{$data->name}}
                           </option>
                             @empty
                             No data to show
@@ -250,14 +250,12 @@
 
             <tr>
 
-                <td>{{$loop->index + 1}} </td>
+                <td>{{$loop->index + 1}} <a href="#" data-toggle="tooltip" title="{{$cohort->remote_id}}"><i class="fas fa-info-circle"></i></a></td>
+                <td>{{ \Carbon\Carbon::parse(\App\Models\UserData::where('cohort_id', $cohort->id)->pluck('last_activity')->first())->format('Y-m-d') }}</td>
                 <td>0</td>
+                <!--Impressions-->
+                <td>{{\App\Models\UserData::where('cohort_id', $cohort->id)->sum('showed_ads')}}</td>
                 <td>0</td>
-                <td>
-                {{\App\Models\UserGameData::sum('ShowedAds')}}
-                </td>
-                <td>  
-                {{\App\Models\UserGameData::sum('ShowedAds')}}</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -271,28 +269,15 @@
                 <td>0</td>
                 <td>0</td> 
 
-
                 <!-- Dynamic columns-->
 
                 @forelse($worlds as $world)
-
-
-
-
-
-
-
                 <td>
                     {{$world->name}}
                 </td>
                 @empty
                 @endforelse
-
                 <!-- Dynamic columns-->
-
-
-
-    
             </tr>
            @endforeach
 
@@ -321,7 +306,7 @@
                 <th style="max-width: 30px;">Tut. <br> Start</th>
                 <th style="max-width: 30px;">Tut. <br>End</th>
                 <th style="max-width: 30px;">Main <br> Menu</th>
-   <th style="max-width: 20px;">ID</th>
+                <th style="max-width: 20px;">ID</th>
                 <th style="max-width: 60px;">End <br> Date</th>
                 <th style="max-width: 50px;">Deaths</th>
                 <th style="max-width: 30px;">Imp</th>
@@ -341,20 +326,15 @@
             </tr>
         </thead>
         <tbody>
-              @foreach(range(1, 31) as $y)
+              @forelse($cohorts as $y)
 
             <tr>
                 <td>{{$loop->index + 1}} </td>
                 <td>{{ \Carbon\Carbon::today()->subDays($loop->index)->diffForHumans() }} </td>
 
-                <td>
-                    100
-                </td>
-                <td>
-                {{\App\Models\UserGameData::sum('ShowedAds')}}
-                </td>
-                <td>  
-                {{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>100</td>
+                <td>0</td>
+                <td>0</td>
                 <td>50</td>
                 <td>10</td>
                 <td>25</td>
@@ -373,11 +353,8 @@
                 <td>
                     100
                 </td>
-                <td>
-                {{\App\Models\UserGameData::sum('ShowedAds')}}
-                </td>
-                <td>  
-                {{\App\Models\UserGameData::sum('ShowedAds')}}</td>
+                <td>0 </td>
+                <td>0</td>
                 <td>50</td>
                 <td>10</td>
                 <td>25</td>
@@ -393,7 +370,8 @@
 
     
             </tr>
-           @endforeach
+           @empty 
+           @endforelse
 
         </tbody>
     </table>

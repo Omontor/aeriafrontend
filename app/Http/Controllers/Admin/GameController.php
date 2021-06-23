@@ -13,7 +13,7 @@ use App\Models\Cohort;
 use App\Models\CohortGroup;
 use App\Models\UserCohort;
 use App\Models\Message;
-use App\Models\UserGameData;
+use App\Models\UserData;
 use App\Models\CustomKey;
 use Gate;
 use Illuminate\Http\Request;
@@ -59,8 +59,7 @@ class GameController extends Controller
     $game = json_decode($response->getBody()->getContents());
 
 
-    $httpcohort = $client->request('GET', '/api/Game/GetCohorts/'.$gameid);
-    $cohorts = json_decode($httpcohort->getBody()->getContents());
+    $cohorts = Cohort::where('gameid', $index)->get();
 
     $httpworlds = $client->request('GET', '/api/world/GetAllWorldPerGame/'.$gameid);
     $worlds = json_decode($httpworlds->getBody()->getContents());
@@ -68,6 +67,9 @@ class GameController extends Controller
 
     $httpanalytics = $client->request('GET', '/api/AeriaAnalytics/AllAnalyticsPerGame/'.$gameid);
     $analytics = json_decode($httpanalytics->getBody()->getContents());
+
+
+
 
     return view('admin.games.show', compact('game', 'cohorts', 'analytics', 'worlds'));
     
