@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateGameRequest;
 use App\Models\Game;
 use App\Models\Level;
 use App\Models\World;
+use App\Models\Analytic;
 use App\Models\Cohort;
 use App\Models\CohortGroup;
 use App\Models\UserCohort;
@@ -48,30 +49,13 @@ class GameController extends Controller
     public function view($index) {
 
     $gameid = $index;
-    $client = new Client([
-                'base_uri' => env('REMOTE_URL'),
-                'timeout'  => 2.0,
-                'verify' => false
+    $game = Game::where('remote_id', $index)->first();
+    $cohorts = Cohort::where('gameid', $index)->where('status', 1)->get();
+    $worlds = World::where('game_id', $index)->get();
+    $analytics = Analytic::where('game_id', $game->remote_id)->get();
+    $customkeys = Analytic::where('game_id', $game->remote_id)->with('customkeys')->get();
 
-            ]);
-
-    $response = $client->request('GET', '/api/Game/'.$gameid);
-    $game = json_decode($response->getBody()->getContents());
-
-
-    $cohorts = Cohort::where('gameid', $index)->get();
-
-    $httpworlds = $client->request('GET', '/api/world/GetAllWorldPerGame/'.$gameid);
-    $worlds = json_decode($httpworlds->getBody()->getContents());
-
-
-    $httpanalytics = $client->request('GET', '/api/AeriaAnalytics/AllAnalyticsPerGame/'.$gameid);
-    $analytics = json_decode($httpanalytics->getBody()->getContents());
-
-
-
-
-    return view('admin.games.show', compact('game', 'cohorts', 'analytics', 'worlds'));
+    return view('admin.games.show', compact('game', 'cohorts', 'analytics', 'worlds', 'customkeys'));
     
     }
 

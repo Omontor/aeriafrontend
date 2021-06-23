@@ -11,4 +11,6 @@ class CustomKey extends Model
 {
     protected $table = 'customkeys';
    protected $guarded = [];
+
+   
 }

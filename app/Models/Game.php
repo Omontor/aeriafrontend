@@ -11,4 +11,14 @@ class Game extends Model
 
     protected $guarded = [];
 
+        public function cohorts()
+    {
+        return $this->hasMany('App\Models\Cohort', 'gameid', 'remote_id');
+    }
+
+    public function analytics()
+    {
+        return $this->hasMany('App\Models\Analytic', 'game_id', 'remote_id');
+    }
+
 }

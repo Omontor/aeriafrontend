@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CohortGroup extends Model
+class TutorialEnd extends Model
 {
     use HasFactory;
 }

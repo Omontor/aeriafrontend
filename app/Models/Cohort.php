@@ -11,4 +11,10 @@ class Cohort extends Model
 
     
     protected $guarded = [];
+
+
+    public function game()
+    {
+        return $this->belongsTo('App\Models\Game', 'id');
+    }
 }

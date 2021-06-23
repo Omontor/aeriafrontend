@@ -12,6 +12,7 @@ class CreateAnalyticsTable extends Migration
             $table->bigIncrements('id');
             $table->string('remote_id');
             $table->string('name')->nullable();
+            $table->string('game_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -69,10 +69,28 @@ class HomeController
 
         }
 
-        /* Fill Cohorts  */
+        $allgames = Game::all();
 
+            /*Fill Analytics */ 
 
-        $url = "/api/Game/GetCohorts/".$value->id;   
+            foreach ($allgames as $key => $value) {
+            $analyticresponse = $client->request('GET', '/api/AeriaAnalytics/AllAnalyticsPerGame/'.$value->remote_id);
+            $analytics = json_decode($analyticresponse->getBody('analytics')->getContents());
+              
+         
+            foreach ($analytics->analytics as $analytic => $anvalue) {
+               
+            $newanalytic = Analytic::firstOrNew(['remote_id' => $anvalue->id]);
+            $newanalytic->remote_id = $anvalue->id;
+            $newanalytic->name = $anvalue->name;
+            $newanalytic->name = $anvalue->name;
+            $newanalytic->game_id = $value->remote_id;
+            $newanalytic->save();
+                }
+
+                   /* Fill Cohorts  */
+
+        $url = "/api/Game/GetCohorts/".$value->remote_id;   
         $cohortresponse = $client->request('GET', $url);
         $cohorts = json_decode($cohortresponse->getBody()->getContents());
 
@@ -88,6 +106,14 @@ class HomeController
 
         
         }
+
+            
+        }
+
+
+
+
+
 
         $allcohorts = Cohort::all();
 
@@ -122,21 +148,7 @@ class HomeController
 
 
 
-        /*Fill Analytics */ 
-
-        $analyticresponse = $client->request('GET', '/api/aeriaanalytics/AllAnalytics');
-        $analytics = json_decode($analyticresponse->getBody()->getContents());
-
-        foreach ($analytics as $analytic => $value) {
-
-        $newanalytic = Analytic::firstOrNew(['remote_id' => $value->id]);
-
-        $newanalytic->remote_id = $value->id;
-        $newanalytic->name = $value->name;
-        $newanalytic->save();
-        
-        }
-
+    
 
          /*Fill Players */ 
 

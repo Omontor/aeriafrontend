@@ -35,7 +35,6 @@
       <div class="row">
         <div class="col-lg-12">
             <h1>{{$game->name}}</h1>
-
         <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">Filters</h3>
@@ -247,11 +246,10 @@
         </thead>
         <tbody>
               @foreach($cohorts as $cohort)
-
             <tr>
 
-                <td>{{$loop->index + 1}} <a href="#" data-toggle="tooltip" title="{{$cohort->remote_id}}"><i class="fas fa-info-circle"></i></a></td>
-                <td>{{ \Carbon\Carbon::parse(\App\Models\UserData::where('cohort_id', $cohort->id)->pluck('last_activity')->first())->format('Y-m-d') }}</td>
+                <td>{{$loop->index + 1}} <a href="#" data-toggle="tooltip" title="{{$cohort->name}}"><i class="fas fa-info-circle"></i></a></td>
+                <td>{{ \Carbon\Carbon::parse(\App\Models\UserData::where('cohort_id', $cohort->id)->pluck('last_activity')->first())->diffForHumans() }}</td>
                 <td>0</td>
                 <!--Impressions-->
                 <td>{{\App\Models\UserData::where('cohort_id', $cohort->id)->sum('showed_ads')}}</td>

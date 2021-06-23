@@ -20,14 +20,16 @@ class AnalyticController extends Controller
 {
     public function index()
     {
-        //Connecting to API}
-        $client = new Client([
-            'base_uri' => env('API_URL'),
+  $client = new Client([
+            'base_uri' => env('REMOTE_URL'),
             'timeout'  => 2.0,
+            'verify' => false
+
         ]);
-        $response =$response = Http::withoutVerifying()->get('https://localhost:5001/api/AeriaAnalytics/AllAnalytics', ['verify' => false]);
-        //Turn response into array
-        $analytics = $response->json([]);
+
+        $response = $client->request('GET', '/api/AeriaAnalytics/AllAnalytics');
+        $analytics = json_decode($response->getBody()->getContents());
+
         return view('admin.analytics.index', compact('analytics'));
     }
 

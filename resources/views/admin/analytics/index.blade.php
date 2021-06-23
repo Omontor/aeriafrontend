@@ -49,26 +49,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            @foreach($analytics as $analytic)
-                                    <tr data-entry-id="{{ $analytic['id'] }}">
+                            @forelse($analytics as $analytic)
+                                    <tr data-entry-id="{{ $analytic->id }}">
                                         <td>
 
                                         </td>
                                         <td>
-                                            {{ $analytic['id'] ?? '' }}
+                                            {{ $analytic->id ?? '' }}
                                         </td>
                                         <td>
-                                            {{ $analytic['name'] ?? '' }}
+                                            {{ $analytic->name ?? '' }}
                                         </td>
                   
                                         <td>
-                                            <a href="{{route('admin.custom-keys.view', $analytic['id'])}}" class="btn btn-xs btn-primary">
+                                            <a href="{{route('admin.custom-keys.view', $analytic->id )}}" class="btn btn-xs btn-primary">
                                          Show Custom Keys
                                      </a>
                                         </td>
 
                                     </tr>
-                                @endforeach    
+                                @empty
+                                @endforelse    
                             </tbody>
                         </table>
                     </div>
