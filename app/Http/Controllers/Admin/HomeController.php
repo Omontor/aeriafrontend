@@ -12,6 +12,7 @@ use App\Models\World;
 use App\Models\Player;
 use App\Models\UserData;
 use App\Models\CustomData;
+use App\Models\LevelInterface;
 use Illuminate\Support\Str;
 
 class HomeController
@@ -40,9 +41,6 @@ class HomeController
         /* Fill Games*/
         $response = $client->request('GET', '/api/Game/AllGames');
         $games = json_decode($response->getBody()->getContents());
-
-
-      
 
         foreach ($games as $game => $value) {
             
@@ -104,17 +102,8 @@ class HomeController
         $newcohort->status = $value->status;
         $newcohort->save();
 
-
-        
+            }  
         }
-
-            
-        }
-
-
-
-
-
 
         $allcohorts = Cohort::all();
 
@@ -141,13 +130,7 @@ class HomeController
                 $newuserdata->first_time = $value3->firsTime;
                 $newuserdata->save();
 
-
-
                     }
-
-
-
-
                 
             }
 
@@ -167,15 +150,9 @@ class HomeController
                 $newCustomData->save();
 
 
-                    }
-
-
-                    
-                    
-                
+                    }       
             }
 
-    
 
          /*Fill Players */ 
 
@@ -188,9 +165,6 @@ class HomeController
         $newplayer->username = $value->username;
         $newplayer->email = $value->email;
         $newplayer->save();
-
-
-
 
         
         }
@@ -212,15 +186,34 @@ class HomeController
                 $newkey->name = $value2->name;
                 $newkey->analytic_id = $value2->aid;
                 $newkey->save();
-                    }
-              
-        
+                    }    
         }
 
 
+      /* Fill Level Interfaces */ 
+        $allworlds = World::all();
+
+        foreach ($allworlds as $analytic => $value) {
+
+$interfacesresponse = $client->request('GET', '/api/AeriaLevelInterfaces/GetAllPerWorld/'.$value->remote_id);
+        $levelinterfaces = json_decode($interfacesresponse->getBody()->getContents());
+
+                foreach ($levelinterfaces as $key => $value2) 
+                {
+                    
+                $newlevelInterface = LevelInterface::firstOrNew(['remote_id' => $value2->id]);
+                $newlevelInterface->remote_id = $value2->id;
+                $newlevelInterface->name = $value2->name;
+                $newlevelInterface->original_id = $value2->originalId;
+                $newlevelInterface->world_id = $value2->worldID;
+                $newlevelInterface->date = $value2->date;
+                $newlevelInterface->save();
+                    
+                }    
+        }
+
+    
       
-
-
 
         return view('home', compact('games', 'gamescount', 'users', 'userscount'));
     }

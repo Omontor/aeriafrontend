@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLevelInterfacesTable extends Migration
+class CreateLastActivitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,8 @@ class CreateLevelInterfacesTable extends Migration
      */
     public function up()
     {
-        Schema::create('level_interfaces', function (Blueprint $table) {
+        Schema::create('last_activities', function (Blueprint $table) {
             $table->id();
-            $table->string('remote_id');
-            $table->string('name');
-            $table->string('original_id');
-            $table->string('world_id')->nullable();
-            $table->string('date');
             $table->timestamps();
         });
     }
@@ -31,6 +26,6 @@ class CreateLevelInterfacesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('level_interfaces');
+        Schema::dropIfExists('last_activities');
     }
 }

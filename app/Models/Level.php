@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Level extends Model
 {
 
-    protected $connection = 'mysql2';
-    public $table = 'aeria_level';
 
   public function world()
     {
