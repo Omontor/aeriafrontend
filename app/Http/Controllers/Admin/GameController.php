@@ -51,11 +51,12 @@ class GameController extends Controller
     $gameid = $index;
     $game = Game::where('remote_id', $index)->first();
     $cohorts = Cohort::where('gameid', $index)->where('status', 1)->get();
+    $userdata = Cohort::where('gameid', $index)->with('userdata')->get();
     $worlds = World::where('game_id', $index)->get();
     $analytics = Analytic::where('game_id', $game->remote_id)->get();
     $customkeys = Analytic::where('game_id', $game->remote_id)->with('customkeys')->get();
 
-    return view('admin.games.show', compact('game', 'cohorts', 'analytics', 'worlds', 'customkeys'));
+    return view('admin.games.show', compact('game', 'cohorts', 'analytics', 'worlds', 'customkeys', 'userdata'));
     
     }
 

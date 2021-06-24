@@ -9,4 +9,9 @@ class UserData extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+       public function game()
+    {
+        return $this->belongsTo('App\Models\Cohort', 'cohort_id', 'remote_id');
+    }
 }

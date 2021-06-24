@@ -17,7 +17,7 @@ class CreateLevelDeathsTable extends Migration
             $table->id();
             $table->string('game_id');
             $table->string('cohort_id');
-            $table->string('player_id'); 
+            $table->string('player_id')->nullable(); 
             $table->string('world_id'); 
             $table->timestamps();
         });

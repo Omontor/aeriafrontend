@@ -11,7 +11,8 @@ use App\Models\CustomKey;
 use App\Models\World;
 use App\Models\Player;
 use App\Models\UserData;
-
+use App\Models\CustomData;
+use Illuminate\Support\Str;
 
 class HomeController
 {
@@ -143,10 +144,36 @@ class HomeController
 
 
                     }
+
+
+
+
                 
             }
 
+             /*Fill User Data*/
+        
+                foreach ($allcohorts as $key => $value2) {
+                $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
+                $userdata = json_decode($userdataresponse->getBody()->getContents());
 
+                foreach ($userdata as $key => $value3) {
+                $date =  collect($value3->customData)->first();
+                $index = collect($value3->customData)->flip()->first();
+   
+                $newCustomData = CustomData::firstOrNew(['date' => $date]);
+                $newCustomData->user_data_id = $value3->id;
+                $newCustomData->index = $index;
+                $newCustomData->save();
+
+
+                    }
+
+
+                    
+                    
+                
+            }
 
     
 

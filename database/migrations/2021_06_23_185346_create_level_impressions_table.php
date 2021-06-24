@@ -15,6 +15,10 @@ class CreateLevelImpressionsTable extends Migration
     {
         Schema::create('level_impressions', function (Blueprint $table) {
             $table->id();
+            $table->string('game_id');
+            $table->string('cohort_id');
+            $table->string('user_id')->nullable();
+            $table->string('last_activity'); 
             $table->timestamps();
         });
     }

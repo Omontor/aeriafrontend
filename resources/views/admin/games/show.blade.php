@@ -26,6 +26,7 @@
     <section class="content-header">
       <h1>
         <a href="/admin/games" class="btn btn-md btn-primary">Back to all games</a>
+        <a href="/admin/games" class="btn btn-md btn-success">Resync Data</a>
       </h1>
     </section>
 

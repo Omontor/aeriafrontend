@@ -15,6 +15,9 @@ class CreateCustomDataTable extends Migration
     {
         Schema::create('custom_data', function (Blueprint $table) {
             $table->id();
+            $table->string('user_data_id');
+            $table->string('index')->nullable();
+            $table->string('date');
             $table->timestamps();
         });
     }
