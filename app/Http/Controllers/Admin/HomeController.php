@@ -13,9 +13,10 @@ use App\Models\Player;
 use App\Models\UserData;
 use App\Models\CustomData;
 use App\Models\LevelInterface;
+use App\Models\LevelProg;
 use App\Models\LevelDif;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Arr;
 class HomeController
 {
     public function index()
@@ -231,20 +232,28 @@ $testresponse = $client->request('GET', '/api/user/getcohortprog/2/2fc59b70-81e9
                         
 $testurl = $value->remote_id."/".$value2->remote_id.'/'.$value3->remote_id;
 $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$value->remote_id."/".$value2->remote_id."/".$value3->remote_id);
+
         $levelinterfaces = $secondinterfacesresponse->getBody()->getContents();                       
-           
+        $interfaces = array($levelinterfaces);
            if($levelinterfaces != "{}")
-            {
+                {
+                    foreach ($interfaces as $key => $value4) {
 
-                $testarray[] = json_decode($levelinterfaces);
-            }
-                
+                        dd($value4);
+                $levelprogdate = Str::substr(Arr::flatten($interfaces)[0], 2 , 10);
+                $newLevelProg = LevelProg::firstOrNew(['date' => $levelprogdate]);
+                $newLevelProg->level_dif = $value->remote_id;
+                $newLevelProg->cohort_id = $value2->remote_id;
+                $newLevelProg->interface_id = $value3->remote_id;
+                $newLevelProg->date = $levelprogdate;
+                $newLevelProg->value = $value4->date;
+                $newLevelProg->save();
                     }
-
-
+         
                 }
-
+            }
         }
+    }
 
           dd($testarray);
 
