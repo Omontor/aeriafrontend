@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\LevelDif;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -36,5 +37,26 @@ class UsersTableSeeder extends Seeder
         ];
 
         User::insert($users);
+    
+
+
+    $leveldifs = [
+            [
+                'id'             => 1,
+                'remote_id'     => 0
+            ],  
+
+            [
+                'id'             => 2,
+                'remote_id'     => 1
+            ],      
+
+            [
+                'id'             => 3,
+                'remote_id'     => 2
+            ],
+        ];
+
+        LevelDif::insert($leveldifs);
     }
 }

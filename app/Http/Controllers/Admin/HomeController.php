@@ -13,6 +13,7 @@ use App\Models\Player;
 use App\Models\UserData;
 use App\Models\CustomData;
 use App\Models\LevelInterface;
+use App\Models\LevelDif;
 use Illuminate\Support\Str;
 
 class HomeController
@@ -195,12 +196,12 @@ class HomeController
 
         foreach ($allworlds as $analytic => $value) {
 
-$interfacesresponse = $client->request('GET', '/api/AeriaLevelInterfaces/GetAllPerWorld/'.$value->remote_id);
+        $interfacesresponse = $client->request('GET', '/api/AeriaLevelInterfaces/GetAllPerWorld/'.$value->remote_id);
         $levelinterfaces = json_decode($interfacesresponse->getBody()->getContents());
 
                 foreach ($levelinterfaces as $key => $value2) 
                 {
-                    
+
                 $newlevelInterface = LevelInterface::firstOrNew(['remote_id' => $value2->id]);
                 $newlevelInterface->remote_id = $value2->id;
                 $newlevelInterface->name = $value2->name;
@@ -210,10 +211,42 @@ $interfacesresponse = $client->request('GET', '/api/AeriaLevelInterfaces/GetAllP
                 $newlevelInterface->save();
                     
                 }    
+
+
         }
 
     
-      
+$testresponse = $client->request('GET', '/api/user/getcohortprog/2/2fc59b70-81e9-4d20-8ee1-b8f28ea2a766/TutorialInterfaceEnd');
+        $testvalue = json_decode($testresponse->getBody()->getContents());
+
+    
+          $allleveldifs = LevelDif::all();
+        $alllevelinterfaces =  LevelInterface::all();
+        $testarray = [];
+        foreach ($allleveldifs as $key => $value) {
+                    
+                foreach ($allcohorts as $key => $value2) {
+                    
+                    foreach ($alllevelinterfaces as $key => $value3) {
+                        
+$testurl = $value->remote_id."/".$value2->remote_id.'/'.$value3->remote_id;
+$secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$value->remote_id."/".$value2->remote_id."/".$value3->remote_id);
+        $levelinterfaces = $secondinterfacesresponse->getBody()->getContents();                       
+           
+           if($levelinterfaces != "{}")
+            {
+
+                $testarray[] = json_decode($levelinterfaces);
+            }
+                
+                    }
+
+
+                }
+
+        }
+
+          dd($testarray);
 
         return view('home', compact('games', 'gamescount', 'users', 'userscount'));
     }
