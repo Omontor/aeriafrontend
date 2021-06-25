@@ -224,6 +224,7 @@ $testresponse = $client->request('GET', '/api/user/getcohortprog/2/2fc59b70-81e9
           $allleveldifs = LevelDif::all();
         $alllevelinterfaces =  LevelInterface::all();
         $testarray = [];
+        LevelProg::truncate();
         foreach ($allleveldifs as $key => $value) {
                     
                 foreach ($allcohorts as $key => $value2) {
@@ -235,28 +236,44 @@ $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$
 
         $levelinterfaces = $secondinterfacesresponse->getBody()->getContents();                       
         $interfaces = array($levelinterfaces);
+        $interfacescollect = json_decode($levelinterfaces);
            if($levelinterfaces != "{}")
                 {
-                    foreach ($interfaces as $key => $value4) {
-
-                        dd($value4);
-                $levelprogdate = Str::substr(Arr::flatten($interfaces)[0], 2 , 10);
-                $newLevelProg = LevelProg::firstOrNew(['date' => $levelprogdate]);
+                 
+                foreach ($interfacescollect as $key => $value4) {
+                $testarray[] = $value4;
+                   
+        $levelprogdate = Str::substr(Arr::flatten($interfaces)[0], 2 , 10);
+                $newLevelProg = new LevelProg;
+               
                 $newLevelProg->level_dif = $value->remote_id;
                 $newLevelProg->cohort_id = $value2->remote_id;
                 $newLevelProg->interface_id = $value3->remote_id;
                 $newLevelProg->date = $levelprogdate;
-                $newLevelProg->value = $value4->date;
-                $newLevelProg->save();
+
+                    $index = 1;
+                     foreach ($value4 as $key => $value5) {
+                        if($index == 1){
+                          $newLevelProg->users = $value5;  
+                        }
+                        
+                      if($index == 2){
+                          $newLevelProg->stars = $value5;  
+                        }
+                        
+                        $index ++;
                     }
-         
+
+
+                $newLevelProg->save();
+                
+                            }
                 }
             }
         }
+     
     }
-
-          dd($testarray);
-
+   
         return view('home', compact('games', 'gamescount', 'users', 'userscount'));
     }
 }

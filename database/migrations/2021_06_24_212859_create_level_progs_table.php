@@ -19,8 +19,8 @@ class CreateLevelProgsTable extends Migration
             $table->string('cohort_id');
             $table->string('interface_id');
             $table->string('date');
-            $table->string('item_id');
-            $table->string('value');
+            $table->string('users');
+            $table->string('stars');
             $table->timestamps();
         });
     }

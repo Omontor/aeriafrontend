@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class LevelProg extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 }
