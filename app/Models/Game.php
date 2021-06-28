@@ -21,4 +21,15 @@ class Game extends Model
         return $this->hasMany('App\Models\Analytic', 'game_id', 'remote_id');
     }
 
+
+    public function worlds()
+    {
+        return $this->hasMany('App\Models\World', 'game_id', 'remote_id');
+    }
+
+    public function levelinterfaces()
+    {
+        return $this->hasMany('App\Models\LevelInterface', 'game_id', 'remote_id');
+    }
+
 }

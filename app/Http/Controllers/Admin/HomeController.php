@@ -200,6 +200,7 @@ class HomeController
         $interfacesresponse = $client->request('GET', '/api/AeriaLevelInterfaces/GetAllPerWorld/'.$value->remote_id);
         $levelinterfaces = json_decode($interfacesresponse->getBody()->getContents());
 
+
                 foreach ($levelinterfaces as $key => $value2) 
                 {
 
@@ -208,6 +209,7 @@ class HomeController
                 $newlevelInterface->name = $value2->name;
                 $newlevelInterface->original_id = $value2->originalId;
                 $newlevelInterface->world_id = $value2->worldID;
+                $newlevelInterface->game_id = Game::where('remote_id', $value->game_id)->first()->remote_id;
                 $newlevelInterface->date = $value2->date;
                 $newlevelInterface->save();
                     

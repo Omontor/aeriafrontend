@@ -1,3 +1,4 @@
+<div id="load"></div>
 @extends('layouts.admin')
     <style type="text/css">
       div.dataTables_wrapper {
@@ -19,6 +20,14 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style type="text/css">
+  #load{
+    width:100%;
+    height:100%;
+    position:fixed;
+    z-index:9999;
+    background:url("http://3dbionotes.cnb.csic.es/images/loading.gif") no-repeat center center rgba(0,0,0,0.65)
+}</style>
 @section('content')
 
 
@@ -26,7 +35,7 @@
     <section class="content-header">
       <h1>
         <a href="/admin/games" class="btn btn-md btn-primary">Back to all games</a>
-        <a href="/admin/games" class="btn btn-md btn-success">Resync Data</a>
+        <a href="{{route('admin.games.resync')}}" class="btn btn-md btn-success" onclick="myFunction()">Resync Data</a>
       </h1>
     </section>
 
@@ -204,12 +213,18 @@
                     <thead>
                         <tr>
                 <th style="max-width: 15px;">ID</th>
-                <th style="max-width: 40px;">End <br> Date </th>
+                <th style="max-width: 40px;">Last <br> Activity </th>
                 <th style="max-width: 50px;">DPL <br>
-                    <a href="#" data-toggle="tooltip" title="Deaths per level played"><i class="fas fa-info-circle"></i></a></th>
+                    <a href="#" data-toggle="tooltip" title="Deaths per level played"><i class="fas fa-info-circle"></i></a></th> 
+                    <th style="max-width: 50px;">IAP <br>
+                    <a href="#" data-toggle="tooltip" title="In App Purchases"><i class="fas fa-info-circle"></i></a></th>
                 <th style="max-width: 40px;">Imp 
                     <br>
-  <a href="#" data-toggle="tooltip" title="Impressions per level played"><i class="fas fa-info-circle"></i></a> </th>
+  <a href="#" data-toggle="tooltip" title="Impressions per level played"><i class="fas fa-info-circle"></i></a> </th>               
+
+  <th style="max-width: 40px;">Ads 
+                    <br>
+  <a href="#" data-toggle="tooltip" title="Showed ads"><i class="fas fa-info-circle"></i></a> </th>
                 <th style="max-width: 50px;">Box
 <br>
 <a href="#" data-toggle="tooltip" title="Free box claims per day"><i class="fas fa-info-circle"></i></a>
@@ -223,16 +238,15 @@
                 <th style="max-width: 30px;">AU <br><a href="#" data-toggle="tooltip" title="Users Still Active  (Played at least 1 time in the last 60 days)"><i class="fas fa-info-circle"></i> </a></th>
                 <th style="max-width: 40px;">Prog. <br> <a href="#" data-toggle="tooltip" title="Progression depth: 25 Percentile"><i class="fas fa-info-circle"></i></a></th>
                 <th style="max-width: 35px;">Finish <br> <a href="#" data-toggle="tooltip" title="Number of users that finished (any stars) last level"><i class="fas fa-info-circle"></i></a></th>
-                <th style="max-width: 20px;">LS <br> <a href="#" data-toggle="tooltip" title="Loading Screen"><i class="fas fa-info-circle"></i></a></th>
-                <th style="max-width: 30px;">PP <br> <a href="#" data-toggle="tooltip" title="Privacy Policy"><i class="fas fa-info-circle"></i></a></th>
-                <th style="max-width: 30px;">TutS <br><a href="#" data-toggle="tooltip" title="Tutorial Start"><i class="fas fa-info-circle"></i></a> </th>
-                <th style="max-width: 25px;">TutE <br> <a href="#" data-toggle="tooltip" title="Tutorial End"><i class="fas fa-info-circle"></i></a></th>
-                <th style="max-width: 30px;">Menu <br> <a href="#" data-toggle="tooltip" title="Main Menu"><i class="fas fa-info-circle"></i></a></th>
+               
+
+
+     
                 
                 <!-- Dynamic columns Worlds-->
 
-                @forelse($worlds as $world)
-                <th style="background-color: blue; color: white;">{{$loop->index + 1}} <br> <a href="#" data-toggle="tooltip" title="{{$world->id}}"><i class="fas fa-info-circle"></i></a></th>
+                @forelse($game->levelinterfaces as $world)
+                <th style="background-color: lightgray; color: black;">{{$world->name}} <br> <a href="#" data-toggle="tooltip" title="{{$world->name}}"><i class="fas fa-info-circle"></i></a></th>
                 @empty
                 @endforelse
 
@@ -252,8 +266,12 @@
                 <td>{{$loop->index + 1}} <a href="#" data-toggle="tooltip" title="{{$cohort->name}}"><i class="fas fa-info-circle"></i></a></td>
                 <td>{{ \Carbon\Carbon::parse(\App\Models\UserData::where('cohort_id', $cohort->id)->pluck('last_activity')->first())->diffForHumans() }}</td>
                 <td>0</td>
+                <!-- IAPS -->
+                <td>{{$cohort->userdata->sum('iap')}}</td>
                 <!--Impressions-->
-                <td>{{\App\Models\UserData::where('cohort_id', $cohort->id)->sum('showed_ads')}}</td>
+                <td>{{$cohort->userdata->sum('showed_ads')}}</td>
+                <!-- watched ads -->
+                <td>{{$cohort->userdata->sum('watched_ads')}}</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -262,17 +280,18 @@
                 <td> 0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td> 
+      
+   
 
                 <!-- Dynamic columns-->
 
-                @forelse($worlds as $world)
+                @forelse($game->levelinterfaces as $world)
                 <td>
-                    {{$world->name}}
+                   @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()  != "[]")
+                   {{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()->sum('users') }}
+                   @else
+                  0
+                   @endif
                 </td>
                 @empty
                 @endforelse
@@ -471,6 +490,27 @@ $(document).ready(function(){
     $('.datepicker2').datepicker();
 </script>
 
+
+<script>document.onreadystatechange = function () {
+  var state = document.readyState
+  if (state == 'interactive') {
+       document.getElementById('contents').style.visibility="hidden";
+  } else if (state == 'complete') {
+      setTimeout(function(){
+         document.getElementById('interactive');
+         document.getElementById('load').style.visibility="hidden";
+         document.getElementById('contents').style.visibility="visible";
+      },1000);
+  }
+
+
+}</script>
+
+<script>
+function myFunction() {
+  document.getElementById("load").style.visibility = "visible";
+}
+</script>
 @endsection
 
 @endsection

@@ -22,4 +22,10 @@ class Cohort extends Model
     {
       return $this->hasMany('App\Models\UserData', 'cohort_id', 'remote_id');
     }
+
+
+    public function levelprog()
+    {
+      return $this->hasMany('App\Models\LevelProg', 'cohort_id', 'remote_id');
+    }
 }

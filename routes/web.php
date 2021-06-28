@@ -29,6 +29,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Game
      Route::get('games/compare', 'GameController@compare')->name('games.compare');
+     Route::get('games/resync', 'GameController@resync')->name('games.resync');
     Route::delete('games/destroy', 'GameController@massDestroy')->name('games.massDestroy');
     Route::resource('games', 'GameController');
     Route::get('games/{game}', 'GameController@view')->name('games.view');

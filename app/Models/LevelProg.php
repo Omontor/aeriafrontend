@@ -9,4 +9,6 @@ class LevelProg extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    
 }

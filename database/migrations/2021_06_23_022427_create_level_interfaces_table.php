@@ -19,6 +19,7 @@ class CreateLevelInterfacesTable extends Migration
             $table->string('name');
             $table->string('original_id');
             $table->string('world_id')->nullable();
+            $table->string('game_id')->nullable();
             $table->string('date');
             $table->timestamps();
         });

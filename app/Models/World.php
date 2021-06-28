@@ -11,4 +11,6 @@ class World extends Model
 {
 
     protected $guarded = [];
+
+    
 }
