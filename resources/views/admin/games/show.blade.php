@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
   <style type="text/css">
   #load{
     width:100%;
@@ -27,129 +28,110 @@
     position:fixed;
     z-index:9999;
     background:url("http://3dbionotes.cnb.csic.es/images/loading.gif") no-repeat center center rgba(0,0,0,0.65)
-}</style>
-@section('content')
+}
+</style>
 
+@section('content')
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <a href="/admin/games" class="btn btn-md btn-primary">Back to all games</a>
+        <a href="{{route('admin.games.index')}}" class="btn btn-md btn-primary">Back to all games</a>
         <a href="{{route('admin.games.resync')}}" class="btn btn-md btn-success" onclick="myFunction()">Resync Data</a>
       </h1>
     </section>
 
     <!-- Main content -->
     <section class="content">
-
       <div class="row">
         <div class="col-lg-12">
             <h1>{{$game->name}}</h1>
         <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Filters</h3>
-            </div>
+                <div class="box-header with-border">
+                  <h3 class="box-title">Filters</h3>
+                </div>
                 <div class="box-body box-profile">
+                 <div class="col-lg-5">
+                    From:
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                </div>                              
+                <div class="col-lg-5">  
+                To:
+                <div class="input-group date" data-provide="datepicker2">
+                    <input type="text" class="form-control">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+                </div> 
 
-                             <div class="col-lg-5">  
-     From:
-                                <div class="input-group date" data-provide="datepicker">
-    <input type="text" class="form-control">
-    <div class="input-group-addon">
-        <span class="glyphicon glyphicon-th"></span>
-    </div>
-</div>
-    
-                          
-                        </select>
-                    </div>                              
 
-                    <div class="col-lg-5">  
-     To:
-                               <div class="input-group date" data-provide="datepicker2">
-    <input type="text" class="form-control">
-    <div class="input-group-addon">
-        <span class="glyphicon glyphicon-th"></span>
-    </div>
-</div>
-                         
-                        </select>
-                    </div> 
 <div class="col-lg-2">  
     <br>
     <a href="" class="btn btn-md btn-primary">Filter By Date</a>
-                    </div> 
-
-
+</div> 
                 </div>
+                
                 <div class="box-body box-profile">
-
- <div class="col-lg-4">   
-                    <div class="row">
-                        
+                    <div class="col-lg-4">   
+                    <div class="row">  
                     <div class="col-lg-9">   
                         <select class="form-control" control-id="ControlID-24">
                         <option>Star Groups   </option> 
                         </select>
                         </div>   
-
                         <div class="col-lg-3">
-                            
                             <a href="" class="btn btn-block btn-primary"> Filter</a>
                         </div>
                     </div>
                         
 </div>
                       
-
- <div class="col-lg-4">   
-                    <div class="row">
-                        
-                    <div class="col-lg-9">   
-                        <select class="form-control" control-id="ControlID-24">
-                        <option>Age Groups   </option> 
-                        </select>
-                        </div>   
-
-                        <div class="col-lg-3">
-                            
-                            <a href="" class="btn btn-block btn-primary"> Filter</a>
-                        </div>
-                    </div>
-                        
+<div class="col-lg-4">   
+    <div class="row">
+        <div class="col-lg-9">   
+            <select class="form-control" control-id="ControlID-24">
+                <option>Age Groups   </option> 
+            </select>
+        </div>   
+        <div class="col-lg-3">
+            <a href="" class="btn btn-block btn-primary"> Filter</a>
+        </div>
+    </div>                      
 </div> 
 
- <div class="col-lg-4">   
-                    <div class="row">
-                        
-                    <div class="col-lg-9">   
-                        <select class="form-control" control-id="ControlID-24">
-                        <option>Segments  </option> 
-                        </select>
-                        </div>   
 
-                        <div class="col-lg-3">
-                            
-                            <a href="" class="btn btn-block btn-primary"> Filter</a>
-                        </div>
-                    </div>
-                        
+
+ <div class="col-lg-4">   
+    <div class="row">  
+        <div class="col-lg-9">   
+            <select class="form-control" control-id="ControlID-24">
+                <option>Segments  </option> 
+            </select>
+        </div>   
+        <div class="col-lg-3">
+            <a href="" class="btn btn-block btn-primary"> Filter</a>
+        </div>
+    </div>                  
 </div>     
         
-                      </div>
+         </div>
         </div>
 
 
         <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">Compare Cohorts</h3>
-
             </div>
                 <div class="box-body box-profile">
                     <div class="col-lg-6">   
                         <select class="form-control" control-id="ControlID-24">
                              @forelse($cohorts as $data)
-
                           <option>
                               {{$data->name}}
                           </option>
@@ -173,39 +155,32 @@
                         <br>
                         <br>
                         
-                        <div class="col-lg-12"><a href="{{route('admin.games.compare')}}" class="btn btn-md btn-primary">Compare Cohorts</a></div>
-                            
+                        <div class="col-lg-12"><a href="{{route('admin.games.compare')}}" class="btn btn-md btn-primary">Compare Cohorts</a></div>    
                         <br>
                         <br>
-                      </div>
+                </div>
         </div>
-
-
-
       </div>
-
-
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-
-    </section>
+    </div>
+</section>
 
 
 <div class="content">
     <div class="row">
-        <div class="col-lg-12">
+
+
+        {{-- Sum --}}
+
+        <div class="col-lg-12" id="sumtable">
             <div class="box box-info">
             <div class="card">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link  btn btn-primary" href="#activity" data-toggle="tab" style="color:white;">Cohort View</a></li>
-                  <li class="nav-item"><a class="nav-link btn btn-primary" href="#settings" data-toggle="tab" style="color:white;">Level</a></li>  
-                  <li class="nav-item"><a class="nav-link btn btn-primary" href="#settings" data-toggle="tab" style="color:white;">Resources Spent</a></li>
-                  <li class="nav-item"><a class="nav-link btn btn-primary" href="#settings" data-toggle="tab" style="color:white;">Monetization</a></li>
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">
+                             <a  onclick="percentage()" class="btn btn-primary btn-xl pull-right" style="margin-right: 50px;">Total / Percentage</a>
                 <div class="tab-content">
                   <div class="tab-pane active" id="activity">
                   
@@ -213,7 +188,11 @@
                     <thead>
                         <tr>
                 <th style="max-width: 15px;">ID</th>
-                <th style="max-width: 40px;">Last <br> Activity </th>
+                
+                 <th style="max-width: 30px;">LA <br>
+                    <a href="#" data-toggle="tooltip" title="Last Activity"><i class="fas fa-info-circle"></i></a></th> 
+                 <th style="max-width: 50px;">SP <br>
+                    <a href="#" data-toggle="tooltip" title="Sessions Played"><i class="fas fa-info-circle"></i></a></th> 
                 <th style="max-width: 50px;">DPL <br>
                     <a href="#" data-toggle="tooltip" title="Deaths per level played"><i class="fas fa-info-circle"></i></a></th> 
                     <th style="max-width: 50px;">IAP <br>
@@ -224,7 +203,7 @@
 
   <th style="max-width: 40px;">Ads 
                     <br>
-  <a href="#" data-toggle="tooltip" title="Showed ads"><i class="fas fa-info-circle"></i></a> </th>
+  <a href="#" data-toggle="tooltip" title="Watched Ads"><i class="fas fa-info-circle"></i></a> </th>
                 <th style="max-width: 50px;">Box
 <br>
 <a href="#" data-toggle="tooltip" title="Free box claims per day"><i class="fas fa-info-circle"></i></a>
@@ -234,37 +213,47 @@
                 <a href="#" data-toggle="tooltip" title="Inital Retention 7 days "><i class="fas fa-info-circle"></i></a>
                 </th>
                 <th style="max-width: 30px;">7DR <br><a href="#" data-toggle="tooltip" title="Current 7 day retention"><i class="fas fa-info-circle"></i></a></th>
+               
+
                 <th style="max-width: 30px;">30DR <br><a href="#" data-toggle="tooltip" title="Current Retention 30 days"><i class="fas fa-info-circle"></i></a></th>
                 <th style="max-width: 30px;">AU <br><a href="#" data-toggle="tooltip" title="Users Still Active  (Played at least 1 time in the last 60 days)"><i class="fas fa-info-circle"></i> </a></th>
                 <th style="max-width: 40px;">Prog. <br> <a href="#" data-toggle="tooltip" title="Progression depth: 25 Percentile"><i class="fas fa-info-circle"></i></a></th>
                 <th style="max-width: 35px;">Finish <br> <a href="#" data-toggle="tooltip" title="Number of users that finished (any stars) last level"><i class="fas fa-info-circle"></i></a></th>
-               
 
-
+           <th style="max-width: 30px;">Logo <br> <a href="#" data-toggle="tooltip" title="Logo Screen"><i class="fas fa-info-circle"></i> </a></th>
+                <th style="max-width: 30px;">Menu <br> <a href="#" data-toggle="tooltip" title="Menu Screen"><i class="fas fa-info-circle"></i></a></th>
      
+                <th style="max-width: 40px;">Tut.<br>S <a href="#" data-toggle="tooltip" title="Tutorial Start"><i class="fas fa-info-circle"></i></a></th>
+                <th style="max-width: 35px;">Tut <br>E <a href="#" data-toggle="tooltip" title="Tutorial End"><i class="fas fa-info-circle"></i></a></th>
+        
                 
                 <!-- Dynamic columns Worlds-->
 
+
+
                 @forelse($game->levelinterfaces as $world)
-                <th style="background-color: lightgray; color: black;">{{$world->name}} <br> <a href="#" data-toggle="tooltip" title="{{$world->name}}"><i class="fas fa-info-circle"></i></a></th>
+                @if($world->name == "Menu" || $world->name == "LogoScreen" || $world->name == "Tutorial" ||  $world->name == "Tutorial End" )
+                @else
+                    @foreach(\App\Models\LevelDif::all() as $leveldif)
+                     <th style="background-color: lightblue; color: black;">{{$world->name}} <br>{{$leveldif->name}} <br> <a href="#" data-toggle="tooltip" title="{{$world->name}}"><i class="fas fa-info-circle"></i></a></th>
+                    @endforeach
+                @endif
                 @empty
                 @endforelse
-
-                <!-- Dynamic columns-->
-
-
-                
-
-
-
             </tr>
         </thead>
+
+
+{{--Start body of table--}}
+
+
         <tbody>
               @foreach($cohorts as $cohort)
             <tr>
 
                 <td>{{$loop->index + 1}} <a href="#" data-toggle="tooltip" title="{{$cohort->name}}"><i class="fas fa-info-circle"></i></a></td>
-                <td>{{ \Carbon\Carbon::parse(\App\Models\UserData::where('cohort_id', $cohort->id)->pluck('last_activity')->first())->diffForHumans() }}</td>
+                <td><small>{{ \Carbon\Carbon::parse(\App\Models\UserData::where('cohort_id', $cohort->id)->pluck('last_activity')->first())->diffForHumans() }}</small></td>
+                <td>{{$cohort->userdata->sum('sessions_played')}}</td>
                 <td>0</td>
                 <!-- IAPS -->
                 <td>{{$cohort->userdata->sum('iap')}}</td>
@@ -279,132 +268,269 @@
                 <!-- Users -->
                 <td> 0</td>
                 <td>0</td>
-                <td>0</td>
-      
-   
+                <td>0</td>                
 
-                <!-- Dynamic columns-->
+
+
+                <td> @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'LogoScreenInterfaceTest')->get()  != "[]")
+{{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'LogoScreenInterfaceTest')->get()->sum('users') }}
+                   @else
+                  0
+                   @endif</td>
+
+                <td>
+                    
+  @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'MenuInterface')->get()  != "[]")
+{{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'MenuInterface')->get()->sum('users') }}
+                   @else
+                  0
+                   @endif
+
+                </td>
+
+                <td> @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterface')->get()  != "[]")
+{{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterface')->get()->sum('users') }}
+                   @else
+                  0
+                   @endif</td>
+                <td>@if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterfaceEnd')->get()  != "[]")
+{{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterfaceEnd')->get()->sum('users') }}
+                   @else
+                  0
+                   @endif</td>
+      
+
 
                 @forelse($game->levelinterfaces as $world)
-                <td>
-                   @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()  != "[]")
+                @if($world->name == "Menu" || $world->name == "LogoScreen" || $world->name == "Tutorial" ||  $world->name == "Tutorial End" )
+                @else
+                    @foreach(\App\Models\LevelDif::all() as $leveldif)
+                    <td>
+                @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()  != "[]")
                    {{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()->sum('users') }}
                    @else
                   0
                    @endif
-                </td>
+                    </td>
+                    @endforeach
+                @endif
                 @empty
                 @endforelse
+
+                <!-- Dynamic columns-->
+
                 <!-- Dynamic columns-->
             </tr>
            @endforeach
 
         </tbody>
     </table>
-                  </div>
-
-
-                  <div class="tab-pane" id="settings">
-                <table id="example3" class="display nowrap" style="width:100%">
-                    <thead>
-                        <tr>
-                <th style="max-width: 20px;">ID</th>
-                <th style="max-width: 60px;">End <br> Date</th>
-                <th style="max-width: 50px;">Deaths</th>
-                <th style="max-width: 30px;">Imp</th>
-                <th style="max-width: 40px;">Boxes</th>
-                <th style="max-width: 30px;">Ret.</th>
-                <th style="max-width: 30px;">7 <br> DR</th>
-                <th style="max-width: 30px;">30 <br>DR</th>
-                <th style="max-width: 40px;">Users</th>
-                <th style="max-width: 50px;">Depth</th>
-                <th style="max-width: 40px;">Finish</th>
-                <th style="max-width: 30px;">LS</th>
-                <th style="max-width: 30px;">PP</th>
-                <th style="max-width: 30px;">Tut. <br> Start</th>
-                <th style="max-width: 30px;">Tut. <br>End</th>
-                <th style="max-width: 30px;">Main <br> Menu</th>
-                <th style="max-width: 20px;">ID</th>
-                <th style="max-width: 60px;">End <br> Date</th>
-                <th style="max-width: 50px;">Deaths</th>
-                <th style="max-width: 30px;">Imp</th>
-                <th style="max-width: 40px;">Boxes</th>
-                <th style="max-width: 30px;">Ret.</th>
-                <th style="max-width: 30px;">7 <br> DR</th>
-                <th style="max-width: 30px;">30 <br>DR</th>
-                <th style="max-width: 40px;">Users</th>
-                <th style="max-width: 50px;">Depth</th>
-                <th style="max-width: 40px;">Finish</th>
-                <th style="max-width: 30px;">LS</th>
-                <th style="max-width: 30px;">PP</th>
-                <th style="max-width: 30px;">Tut. <br> Start</th>
-                <th style="max-width: 30px;">Tut. <br>End</th>
-                <th style="max-width: 30px;">Main <br> Menu</th>
-
-            </tr>
-        </thead>
-        <tbody>
-              @forelse($cohorts as $y)
-
-            <tr>
-                <td>{{$loop->index + 1}} </td>
-                <td>{{ \Carbon\Carbon::today()->subDays($loop->index)->diffForHumans() }} </td>
-
-                <td>100</td>
-                <td>0</td>
-                <td>0</td>
-                <td>50</td>
-                <td>10</td>
-                <td>25</td>
-                <!-- Users -->
-                <td> 1</td>
-                <td>260</td>
-                <td>600</td>
-                <td>40</td>
-                <td>500</td>
-                <td>1250</td>
-                <td>1200</td>
-                <td>100</td>    
-                <td>1 </td>
-                <td>{{ \Carbon\Carbon::today()->subDay()->diffForHumans() }} </td>
-
-                <td>
-                    100
-                </td>
-                <td>0 </td>
-                <td>0</td>
-                <td>50</td>
-                <td>10</td>
-                <td>25</td>
-                <!-- Users -->
-                <td> 1</td>
-                <td>260</td>
-                <td>600</td>
-                <td>40</td>
-                <td>500</td>
-                <td>1250</td>
-                <td>1200</td>
-                <td>100</td>
-
-    
-            </tr>
-           @empty 
-           @endforelse
-
-        </tbody>
-    </table>
-                  </div>
-                  <!-- /.tab-pane -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- /.tab-content -->
-              </div><!-- /.card-body -->
             </div>
         </div>
+
+
+        <div class="col-lg-12" id="percenttable" style="display:none;">
+            <div class="box box-info">
+            <div class="card">
+              <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                  <li class="nav-item"><a class="nav-link  btn btn-primary" href="#activity" data-toggle="tab" style="color:white;">Cohort View</a></li>
+                </ul>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <a  onclick="percentage()" class="btn btn-primary btn-xl pull-right" style="margin-right: 50px;">Total / Percentage</a>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="activity">
+                  
+   <table id="example2" class="display nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                <th style="max-width: 15px;">ID</th>
+                
+                 <th style="max-width: 30px;">LA <br>
+                    <a href="#" data-toggle="tooltip" title="Last Activity"><i class="fas fa-info-circle"></i></a></th> 
+                 <th style="max-width: 50px;">SP <br>
+                    <a href="#" data-toggle="tooltip" title="Sessions Played"><i class="fas fa-info-circle"></i></a></th> 
+                <th style="max-width: 50px;">DPL <br>
+                    <a href="#" data-toggle="tooltip" title="Deaths per level played"><i class="fas fa-info-circle"></i></a></th> 
+                    <th style="max-width: 50px;">IAP <br>
+                    <a href="#" data-toggle="tooltip" title="In App Purchases"><i class="fas fa-info-circle"></i></a></th>
+                <th style="max-width: 40px;">Imp 
+                    <br>
+  <a href="#" data-toggle="tooltip" title="Impressions per level played"><i class="fas fa-info-circle"></i></a> </th>               
+
+  <th style="max-width: 40px;">Ads 
+                    <br>
+  <a href="#" data-toggle="tooltip" title="Watched Ads"><i class="fas fa-info-circle"></i></a> </th>
+                <th style="max-width: 50px;">Box
+<br>
+<a href="#" data-toggle="tooltip" title="Free box claims per day"><i class="fas fa-info-circle"></i></a>
+                </th>
+                <th style="max-width: 50px;">Ret.
+                    <br>
+                <a href="#" data-toggle="tooltip" title="Inital Retention 7 days "><i class="fas fa-info-circle"></i></a>
+                </th>
+                <th style="max-width: 30px;">7DR <br><a href="#" data-toggle="tooltip" title="Current 7 day retention"><i class="fas fa-info-circle"></i></a></th>
+               
+
+                <th style="max-width: 30px;">30DR <br><a href="#" data-toggle="tooltip" title="Current Retention 30 days"><i class="fas fa-info-circle"></i></a></th>
+                <th style="max-width: 30px;">AU <br><a href="#" data-toggle="tooltip" title="Users Still Active  (Played at least 1 time in the last 60 days)"><i class="fas fa-info-circle"></i> </a></th>
+                <th style="max-width: 40px;">Prog. <br> <a href="#" data-toggle="tooltip" title="Progression depth: 25 Percentile"><i class="fas fa-info-circle"></i></a></th>
+                <th style="max-width: 35px;">Finish <br> <a href="#" data-toggle="tooltip" title="Number of users that finished (any stars) last level"><i class="fas fa-info-circle"></i></a></th>
+
+           <th style="max-width: 30px;">Logo <br> <a href="#" data-toggle="tooltip" title="Logo Screen"><i class="fas fa-info-circle"></i> </a></th>
+                <th style="max-width: 30px;">Menu <br> <a href="#" data-toggle="tooltip" title="Menu Screen"><i class="fas fa-info-circle"></i></a></th>
+     
+                <th style="max-width: 40px;">Tut.<br>S <a href="#" data-toggle="tooltip" title="Tutorial Start"><i class="fas fa-info-circle"></i></a></th>
+                <th style="max-width: 35px;">Tut <br>E <a href="#" data-toggle="tooltip" title="Tutorial End"><i class="fas fa-info-circle"></i></a></th>
+        
+                
+                <!-- Dynamic columns Worlds-->
+
+
+
+                @forelse($game->levelinterfaces as $world)
+                @if($world->name == "Menu" || $world->name == "LogoScreen" || $world->name == "Tutorial" ||  $world->name == "Tutorial End" )
+                @else
+                    @foreach(\App\Models\LevelDif::all() as $leveldif)
+                     <th style="background-color: lightblue; color: black;">{{$world->name}} <br>{{$leveldif->name}} <br> <a href="#" data-toggle="tooltip" title="{{$world->name}}"><i class="fas fa-info-circle"></i></a></th>
+                    @endforeach
+                @endif
+                @empty
+                @endforelse
+            </tr>
+        </thead>
+
+
+{{--Start body of table--}}
+
+
+        <tbody>
+              @foreach($cohorts as $cohort)
+            <tr>
+
+                <td>{{$loop->index + 1}} <a href="#" data-toggle="tooltip" title="{{$cohort->name}}"><i class="fas fa-info-circle"></i></a></td>
+                <td><small>{{ \Carbon\Carbon::parse(\App\Models\UserData::where('cohort_id', $cohort->id)->pluck('last_activity')->first())->diffForHumans() }}</small></td>
+                <td>{{$cohort->userdata->sum('sessions_played')}}</td>
+                <td>0</td>
+                <!-- IAPS -->
+                <td>
+
+
+@if($cohort->userdata->count() != 0 && $cohort->userdata->sum('iaps') != 0)
+                        @if(number_format(($cohort->userdata->count() / $cohort->userdata->sum('iaps')) * 100, 0) > 50)
+                            <span style="color: green;">
+                                {{number_format(($cohort->userdata->count() / $cohort->userdata->sum('iaps')) * 100, 0)  }} %
+                            </span>
+
+                        @else
+ <span style="color: red;">
+                    {{number_format(($cohort->userdata->count() / $cohort->userdata->sum('iaps')) * 100, 0)  }} %
+                    </span>
+                        @endif
+
+                    @else
+                   <span style="color: red;"> 0 % </span>
+                    @endif
+
+                </td>
+                <!--Impressions-->
+                <td>{{$cohort->userdata->sum('showed_ads')}}</td>
+                <!-- watched ads -->
+                <td>
+                    @if($cohort->userdata->sum('showed_ads') != 0 && $cohort->userdata->sum('watched_ads') != 0)
+                        @if(number_format(($cohort->userdata->sum('watched_ads') / $cohort->userdata->sum('showed_ads')) * 100, 0) > 50)
+                            <span style="color: green;">
+                                {{number_format(($cohort->userdata->sum('watched_ads') / $cohort->userdata->sum('showed_ads')) * 100, 0)  }} %
+                            </span>
+
+                        @else
+ <span style="color: red;">
+                    {{number_format(($cohort->userdata->sum('watched_ads') / $cohort->userdata->sum('showed_ads')) * 100, 0)  }} %
+                    </span>
+                        @endif
+
+                    @else
+                    0 %
+                    @endif
+
+                </td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <!-- Users -->
+                <td> 0</td>
+                <td>0</td>
+                <td>0</td>                
+
+
+
+                <td> @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'LogoScreenInterfaceTest')->get()  != "[]")
+{{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'LogoScreenInterfaceTest')->get()->sum('users') }}
+                   @else
+                  0
+                   @endif</td>
+
+                <td>
+                    
+  @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'MenuInterface')->get()  != "[]")
+{{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'MenuInterface')->get()->sum('users') }}
+                   @else
+                  0
+                   @endif
+
+                </td>
+                   
+                <td> @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterface')->get()  != "[]")
+{{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterface')->get()->sum('users') }}
+                   @else
+                  0
+                   @endif</td>
+                <td>@if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterfaceEnd')->get()  != "[]")
+{{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterfaceEnd')->get()->sum('users') }}
+                   @else
+                  0
+                   @endif</td>
+      
+
+
+                @forelse($game->levelinterfaces as $world)
+                @if($world->name == "Menu" || $world->name == "LogoScreen" || $world->name == "Tutorial" ||  $world->name == "Tutorial End" )
+                @else
+                    @foreach(\App\Models\LevelDif::all() as $leveldif)
+                    <td>
+                @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()  != "[]")
+                   {{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()->sum('users') }}
+                   @else
+                  0
+                   @endif
+                    </td>
+                    @endforeach
+                @endif
+                @empty
+                @endforelse
+
+                <!-- Dynamic columns-->
+
+                <!-- Dynamic columns-->
+            </tr>
+           @endforeach
+
+        </tbody>
+    </table>                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-
     </div>
-  </div>
+</div>
 
 
 
@@ -412,7 +538,16 @@
 <script>
  $(document).ready(function() {
     $('#example').DataTable( {
-        "scrollX": true
+        "scrollX": true,
+         dom: 'Bfrtip',
+         buttons: [
+            {
+                text: 'My button',
+                action: function ( e, dt, node, config ) {
+                    alert( 'Button activated' );
+                }
+            }
+        ]
     } );
 } );
 </script>
@@ -439,41 +574,8 @@
 } );
 </script>
 
-<script>
- $(document).ready(function() {
-    $('#example3').DataTable( {
-        "scrollX": true,
-        'buttons': [
- 
-    'colvis',
-],
-    } );
-} );
-</script>
 
-<script>
- $(document).ready(function() {
-    $('#example4').DataTable( {
-        "scrollX": true,
-        'buttons': [
- 
-    'colvis',
-],
-    } );
-} );
-</script>
 
-<script>
- $(document).ready(function() {
-    $('#example5').DataTable( {
-        "scrollX": true,
-        'buttons': [
- 
-    'colvis',
-],
-    } );
-} );
-</script>
 
 <script>
 $(document).ready(function(){
@@ -511,6 +613,26 @@ function myFunction() {
   document.getElementById("load").style.visibility = "visible";
 }
 </script>
+
+<script>
+    
+function percentage() {
+  var x = document.getElementById("sumtable");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+  var x = document.getElementById("percenttable");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+</script>
+
 @endsection
 
 @endsection

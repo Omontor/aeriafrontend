@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLevelDifsTable extends Migration
+class CreateWatchedAdsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateLevelDifsTable extends Migration
      */
     public function up()
     {
-        Schema::create('level_difs', function (Blueprint $table) {
+        Schema::create('watched_ads', function (Blueprint $table) {
             $table->id();
-            $table->string('remote_id');
-            $table->string('name');
+            $table->string('cohort_id');
+            $table->bigInteger('value');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateLevelDifsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('level_difs');
+        Schema::dropIfExists('watched_ads');
     }
 }

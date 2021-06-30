@@ -28,4 +28,14 @@ class Cohort extends Model
     {
       return $this->hasMany('App\Models\LevelProg', 'cohort_id', 'remote_id');
     }
+
+    public function showedads()
+    {
+      return $this->hasMany('App\Models\ShowedAd', 'cohort_id', 'remote_id');
+    }
+
+        public function watchedads()
+    {
+      return $this->hasMany('App\Models\WatchedAd', 'cohort_id', 'remote_id');
+    }
 }

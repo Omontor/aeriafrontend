@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserProgression extends Model
+class ShowedAd extends Model
 {
     use HasFactory;
     protected $guarded = [];

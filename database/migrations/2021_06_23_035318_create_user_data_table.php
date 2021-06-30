@@ -20,12 +20,12 @@ class CreateUserDataTable extends Migration
             $table->string('platform');  
             $table->string('last_activity');
             $table->string('days_playing');            
-            $table->string('iap');  
-            $table->string('watched_ads');
-            $table->string('showed_ads');            
-            $table->string('star_group');  
-            $table->string('sessions_played');
-            $table->string('days_played');
+            $table->bigInteger('iap');  
+            $table->bigInteger('watched_ads');
+            $table->bigInteger('showed_ads');            
+            $table->bigInteger('star_group');  
+            $table->bigInteger('sessions_played');
+            $table->bigInteger('days_played');
             $table->string('first_time');
             $table->timestamps();
         });

@@ -43,17 +43,20 @@ class UsersTableSeeder extends Seeder
     $leveldifs = [
             [
                 'id'             => 1,
+                'name'           => 'normal',
                 'remote_id'     => 0
             ],  
 
             [
                 'id'             => 2,
+                'name'          => 'hard',
                 'remote_id'     => 1
             ],      
 
             [
                 'id'             => 3,
-                'remote_id'     => 2
+                'remote_id'     => 2,
+                 'name'         => 'insane'
             ],
         ];
 

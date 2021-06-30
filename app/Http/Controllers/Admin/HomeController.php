@@ -17,6 +17,8 @@ use App\Models\LevelProg;
 use App\Models\LevelDif;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use App\Models\ShowedAd;
+use App\Models\WatchedAd;
 class HomeController
 {
     public function index()
@@ -125,7 +127,15 @@ class HomeController
                 $newuserdata->days_playing = $value3->daysPlaying;
                 $newuserdata->iap = $value3->iap;
                 $newuserdata->watched_ads = $value3->watchedAds;
+               $watched_ads = WatchedAd::firstOrNew(['cohort_id' => $value2->remote_id]);
+                        $watched_ads->value += $newuserdata->watched_ads;
+                        $watched_ads->save();
+                
                 $newuserdata->showed_ads = $value3->showedAds;
+                               $showed_ads = ShowedAd::firstOrNew(['cohort_id' => $value2->remote_id]);
+                        $showed_ads->value += $newuserdata->showed_ads;
+                        $showed_ads->save();
+                
                 $newuserdata->star_group = $value3->starGroup;
                 $newuserdata->sessions_played = $value3->sessionsPlayed;
                 $newuserdata->days_played = $value3->daysPlayed;
@@ -133,7 +143,7 @@ class HomeController
                 $newuserdata->save();
 
                     }
-                
+
             }
 
              /*Fill User Data*/

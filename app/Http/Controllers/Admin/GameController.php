@@ -18,6 +18,8 @@ use App\Models\UserData;
 use App\Models\CustomData;
 use App\Models\CustomKey;
 use App\Models\LevelInterface;
+use App\Models\ShowedAd;
+use App\Models\WatchedAd;
 use Gate;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
@@ -63,6 +65,8 @@ class GameController extends Controller
     $customkeys = Analytic::where('game_id', $game->remote_id)->with('customkeys')->get();
     $levelinterfaces = LevelInterface::where('game_id', $game->remote_id)->get();
 
+
+
     return view('admin.games.show', compact('game', 'cohorts', 'analytics', 'worlds', 'customkeys', 'userdata', 'levelinterfaces'));
     
     }
@@ -83,6 +87,7 @@ class GameController extends Controller
 
 
     public function resync() {
+        
         $httpgames = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Game/AllGames', ['verify' => false]);
         $games = $httpgames->json([]);
         $gamescount = count($games);
@@ -187,7 +192,15 @@ class GameController extends Controller
                 $newuserdata->days_playing = $value3->daysPlaying;
                 $newuserdata->iap = $value3->iap;
                 $newuserdata->watched_ads = $value3->watchedAds;
+               $watched_ads = WatchedAd::firstOrNew(['cohort_id' => $value2->remote_id]);
+                        $watched_ads->value += $newuserdata->watched_ads;
+                        $watched_ads->save();
+                
                 $newuserdata->showed_ads = $value3->showedAds;
+                               $showed_ads = ShowedAd::firstOrNew(['cohort_id' => $value2->remote_id]);
+                        $showed_ads->value += $newuserdata->showed_ads;
+                        $showed_ads->save();
+                
                 $newuserdata->star_group = $value3->starGroup;
                 $newuserdata->sessions_played = $value3->sessionsPlayed;
                 $newuserdata->days_played = $value3->daysPlayed;
@@ -195,7 +208,7 @@ class GameController extends Controller
                 $newuserdata->save();
 
                     }
-                
+
             }
 
              /*Fill User Data*/
