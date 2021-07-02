@@ -182,6 +182,8 @@ class GameController extends Controller
                 $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
                 $userdata = json_decode($userdataresponse->getBody()->getContents());
      
+                $userdataarray = [];
+
                 foreach ($userdata as $key => $value3) {
 
                 $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
@@ -206,8 +208,10 @@ class GameController extends Controller
                 $newuserdata->days_played = $value3->daysPlayed;
                 $newuserdata->first_time = $value3->firsTime;
                 $newuserdata->save();
-
+                
                     }
+
+
 
             }
 
@@ -225,11 +229,11 @@ class GameController extends Controller
                 $newCustomData->user_data_id = $value3->id;
                 $newCustomData->index = $index;
                 $newCustomData->save();
-
+$userdataarray[] = $value3;
 
                     }       
             }
-
+dd($userdataarray);
 
          /*Fill Players */ 
 

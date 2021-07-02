@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLevelDeathsTable extends Migration
+class CreateCohortDeathsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateLevelDeathsTable extends Migration
      */
     public function up()
     {
-        Schema::create('level_deaths', function (Blueprint $table) {
+        Schema::create('cohort_deaths', function (Blueprint $table) {
             $table->id();
-            $table->string('game_id');
             $table->string('cohort_id');
-            $table->string('player_id')->nullable(); 
-            $table->string('world_id'); 
+            $table->string('level_id')->nullable();
+            $table->bigInteger('value');
+            $table->bigInteger('entry');
+            $table->string('date');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateLevelDeathsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('level_deaths');
+        Schema::dropIfExists('cohort_deaths');
     }
 }

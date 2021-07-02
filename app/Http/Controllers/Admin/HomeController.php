@@ -8,6 +8,7 @@ use App\Models\Game;
 use App\Models\Cohort;
 use App\Models\Analytic;
 use App\Models\CustomKey;
+use App\Models\CohortDeath;
 use App\Models\World;
 use App\Models\Player;
 use App\Models\UserData;
@@ -243,9 +244,8 @@ $testresponse = $client->request('GET', '/api/user/getcohortprog/2/2fc59b70-81e9
                     
                     foreach ($alllevelinterfaces as $key => $value3) {
                         
-$testurl = $value->remote_id."/".$value2->remote_id.'/'.$value3->remote_id;
-$secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$value->remote_id."/".$value2->remote_id."/".$value3->remote_id);
-
+        $testurl = $value->remote_id."/".$value2->remote_id.'/'.$value3->remote_id;
+        $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$value->remote_id."/".$value2->remote_id."/".$value3->remote_id);
         $levelinterfaces = $secondinterfacesresponse->getBody()->getContents();                       
         $interfaces = array($levelinterfaces);
         $interfacescollect = json_decode($levelinterfaces);
@@ -285,7 +285,62 @@ $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$
         }
      
     }
+
+   // https://imaginoix.com:5000/api/AnalyticsLevel/FilteredByCohort/f2e635a9-9f92-4344-b459-c8f760ecf1c6/10
    
+            $postclient = new Client([
+                        'base_uri' => env('REMOTE_URL'),
+                        'timeout'  => 2.0,
+                        'verify' => false
+                    ]);
+            try { 
+                $testdeaths = [];
+      foreach ($allgames as $analytic => $value) {
+
+
+                foreach ($allcohorts as $key => $value2) {
+                   
+            $deathsresponse = $client->request('POST', '/api/AnalyticsLevel/FilteredByCohort/'.$value2->remote_id."/".$value->remote_id, 
+                ['json' => 
+                    [
+                   "filterMethod"=> 0,
+                            
+                            "customKey"=> 114,
+                            "gameId"=> $value->remote_id,
+                            "userId"=> "none",
+                            "levelId"=> "0",
+                            "bvc"=> 0,
+                            "analyticId"=> 24,
+                            "startDate"=> "1988-01-01T00:00:00",
+                            "endDate"=> "2022-01-01T00:00:00"
+                    ]
+
+                 ]);
+
+                    $alldeaths = json_decode($deathsresponse->getBody()->getContents());
+
+                           foreach ($alldeaths as $key => $value3) 
+                        {
+
+                            $testdeaths[] = $value3;
+                                           
+            $newDeath = CohortDeath::firstOrNew(['date' => $value3->creationDate]);
+
+           $newDeath->cohort_id = $value2->remote_id;
+           $newDeath->level_id = 0;
+           $newDeath->value = $value3->value;
+           $newDeath->date = $value3->creationDate;
+           $newDeath->entry = $value3->entry;
+           $newDeath->save();
+                        }  
+                    }
+                }  
+            } 
+              catch (Exception $e) {
+                
+                //this is an error
+
+            }
         return view('home', compact('games', 'gamescount', 'users', 'userscount'));
     }
 }
