@@ -327,6 +327,7 @@ $testresponse = $client->request('GET', '/api/user/getcohortprog/2/2fc59b70-81e9
             $newDeath = CohortDeath::firstOrNew(['date' => $value3->creationDate]);
 
            $newDeath->cohort_id = $value2->remote_id;
+           $newDeath->game_id = $value->remote_id;
            $newDeath->level_id = 0;
            $newDeath->value = $value3->value;
            $newDeath->date = $value3->creationDate;

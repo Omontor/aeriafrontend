@@ -50,15 +50,11 @@
                 <div class="box-header with-border">
                   <h3 class="box-title">Filters</h3>
                 </div>
-                <form method="POST" action="{{route('admin.games.filterbydate')}}">
-                    @csrf
-
-                    <input type="text" hidden value="{{$game->remote_id}}" name="id">
                 <div class="box-body box-profile">
                  <div class="col-lg-5">
                     From:
                     <div class="input-group date" data-provide="datepicker">
-                        <input type="text" class="form-control" name="start_date">
+                        <input type="text" class="form-control">
                         <div class="input-group-addon">
                             <span class="glyphicon glyphicon-th"></span>
                         </div>
@@ -67,7 +63,7 @@
                 <div class="col-lg-5">  
                 To:
                 <div class="input-group date" data-provide="datepicker2">
-                    <input type="text" class="form-control" name="end_date">
+                    <input type="text" class="form-control">
                     <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
                     </div>
@@ -77,10 +73,8 @@
 
 <div class="col-lg-2">  
     <br>
-    <button type="submit" class="btn btn-md btn-primary">Filter By Date</button>
+    <a href="" class="btn btn-md btn-primary">Filter By Date</a>
 </div> 
-</form>
-
                 </div>
                 
                 <div class="box-body box-profile">
@@ -200,7 +194,7 @@
                  <th style="max-width: 50px;">SP <br>
                     <a href="#" data-toggle="tooltip" title="Sessions Played"><i class="fas fa-info-circle"></i></a></th> 
                 <th style="max-width: 30px;">Deaths <br>
-                    <a href="#" data-toggle="tooltip" title="Deaths by cohort"><i class="fas fa-info-circle"></i></a></th> 
+                    <a href="#" data-toggle="tooltip" title="Deaths per level played"><i class="fas fa-info-circle"></i></a></th> 
                     <th style="max-width: 50px;">IAP <br>
                     <a href="#" data-toggle="tooltip" title="In App Purchases"><i class="fas fa-info-circle"></i></a></th>
                 <th style="max-width: 40px;">Imp 
@@ -254,12 +248,16 @@
 
 
         <tbody>
-              @foreach($cohorts as $cohort)
-            <tr>
+              @foreach($cohorts->userdata()->whereBetween('last_activity',[$start, $end])->get() as $cohort)
+            <tr> 
 
+                @php
+                $value = $cohort->userdata()->whereBetween('last_activity',[$start, $end])->get()
+                @endphp
+
+{{$value}}
                 <td>{{$loop->index + 1}} <a href="#" data-toggle="tooltip" title="{{$cohort->name}}"><i class="fas fa-info-circle"></i></a></td>
-
-                <td><small>{{\Carbon\Carbon::parse( $cohort->userdata->first()->last_activity)->diffForHumans() }}</small></td>
+                <td><small>{{ \Carbon\Carbon::parse(\App\Models\UserData::where('cohort_id', $cohort->id)->pluck('last_activity')->first())->diffForHumans() }}</small></td>
                 <td>{{$cohort->userdata->sum('sessions_played')}}</td>
                 <td>{{$cohort->deaths->sum('value')}}</td>
                 <!-- IAPS -->
@@ -363,7 +361,7 @@
                  <th style="max-width: 50px;">SP <br>
                     <a href="#" data-toggle="tooltip" title="Sessions Played"><i class="fas fa-info-circle"></i></a></th> 
                 <th style="max-width: 30px;">Deaths <br>
-                    <a href="#" data-toggle="tooltip" title="Deaths by cohort"><i class="fas fa-info-circle"></i></a></th> 
+                    <a href="#" data-toggle="tooltip" title="Deaths per level played"><i class="fas fa-info-circle"></i></a></th> 
                     <th style="max-width: 50px;">IAP <br>
                     <a href="#" data-toggle="tooltip" title="In App Purchases"><i class="fas fa-info-circle"></i></a></th>
                 <th style="max-width: 40px;">Imp 
@@ -421,31 +419,9 @@
             <tr>
 
                 <td>{{$loop->index + 1}} <a href="#" data-toggle="tooltip" title="{{$cohort->name}}"><i class="fas fa-info-circle"></i></a></td>
-                <td><small>{{\Carbon\Carbon::parse( $cohort->userdata->first()->last_activity)->diffForHumans() }}</small></td>
+                <td><small>{{ \Carbon\Carbon::parse(\App\Models\UserData::where('cohort_id', $cohort->id)->pluck('last_activity')->first())->diffForHumans() }}</small></td>
                 <td>{{$cohort->userdata->sum('sessions_played')}}</td>
-
-
-                <td>
-
-@if($cohort->deaths->count() != 0 && $cohort->deaths->sum('value') != 0)
-                        @if(number_format(($cohort->deaths->count() / $cohort->deaths->sum('value')) * 100, 0) > 50)
-                            <span style="color: purple;">
-                                {{number_format(($cohort->deaths->count() / $cohort->deaths->sum('value')) * 100, 0)  }} %
-                            </span>
-
-                        @else
- <span style="color: blue;">
-                    {{number_format(($cohort->deaths->count() / $cohort->deaths->sum('value')) * 100, 0)  }} %
-                    </span>
-                        @endif
-
-                    @else
-                   <span style="color: black;"> 0 % </span>
-                    @endif
-
-
-
-                </td>
+                <td>0</td>
                 <!-- IAPS -->
                 <td>
 

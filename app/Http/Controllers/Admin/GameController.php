@@ -20,6 +20,7 @@ use App\Models\CustomKey;
 use App\Models\LevelInterface;
 use App\Models\ShowedAd;
 use App\Models\WatchedAd;
+use App\Models\CohortDeath;
 use Gate;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
@@ -29,7 +30,7 @@ use App\Models\LevelProg;
 use App\Models\LevelDif;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
-
+use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -64,10 +65,10 @@ class GameController extends Controller
     $analytics = Analytic::where('game_id', $game->remote_id)->get();
     $customkeys = Analytic::where('game_id', $game->remote_id)->with('customkeys')->get();
     $levelinterfaces = LevelInterface::where('game_id', $game->remote_id)->get();
+    $cohortdeaths = CohortDeath::where('game_id', $game->remote_id)->get();
 
 
-
-    return view('admin.games.show', compact('game', 'cohorts', 'analytics', 'worlds', 'customkeys', 'userdata', 'levelinterfaces'));
+    return view('admin.games.show', compact('game', 'cohorts', 'analytics', 'worlds', 'customkeys', 'userdata', 'levelinterfaces', 'cohortdeaths'));
     
     }
 
@@ -233,7 +234,7 @@ $userdataarray[] = $value3;
 
                     }       
             }
-dd($userdataarray);
+
 
          /*Fill Players */ 
 
@@ -393,5 +394,26 @@ $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$
             }
 
   
+    }
+
+
+    public function filterByDate (Request $request){
+
+    
+    $gameid = $request->id;
+    $game = Game::where('remote_id', $gameid)->first();
+    $start = Carbon::parse($request->start_date);
+    $end = Carbon::parse($request->end_date);
+    $cohorts = Cohort::where('gameid', $gameid)->where('status', 1)->get();
+    $userdata = Userdata::whereBetween('last_activity',[$start, $end])->get()
+    $worlds = World::where('game_id', $gameid)->get();
+    $analytics = Analytic::where('game_id', $game->remote_id)->get();
+    $customkeys = Analytic::where('game_id', $game->remote_id)->with('customkeys')->get();
+    $levelinterfaces = LevelInterface::where('game_id', $game->remote_id)->get();
+    $cohortdeaths = CohortDeath::where('game_id', $game->remote_id)->get();
+
+
+    return view('admin.games.filterdate', compact('game', 'cohorts', 'analytics', 'worlds', 'customkeys', 'userdata', 'levelinterfaces', 'cohortdeaths','start', 'end'));
+    
     }
 }

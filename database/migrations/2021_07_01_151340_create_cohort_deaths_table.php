@@ -16,6 +16,7 @@ class CreateCohortDeathsTable extends Migration
         Schema::create('cohort_deaths', function (Blueprint $table) {
             $table->id();
             $table->string('cohort_id');
+            $table->string('game_id');
             $table->string('level_id')->nullable();
             $table->bigInteger('value');
             $table->bigInteger('entry');

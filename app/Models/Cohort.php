@@ -37,5 +37,10 @@ class Cohort extends Model
         public function watchedads()
     {
       return $this->hasMany('App\Models\WatchedAd', 'cohort_id', 'remote_id');
+    }    
+
+    public function deaths()
+    {
+      return $this->hasMany('App\Models\CohortDeath', 'cohort_id', 'remote_id');
     }
 }
