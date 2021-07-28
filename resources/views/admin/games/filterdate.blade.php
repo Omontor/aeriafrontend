@@ -248,14 +248,9 @@
 
 
         <tbody>
-              @foreach($cohorts->userdata()->whereBetween('last_activity',[$start, $end])->get() as $cohort)
-            <tr> 
+              @foreach($userdata->cohorts as $cohort)
+            <tr>
 
-                @php
-                $value = $cohort->userdata()->whereBetween('last_activity',[$start, $end])->get()
-                @endphp
-
-{{$value}}
                 <td>{{$loop->index + 1}} <a href="#" data-toggle="tooltip" title="{{$cohort->name}}"><i class="fas fa-info-circle"></i></a></td>
                 <td><small>{{ \Carbon\Carbon::parse(\App\Models\UserData::where('cohort_id', $cohort->id)->pluck('last_activity')->first())->diffForHumans() }}</small></td>
                 <td>{{$cohort->userdata->sum('sessions_played')}}</td>
