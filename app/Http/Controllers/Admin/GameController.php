@@ -67,7 +67,6 @@ class GameController extends Controller
     $levelinterfaces = LevelInterface::where('game_id', $game->remote_id)->get();
     $cohortdeaths = CohortDeath::where('game_id', $game->remote_id)->get();
 
-
     return view('admin.games.show', compact('game', 'cohorts', 'analytics', 'worlds', 'customkeys', 'userdata', 'levelinterfaces', 'cohortdeaths'));
     
     }

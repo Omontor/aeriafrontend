@@ -24,6 +24,7 @@ class HomeController
 {
     public function index()
     {
+
     	$httpgames = Http::withoutVerifying()->get(env('REMOTE_URL').'/api/Game/AllGames', ['verify' => false]);
         $games = $httpgames->json([]);
         $gamescount = count($games);
@@ -38,7 +39,7 @@ class HomeController
 
         $client = new Client([
             'base_uri' => env('REMOTE_URL'),
-            'timeout'  => 2.0,
+            'timeout'  => 20.0,
             'verify' => false
 
         ]);
@@ -72,6 +73,8 @@ class HomeController
             }
 
         }
+
+
 
         $allgames = Game::all();
 
@@ -110,6 +113,10 @@ class HomeController
             }  
         }
 
+
+  
+
+
         $allcohorts = Cohort::all();
 
               /*Fill User Data*/
@@ -117,7 +124,7 @@ class HomeController
                 foreach ($allcohorts as $key => $value2) {
                 $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
                 $userdata = json_decode($userdataresponse->getBody()->getContents());
-     
+
                 foreach ($userdata as $key => $value3) {
 
                 $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
@@ -144,8 +151,9 @@ class HomeController
                 $newuserdata->save();
 
                     }
-
+   
             }
+                       
 
              /*Fill User Data*/
         
@@ -290,7 +298,7 @@ $testresponse = $client->request('GET', '/api/user/getcohortprog/2/2fc59b70-81e9
    
             $postclient = new Client([
                         'base_uri' => env('REMOTE_URL'),
-                        'timeout'  => 2.0,
+                        'timeout'  => 20.0,
                         'verify' => false
                     ]);
             try { 
