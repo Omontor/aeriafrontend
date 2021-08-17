@@ -268,8 +268,8 @@
                 <td>{{$cohort->userdata->sum('showed_ads')}}</td>
                 <!-- watched ads -->
                 <td>{{$cohort->userdata->sum('watched_ads')}}</td>
-                <td>0</td>
-                <td>0</td>
+                <td>boxes</td>
+                <td>{{$cohort->userdata->count()}}</td>
                 <td>0</td>
                 <td>0</td>
                 <!-- Users -->

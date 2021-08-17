@@ -39,7 +39,7 @@ class HomeController
 
         $client = new Client([
             'base_uri' => env('REMOTE_URL'),
-            'timeout'  => 20.0,
+            'timeout'  => 40.0,
             'verify' => false
 
         ]);
@@ -298,7 +298,7 @@ $testresponse = $client->request('GET', '/api/user/getcohortprog/2/2fc59b70-81e9
    
             $postclient = new Client([
                         'base_uri' => env('REMOTE_URL'),
-                        'timeout'  => 20.0,
+                        'timeout'  => 40.0,
                         'verify' => false
                     ]);
             try { 

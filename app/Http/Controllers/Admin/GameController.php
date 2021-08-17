@@ -40,7 +40,7 @@ class GameController extends Controller
     {       
         $client = new Client([
             'base_uri' => env('REMOTE_URL'),
-            'timeout'  => 2.0,
+            'timeout'  => 20.0,
             'verify' => false
 
         ]);
@@ -102,7 +102,7 @@ class GameController extends Controller
 
         $client = new Client([
             'base_uri' => env('REMOTE_URL'),
-            'timeout'  => 2.0,
+            'timeout'  => 20.0,
             'verify' => false
 
         ]);
@@ -372,7 +372,7 @@ $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$
 
             $client = new Client([
                         'base_uri' => env('REMOTE_URL'),
-                        'timeout'  => 2.0,
+                        'timeout'  => 20.0,
                         'verify' => false
 
                     ]);
