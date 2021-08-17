@@ -210,10 +210,7 @@
   <th style="max-width: 40px;">Ads 
                     <br>
   <a href="#" data-toggle="tooltip" title="Watched Ads"><i class="fas fa-info-circle"></i></a> </th>
-                <th style="max-width: 50px;">Box
-<br>
-<a href="#" data-toggle="tooltip" title="Free box claims per day"><i class="fas fa-info-circle"></i></a>
-                </th>
+
                 <th style="max-width: 50px;">Ret.
                     <br>
                 <a href="#" data-toggle="tooltip" title="Inital Retention 7 days "><i class="fas fa-info-circle"></i></a>
@@ -268,7 +265,7 @@
                 <td>{{$cohort->userdata->sum('showed_ads')}}</td>
                 <!-- watched ads -->
                 <td>{{$cohort->userdata->sum('watched_ads')}}</td>
-                <td>boxes</td>
+       
                 <td>{{$cohort->userdata->count()}}</td>
                 <td>0</td>
                 <td>0</td>
@@ -306,7 +303,9 @@
                   0
                    @endif</td>
       
-
+                @php
+                $loopindex = 0;
+                @endphp
 
                 @forelse($game->levelinterfaces as $world)
                 @if($world->name == "Menu" || $world->name == "LogoScreen" || $world->name == "Tutorial" ||  $world->name == "Tutorial End" )
@@ -314,7 +313,19 @@
                     @foreach(\App\Models\LevelDif::all() as $leveldif)
                     <td>
                 @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()  != "[]")
-                   {{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()->sum('users') }}
+            
+
+                @php
+                if ($loopindex > 2) {
+                    $loopindex = 0;
+                }
+
+                @endphp
+                   {{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->where('level_dif', $loopindex)->get()->sum('users') }}
+                @php
+                $loopindex ++;
+                @endphp
+
                    @else
                   0
                    @endif
