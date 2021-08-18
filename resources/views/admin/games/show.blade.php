@@ -537,7 +537,9 @@
                   0
                    @endif</td>
       
-
+                @php
+                $loopindex = 0;
+                @endphp
 
                 @forelse($game->levelinterfaces as $world)
                 @if($world->name == "Menu" || $world->name == "LogoScreen" || $world->name == "Tutorial" ||  $world->name == "Tutorial End" )
@@ -545,7 +547,27 @@
                     @foreach(\App\Models\LevelDif::all() as $leveldif)
                     <td>
                 @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()  != "[]")
-                   {{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()->sum('users') }}
+            
+
+                @php
+                if ($loopindex > 2) {
+                    $loopindex = 0;
+                }
+
+                @endphp
+ @if(\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->where('level_dif', $loopindex)->get()->sum('users') != 0)
+<!-- Here-->
+
+ {{number_format(( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->where('level_dif', $loopindex)->get()->sum('users')  / $cohort->amount) * 100, 0)  }} %
+
+ @else
+
+ 0
+ @endif
+                @php
+                $loopindex ++;
+                @endphp
+
                    @else
                   0
                    @endif
