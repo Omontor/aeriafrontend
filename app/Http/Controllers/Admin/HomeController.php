@@ -60,9 +60,6 @@ class HomeController
             /* Fill Level Interfaces */ 
                 $this->fillLevelInterfaces();
 
-
-/*Heavy load starts here*/
-
         /*Fill Level Progression*/
      /*  $this->fillLevelProgression();*/
 
@@ -150,8 +147,6 @@ $pool = Pool::create();
             {
                 return;
             }
-
-           
                         }  
                     }
                 }  
@@ -397,6 +392,8 @@ $localanalytics = Analytic::all();
                 }    
         }
     }
+
+ /*TODO EXTRACT THIS LOOPS TO COHORTS AND INTERFACES IN ORDER TO GET RID OF THIS FUNCTION*/
 
     public function fillLevelProgression(){
                       $client = new Client([
