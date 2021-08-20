@@ -131,8 +131,6 @@ class GameController extends Controller
            $newworld->game_id = $value2->gameId;
            $newworld->save();
 
-          
-
             }
 
         }
@@ -372,7 +370,7 @@ $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$
 
             $client = new Client([
                         'base_uri' => env('REMOTE_URL'),
-
+                        'timeout'  => 20.0,
                         'verify' => false
 
                     ]);
