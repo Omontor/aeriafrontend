@@ -265,12 +265,18 @@
                 <td>{{$cohort->userdata->sum('showed_ads')}}</td>
                 <!-- watched ads -->
                 <td>{{$cohort->userdata->sum('watched_ads')}}</td>
-       
-                <td>{{$cohort->userdata->count()}}</td>
-                <td>0</td>
-                <td>0</td>
+       {{--Retention totals--}}
+                <td style="color:blue">
+                    {{\App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(6))->count() }}
+                 
+                    
+
+                </td>
+                <td style="color:green">           {{\App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(7))->count() }}
+                </td>
+                <td style="color: teal"> {{\App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(30))->count() }}</td>
                 <!-- Users -->
-                <td> 0</td>
+                <td style="color:indigo"> {{\App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(29))->count() }}</td>
                 <td>0</td>
                 <td>0</td>                
 
@@ -384,10 +390,7 @@
   <th style="max-width: 40px;">Ads 
                     <br>
   <a href="#" data-toggle="tooltip" title="Watched Ads"><i class="fas fa-info-circle"></i></a> </th>
-                <th style="max-width: 50px;">Box
-<br>
-<a href="#" data-toggle="tooltip" title="Free box claims per day"><i class="fas fa-info-circle"></i></a>
-                </th>
+
                 <th style="max-width: 50px;">Ret.
                     <br>
                 <a href="#" data-toggle="tooltip" title="Inital Retention 7 days "><i class="fas fa-info-circle"></i></a>
@@ -441,12 +444,12 @@
 @if($cohort->deaths->count() != 0 && $cohort->deaths->sum('value') != 0)
                         @if(number_format(($cohort->deaths->count() / $cohort->deaths->sum('value')) * 100, 0) > 50)
                             <span style="color: purple;">
-                                {{number_format(($cohort->deaths->count() / $cohort->deaths->sum('value')) * 100, 0)  }} %
+                                {{number_format(($cohort->deaths->sum('value') /  $cohort->userdata->sum('sessions_played')) * 100, 0)  }} %
                             </span>
 
                         @else
  <span style="color: blue;">
-                    {{number_format(($cohort->deaths->count() / $cohort->deaths->sum('value')) * 100, 0)  }} %
+                     {{number_format(($cohort->deaths->sum('value') /  $cohort->userdata->sum('sessions_played')) * 100, 0)  }} %
                     </span>
                         @endif
 
@@ -499,7 +502,7 @@
                     @endif
 
                 </td>
-                <td>0</td>
+
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
