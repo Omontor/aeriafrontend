@@ -61,7 +61,7 @@ class HomeController
                 $this->fillLevelInterfaces();
 
         /*Fill Level Progression*/
-     /*  $this->fillLevelProgression();*/
+     $this->fillLevelProgression();
 
 
        
@@ -256,20 +256,23 @@ $pool = Pool::create();
 
         ]);
         $allcohorts = Cohort::all();
-        $pool = Pool::create();
+     $pool = Pool::create();
 
                 foreach ($allcohorts as $key => $value2) {
+
+
                 $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
                 $userdata = json_decode($userdataresponse->getBody()->getContents());
 
                 foreach ($userdata as $key => $value3) {
- $newuserdata = UserData::where('remote_id', $value3->id)->first();
+
+    $pool->add(function () use ($value3) {
+
+                 $newuserdata = UserData::where('remote_id', $value3->id)->first();
 
                 if (!$newuserdata) {
-    $pool->add(function () use ($value3) {
-   
 
-               
+
                 $newuserdata = new UserData;
                 $newuserdata->cohort_id = $value2->remote_id;
                 $newuserdata->remote_id = $value3->id;
@@ -299,36 +302,27 @@ $pool = Pool::create();
                  $newCustomData = CustomData::where('date',$date)->first();
                  if (!$newCustomData) {
                      $newCustomData = new CustomData;
+                     $newCustomData->date = $date;
                 $newCustomData->user_data_id = $value3->id;
                 $newCustomData->index = $index;
                 $newCustomData->save();
+
                  }
-                 else
-                 {
-                    return;
-                 }
-               
-
-
-
-    })->then(function ($output) {
-             
-    })->catch(function (Throwable $exception) {
-        dd($exception);
-    });
-                    }
-                else
-                {
-                    return;
+                      
+              
                 }
+    })->then(function ($output) {
+        // Handle success
+    })->catch(function (Throwable $exception) {
+        // Handle exception
+    });
 
-
-                    } 
-
-$pool->wait();
+              
 
             }
+            $pool->wait();
     }
+}
 
     public function FillPlayers (){
                       $client = new Client([
