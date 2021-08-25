@@ -195,8 +195,8 @@
                         <tr>
                 <th style="max-width: 15px;">ID</th>
                 
-                 <th style="max-width: 30px;">LA <br>
-                    <a href="#" data-toggle="tooltip" title="Last Activity"><i class="fas fa-info-circle"></i></a></th> 
+                 <th style="max-width: 30px;">TU <br>
+                    <a href="#" data-toggle="tooltip" title="Total "><i class="fas fa-info-circle"></i></a></th> 
                  <th style="max-width: 50px;">SP <br>
                     <a href="#" data-toggle="tooltip" title="Sessions Played"><i class="fas fa-info-circle"></i></a></th> 
                 <th style="max-width: 30px;">Deaths <br>
@@ -254,9 +254,11 @@
               @foreach($cohorts as $cohort)
             <tr>
 
+
+
                 <td>{{$loop->index + 1}} <a href="#" data-toggle="tooltip" title="{{$cohort->name}}"><i class="fas fa-info-circle"></i></a></td>
 
-                <td><small>{{\Carbon\Carbon::parse( $cohort->userdata->first()->last_activity)->diffForHumans() }}</small></td>
+                <td><small> {{$cohort->userdata->count()}} </small></td>
                 <td>{{$cohort->userdata->sum('sessions_played')}}</td>
                 <td>{{$cohort->deaths->sum('value')}}</td>
                 <!-- IAPS -->
@@ -375,8 +377,8 @@
                         <tr>
                 <th style="max-width: 15px;">ID</th>
                 
-                 <th style="max-width: 30px;">LA <br>
-                    <a href="#" data-toggle="tooltip" title="Last Activity"><i class="fas fa-info-circle"></i></a></th> 
+                 <th style="max-width: 30px;">TU <br>
+                    <a href="#" data-toggle="tooltip" title="Total "><i class="fas fa-info-circle"></i></a></th> 
                  <th style="max-width: 50px;">SP <br>
                     <a href="#" data-toggle="tooltip" title="Sessions Played"><i class="fas fa-info-circle"></i></a></th> 
                 <th style="max-width: 30px;">Deaths <br>
@@ -435,7 +437,7 @@
             <tr>
 
                 <td>{{$loop->index + 1}} <a href="#" data-toggle="tooltip" title="{{$cohort->name}}"><i class="fas fa-info-circle"></i></a></td>
-                <td><small>{{\Carbon\Carbon::parse( $cohort->userdata->first()->last_activity)->diffForHumans() }}</small></td>
+                <td><small>last activity</small></td>
                 <td>{{$cohort->userdata->sum('sessions_played')}}</td>
 
 

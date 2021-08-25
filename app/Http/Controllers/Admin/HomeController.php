@@ -52,7 +52,7 @@ class HomeController
             /* Fill Cohorts  */
                 $this->fillCohorts();
             /*Fill User Data*/
-                $this->FillUserData();
+          /*      $this->FillUserData();*/
             /*Fill Players */ 
                 $this->FillPlayers();
             /*Fill Custom Keys */ 
@@ -399,8 +399,8 @@ $localanalytics = Analytic::all();
         $alllevelinterfaces =  LevelInterface::all();
         $testarray = [];
         $allcohorts = Cohort::all();
-    /*Create async pool*/
-    $pool = Pool::create();
+$pool = Pool::create();
+
 
         foreach ($allleveldifs as $key => $value) {
                 foreach ($allcohorts as $key => $value2) {
@@ -441,9 +441,10 @@ $localanalytics = Analytic::all();
                         })->catch(function (Throwable $exception) {
                             // Handle exception
                         });
-                $pool->wait();
+               
                 /* end async operation*/
                     }
+                     $pool->wait();
                 }
             }
         }
