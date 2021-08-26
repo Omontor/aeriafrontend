@@ -83,11 +83,13 @@ class HomeController
 
 
 public function ResyncData()
-{                      $client = new Client([
-            'base_uri' => env('REMOTE_URL'),
-            'verify' => false
 
-        ]);
+{                      
+    $client = new Client([
+    'base_uri' => env('REMOTE_URL'),
+    'verify' => false
+
+]);
                 $pool = Pool::create();
                 $pool2 = Pool::create();
 
@@ -183,7 +185,7 @@ public function test (){
                /*Fill Level Progression*/
              $this->fillLevelProgression();
 
- return redirect()->back()->withSuccess('Success');
+ return redirect()->back()->withSuccess('Level progression synced');
 }
 
 public function fillDeaths (){
