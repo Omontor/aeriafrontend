@@ -21,6 +21,7 @@ use Illuminate\Support\Arr;
 use App\Models\ShowedAd;
 use App\Models\WatchedAd;
 use Spatie\Async\Pool;
+use Carbon\Carbon;
 class HomeController
 {
         private $client;
@@ -36,8 +37,48 @@ class HomeController
 
  public function index()
     {
-    /* Fill information */
+       
+        $games = Game::All();
+        $gamescount = $games->count();
+        $users = Player::all();
+        $userscount= $users->count();
+        $cohorts = Cohort::count();
+        $records= UserData::count();
 
+        $todaydate = Carbon::today()->format('Y-m-d')."T00:00:00";
+        $today =     UserData::where('last_activity', $todaydate);
+
+        $today1date = Carbon::today()->subDays(1)->format('Y-m-d')."T00:00:00";
+        $today1 =    UserData::where('last_activity', $today1date);
+
+        $today2date = Carbon::today()->subDays(2)->format('Y-m-d')."T00:00:00";
+        $today2 =    UserData::where('last_activity', $today2date);      
+
+        $today3date = Carbon::today()->subDays(3)->format('Y-m-d')."T00:00:00";
+        $today3 =    UserData::where('last_activity', $today3date);        
+
+        $today4date = Carbon::today()->subDays(4)->format('Y-m-d')."T00:00:00";
+        $today4 =    UserData::where('last_activity', $today4date);
+
+        $today5date = Carbon::today()->subDays(5)->format('Y-m-d')."T00:00:00";
+        $today5 =    UserData::where('last_activity', $today5date);        
+
+        $today6date = Carbon::today()->subDays(6)->format('Y-m-d')."T00:00:00";
+        $today6 =    UserData::where('last_activity', $today6date);
+
+        $today7date = Carbon::today()->subDays(7)->format('Y-m-d')."T00:00:00";
+        $today7 =    UserData::where('last_activity', $today7date);
+
+        return view('home', compact('games', 'gamescount', 'users', 'userscount', 'today', 'today1', 'today2', 'today3', 'today4','today5', 'today6', 'today7', 'cohorts', 'records'));
+    }
+
+
+public function ResyncData()
+{
+
+return "resync";
+
+        /* Fill information */
        $this->client = new Client([
             'base_uri' => env('REMOTE_URL'),
             'verify' => false
@@ -64,16 +105,7 @@ class HomeController
      $this->fillLevelProgression();
 
 
-       
-        $games = Game::All();
-        $gamescount = $games->count();
-        $users = Player::all();
-        $userscount= $users->count();
-
-
-
-        return view('home', compact('games', 'gamescount', 'users', 'userscount'));
-    }
+}
 
 
 public function fillDeaths (){
