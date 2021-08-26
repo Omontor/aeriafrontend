@@ -90,8 +90,6 @@ public function ResyncData()
     'verify' => false
 
 ]);
-
-
                 $pool = Pool::create();
                 $pool2 = Pool::create();
 
@@ -100,18 +98,16 @@ public function ResyncData()
                 foreach (Cohort::all() as $key => $value2) {
 
 
-                $pool2->add(function () use ($value2) {
                 
                 $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
                 $userdata = json_decode($userdataresponse->getBody()->getContents());
                 $userdataarray = [];
 
-dd($userdata);
+
 
                 foreach ($userdata as $key => $value3) {
 
-                $pool->add(function () use ($value3) {
-
+           
                 $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
                 $newuserdata->cohort_id = $value2->remote_id;
                 $newuserdata->remote_id = $value3->id;
@@ -149,27 +145,15 @@ dd($userdata);
                 $newCustomData->save();
 }
 
-                    })->then(function ($output) {
-                        
-                    })->catch(function (Throwable $exception) {
-                        // Handle exception
-                    });
-
-
                 
                     }
 
-                $pool->wait();
-    })->then(function ($output) {
-      
-    })->catch(function (Throwable $exception) {
-        // Handle exception
-    });
+
 
 
 
             }
-$pool2->wait();
+
     /*Fill Players */ 
                 $this->FillPlayers();
             /*Fill Custom Keys */ 
