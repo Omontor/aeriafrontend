@@ -108,8 +108,10 @@ public function ResyncData()
 
                 foreach ($userdata as $key => $value3) {
 
-           
-                $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
+                    
+                  $newuserdata =  UserData::whare('remote_id', $value3->id)->first();
+                  if (!$newuserdata) {
+                        $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
                 $newuserdata->cohort_id = $value2->remote_id;
                 $newuserdata->remote_id = $value3->id;
                 $newuserdata->platform = $value3->platform;
@@ -145,6 +147,9 @@ public function ResyncData()
                 $newCustomData->index = $index;
                 $newCustomData->save();
 }
+                  }
+
+    
 
                 
                     }
