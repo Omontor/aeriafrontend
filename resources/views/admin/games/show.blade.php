@@ -238,7 +238,7 @@
                 @if($world->name == "Menu" || $world->name == "LogoScreen" || $world->name == "Tutorial" ||  $world->name == "Tutorial End" )
                 @else
                     @foreach(\App\Models\LevelDif::all() as $leveldif)
-                     <th style="background-color: lightblue; color: black;">{{$world->name}} <br>{{$leveldif->name}} <br> <a href="#" data-toggle="tooltip" title="{{$world->name}}"><i class="fas fa-info-circle"></i></a></th>
+                     <th style="background-color: lightblue; color: black;">{{$world->name}} <br>{{$leveldif->name}} </th>
                     @endforeach
                 @endif
                 @empty
@@ -420,7 +420,7 @@
                 @if($world->name == "Menu" || $world->name == "LogoScreen" || $world->name == "Tutorial" ||  $world->name == "Tutorial End" )
                 @else
                     @foreach(\App\Models\LevelDif::all() as $leveldif)
-                     <th style="background-color: lightblue; color: black;">{{$world->name}} <br>{{$leveldif->name}} <br> <a href="#" data-toggle="tooltip" title="{{$world->name}}"><i class="fas fa-info-circle"></i></a></th>
+                     <th style="background-color: lightblue; color: black;">{{$world->name}} <br>{{$leveldif->name}}</th>
                     @endforeach
                 @endif
                 @empty
@@ -520,6 +520,20 @@ $svendret = (App\Models\UserData::where('cohort_id', $cohort->remote_id)->where(
 
                 </td>
                 <td>
+
+@php
+$svendret = (App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(6))->count() / 1000) *100;
+@endphp
+@if($svendret > 50)
+<span style="color:green;">{{$svendret}} %</span>
+@else
+<span style="color:red;">{{$svendret}} %</span>
+@endif
+
+
+
+                </td>
+                <td>
                     
 @php
 $thirtyday = (App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(30))->count() / 1000) *100;
@@ -542,36 +556,80 @@ $sixtyday = (App\Models\UserData::where('cohort_id', $cohort->remote_id)->where(
 <span style="color:red;">{{$sixtyday}} %</span>
 @endif
                 </td>
-                <!-- Users -->
-                <td> 0</td>
+               
+
                 <td>0</td>
                 <td>0</td>                
 
 
 
-                <td> @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'LogoScreenInterfaceTest')->get()  != "[]")
-{{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'LogoScreenInterfaceTest')->get()->sum('users') }}
+                <td> 
+
+@if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'LogoScreenInterfaceTest')->get()  != "[]")
+@php
+$logoscreen = (\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'LogoScreenInterfaceTest')->get()->sum('users') /1000)*100 ;
+@endphp
+
+@if($logoscreen > 50)
+    <span style="color:green">{{$logoscreen}} %</span>
+@else
+    <span style="color:red">{{$logoscreen}} %</span>
+@endif
                    @else
-                  0
+                  0%
                    @endif</td>
 
                 <td>
                     
   @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'MenuInterface')->get()  != "[]")
-{{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'MenuInterface')->get()->sum('users') }}
+@php
+$menuscreen = (\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'MenuInterface')->get()->sum('users')  /1000)*100 ;
+@endphp
+
+@if($menuscreen > 50)
+    <span style="color:green">{{$menuscreen}} %</span>
+@else
+    <span style="color:red">{{$menuscreen}} %</span>
+@endif
+
                    @else
-                  0
+                  0%
                    @endif
 
                 </td>
                    
-                <td> @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterface')->get()  != "[]")
-{{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterface')->get()->sum('users') }}
+                <td> 
+
+    @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterface')->get()  != "[]")
+@php
+$tutorialscreen = (\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterface')->get()->sum('users')  /1000)*100 ;
+@endphp
+
+@if($tutorialscreen > 50)
+    <span style="color:green">{{$tutorialscreen}} %</span>
+@else
+    <span style="color:red">{{$tutorialscreen}} %</span>
+@endif
+
+
                    @else
-                  0
+                  0%
                    @endif</td>
-                <td>@if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterfaceEnd')->get()  != "[]")
-{{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterfaceEnd')->get()->sum('users') }}
+                <td>
+
+
+                    @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterfaceEnd')->get()  != "[]")
+
+@php
+$tutorialend = (\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', 'TutorialInterfaceEnd')->get()->sum('users')  /1000)*100 ;
+@endphp
+
+@if($tutorialend > 50)
+    <span style="color:green">{{$tutorialend}} %</span>
+@else
+    <span style="color:red">{{$tutorialend}} %</span>
+@endif
+
                    @else
                   0
                    @endif</td>
@@ -597,7 +655,17 @@ $sixtyday = (App\Models\UserData::where('cohort_id', $cohort->remote_id)->where(
  @if(\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->where('level_dif', $loopindex)->get()->sum('users') != 0)
 <!-- Here-->
 
- {{number_format(( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->where('level_dif', $loopindex)->get()->sum('users')  / $cohort->amount) * 100, 0)  }} %
+
+
+@if (((\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->where('level_dif', $loopindex)->get()->sum('users')  / $cohort->amount)*100>10)
+    ) 
+
+<span style="color:blue"> {{number_format(( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->where('level_dif', $loopindex)->get()->sum('users')  / $cohort->amount) * 100, 0)  }} %</span>
+@else
+<span style="color:red"> {{number_format(( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->where('level_dif', $loopindex)->get()->sum('users')  / $cohort->amount) * 100, 0)  }} %</span>
+@endif
+
+
 
  @else
 
