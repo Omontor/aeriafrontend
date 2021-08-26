@@ -91,7 +91,7 @@ public function ResyncData()
 
 ]);
 
-    dd("test");
+
                 $pool = Pool::create();
                 $pool2 = Pool::create();
 
@@ -106,7 +106,7 @@ public function ResyncData()
                 $userdata = json_decode($userdataresponse->getBody()->getContents());
                 $userdataarray = [];
 
-
+dd($userdata);
 
                 foreach ($userdata as $key => $value3) {
 
