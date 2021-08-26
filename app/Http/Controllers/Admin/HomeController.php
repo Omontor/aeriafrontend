@@ -90,6 +90,8 @@ public function ResyncData()
     'verify' => false
 
 ]);
+
+    dd("test");
                 $pool = Pool::create();
                 $pool2 = Pool::create();
 
@@ -98,7 +100,7 @@ public function ResyncData()
                 foreach (Cohort::all() as $key => $value2) {
 
 
-$pool2->add(function () use ($value2) {
+                $pool2->add(function () use ($value2) {
                 
                 $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
                 $userdata = json_decode($userdataresponse->getBody()->getContents());
