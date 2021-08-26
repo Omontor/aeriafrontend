@@ -505,7 +505,14 @@
 
                 </td>
 
-                <td>0</td>
+                <td>
+
+
+
+
+{{(\App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(6))->count() / 1000) *100}}%
+
+                </td>
                 <td>0</td>
                 <td>0</td>
                 <!-- Users -->

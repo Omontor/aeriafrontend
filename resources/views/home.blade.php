@@ -8,6 +8,10 @@
       <div class="col-lg-12">
                    <a class="btn btn-success" href="{{ route('admin.homeresync') }}">
                    Resync All Data
+                </a>                   
+
+                <a class="btn btn-primary" href="{{ route('admin.secondsync') }}">
+                   Resync Level Proggression
                 </a>
       </div>
       <br>
