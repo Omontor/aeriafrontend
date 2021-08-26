@@ -22,6 +22,7 @@ use App\Models\ShowedAd;
 use App\Models\WatchedAd;
 use Spatie\Async\Pool;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 class HomeController
 {
         private $client;
@@ -37,6 +38,14 @@ class HomeController
 
  public function index()
     {
+         /* Fill Games*/
+                $this->FillGames();
+            /* Fill Worlds*/
+                $this->fillWorlds();
+            /*Fill Analytics */ 
+                $this->fillAnalytics();
+            /* Fill Cohorts  */
+                $this->fillCohorts();
        
         $games = Game::All();
         $gamescount = $games->count();
@@ -74,39 +83,108 @@ class HomeController
 
 
 public function ResyncData()
-{
-
-return "resync";
-
-        /* Fill information */
-       $this->client = new Client([
+{                      $client = new Client([
             'base_uri' => env('REMOTE_URL'),
             'verify' => false
 
         ]);
-            /* Fill Games*/
-                $this->FillGames();
-            /* Fill Worlds*/
-                $this->fillWorlds();
-            /*Fill Analytics */ 
-                $this->fillAnalytics();
-            /* Fill Cohorts  */
-                $this->fillCohorts();
-            /*Fill User Data*/
-          /*      $this->FillUserData();*/
-            /*Fill Players */ 
+                $pool = Pool::create();
+                $pool2 = Pool::create();
+
+              /*Fill User Data*/
+        
+                foreach (Cohort::all() as $key => $value2) {
+
+
+$pool2->add(function () use ($value2) {
+                
+                $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
+                $userdata = json_decode($userdataresponse->getBody()->getContents());
+                $userdataarray = [];
+
+
+
+                foreach ($userdata as $key => $value3) {
+
+                $pool->add(function () use ($value3) {
+
+                $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
+                $newuserdata->cohort_id = $value2->remote_id;
+                $newuserdata->remote_id = $value3->id;
+                $newuserdata->platform = $value3->platform;
+                $newuserdata->last_activity = $value3->lastActivity;
+                $newuserdata->days_playing = $value3->daysPlaying;
+                $newuserdata->iap = $value3->iap;
+                $newuserdata->watched_ads = $value3->watchedAds;
+               $watched_ads = WatchedAd::firstOrNew(['cohort_id' => $value2->remote_id]);
+                        $watched_ads->value += $newuserdata->watched_ads;
+                        $watched_ads->save();
+                
+                $newuserdata->showed_ads = $value3->showedAds;
+                               $showed_ads = ShowedAd::firstOrNew(['cohort_id' => $value2->remote_id]);
+                        $showed_ads->value += $newuserdata->showed_ads;
+                        $showed_ads->save();
+                
+                $newuserdata->star_group = $value3->starGroup;
+                $newuserdata->sessions_played = $value3->sessionsPlayed;
+                $newuserdata->days_played = $value3->daysPlayed;
+                $newuserdata->first_time = $value3->firsTime;
+                $newuserdata->save();
+
+
+       
+                $date =  collect($value3->customData)->first();
+                $index = collect($value3->customData)->flip()->first();
+
+                 $newCustomData = CustomData::where('date',$date)->first();
+                 if (!$newCustomData) {
+                     $newCustomData = new CustomData;
+                     $newCustomData->date = $date;
+                $newCustomData->user_data_id = $value3->id;
+                $newCustomData->index = $index;
+                $newCustomData->save();
+}
+
+                    })->then(function ($output) {
+                        
+                    })->catch(function (Throwable $exception) {
+                        // Handle exception
+                    });
+
+
+                
+                    }
+
+                $pool->wait();
+    })->then(function ($output) {
+      
+    })->catch(function (Throwable $exception) {
+        // Handle exception
+    });
+
+
+
+            }
+$pool2->wait();
+    /*Fill Players */ 
                 $this->FillPlayers();
             /*Fill Custom Keys */ 
                 $this->fillCustomKeys();
             /* Fill Level Interfaces */ 
                 $this->fillLevelInterfaces();
-
-        /*Fill Level Progression*/
-     $this->fillLevelProgression();
-
+  return redirect()->back()->withSuccess('Success');               
 
 }
 
+
+public function test (){
+
+        
+               /*Fill Level Progression*/
+             $this->fillLevelProgression();
+
+ return redirect()->back()->withSuccess('Success');
+}
 
 public function fillDeaths (){
 
@@ -281,31 +359,37 @@ $pool = Pool::create();
         }
     }
 
-    public function FillUserData(){
-                      $client = new Client([
+    public function FillUserData()
+
+    {
+
+        $client = new Client([
             'base_uri' => env('REMOTE_URL'),
             'verify' => false
 
         ]);
+
+    $pool = Pool::create();
+    $pool2 = Pool::create();
+
+
         $allcohorts = Cohort::all();
-     $pool = Pool::create();
-
                 foreach ($allcohorts as $key => $value2) {
-
 
                 $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
                 $userdata = json_decode($userdataresponse->getBody()->getContents());
 
                 foreach ($userdata as $key => $value3) {
 
-    $pool->add(function () use ($value3) {
-
-                 $newuserdata = UserData::where('remote_id', $value3->id)->first();
-
-                if (!$newuserdata) {
+                 
+                     $pool2->add(function () use ($value3) {
 
 
-                $newuserdata = new UserData;
+               
+
+                $newworld = UserData::firstOrNew(['remote_id' => $value3->id]);
+
+       
                 $newuserdata->cohort_id = $value2->remote_id;
                 $newuserdata->remote_id = $value3->id;
                 $newuserdata->platform = $value3->platform;
@@ -325,7 +409,7 @@ $pool = Pool::create();
                 $newuserdata->days_played = $value3->daysPlayed;
                 $newuserdata->first_time = $value3->firsTime;
                 $newuserdata->save();
-
+dd($newuserdata);    
 
        
                 $date =  collect($value3->customData)->first();
@@ -340,20 +424,24 @@ $pool = Pool::create();
                 $newCustomData->save();
 
                  }
-                      
-              
-                }
-    })->then(function ($output) {
-        // Handle success
-    })->catch(function (Throwable $exception) {
-        // Handle exception
-    });
 
-              
+            
+                    })->then(function ($output) {
+                        // Handle success
+                    })->catch(function (Throwable $exception) {
+                        // Handle exception
+                    });   
 
-            }
-            $pool->wait();
+
+
+        }
+        $pool2->wait();
+                  
     }
+
+
+    return redirect()->back()->withSuccess('Success');
+  
 }
 
     public function FillPlayers (){

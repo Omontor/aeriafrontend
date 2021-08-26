@@ -56,7 +56,7 @@
               <p>Cohorts</p>
             </div>
             <div class="icon">
-              <i class="fas fa-users"></i>
+              <i class="fas fa-database"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -70,7 +70,7 @@
               <p>Records</p>
             </div>
             <div class="icon">
-              <i class="fas fa-user-friends"></i>
+              <i class="fas fa-archive"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
