@@ -87,6 +87,7 @@ public function ResyncData()
 {                      
     $client = new Client([
     'base_uri' => env('REMOTE_URL'),
+    'timeout'  => 20.0,
     'verify' => false
 
 ]);
