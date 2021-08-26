@@ -109,7 +109,7 @@ public function ResyncData()
                 foreach ($userdata as $key => $value3) {
 
                     
-                  $newuserdata =  UserData::whare('remote_id', $value3->id)->first();
+                  $newuserdata =  UserData::where('remote_id', $value3->id)->first();
                   if (!$newuserdata) {
                         $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
                 $newuserdata->cohort_id = $value2->remote_id;
