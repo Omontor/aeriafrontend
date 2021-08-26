@@ -278,7 +278,7 @@
                 </td>
                 <td style="color: teal"> {{\App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(30))->count() }}</td>
                 <!-- Users -->
-                <td style="color:indigo"> {{\App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(29))->count() }}</td>
+                <td style="color:indigo"> {{\App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(59))->count() }}</td>
                 <td>0</td>
                 <td>0</td>                
 
@@ -437,7 +437,7 @@
             <tr>
 
                 <td>{{$loop->index + 1}} <a href="#" data-toggle="tooltip" title="{{$cohort->name}}"><i class="fas fa-info-circle"></i></a></td>
-                <td><small>last activity</small></td>
+                <td><small>{{$cohort->userdata->count()}}</small></td>
                 <td>{{$cohort->userdata->sum('sessions_played')}}</td>
 
 
@@ -507,14 +507,41 @@
 
                 <td>
 
+@php
+$svendret = (App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(6))->count() / 1000) *100;
+@endphp
+@if($svendret > 50)
+<span style="color:green;">{{$svendret}} %</span>
+@else
+<span style="color:red;">{{$svendret}} %</span>
+@endif
 
 
-
-{{(\App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(6))->count() / 1000) *100}}%
 
                 </td>
-                <td>0</td>
-                <td>0</td>
+                <td>
+                    
+@php
+$thirtyday = (App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(30))->count() / 1000) *100;
+@endphp
+@if($thirtyday > 50)
+<span style="color:green;">{{$thirtyday}} %</span>
+@else
+<span style="color:red;">{{$thirtyday}} %</span>
+@endif
+
+
+                </td>
+                <td>
+@php
+$sixtyday = (App\Models\UserData::where('cohort_id', $cohort->remote_id)->where('last_activity','<=', Carbon\Carbon::today()->subDay(59))->count() / 1000) *100;
+@endphp
+@if($sixtyday > 50)
+<span style="color:green;">{{$sixtyday}} %</span>
+@else
+<span style="color:red;">{{$sixtyday}} %</span>
+@endif
+                </td>
                 <!-- Users -->
                 <td> 0</td>
                 <td>0</td>
