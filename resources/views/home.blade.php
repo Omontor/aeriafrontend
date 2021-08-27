@@ -96,7 +96,7 @@
           </div>
         </div>
 
-        <div class="col-lg12">
+        <div class="col-lg-12">
           <canvas id="myChart" width="400" height="100"></canvas>
 
 
@@ -130,6 +130,130 @@ var myChart = new Chart(ctx, {
             ],
             borderWidth: 1
         }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+ 
+        </div>        
+
+
+
+
+    <div class="col-lg-8">
+        <canvas id="myChart2" width="400" height="100"></canvas>
+            {{--Data Sources--}}
+
+<script>
+var ctx = document.getElementById('myChart2');
+var myChart2 = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [      
+            @for ($i = 0; $i < 30; $i++)
+            {{Carbon\Carbon::today()->subDays(30-$i)->format('d')}},
+            @endfor
+            ],
+        datasets: [{
+            label: 'Daily Players in all games',
+            data:
+
+             [
+            @for ($i = 0; $i < 30; $i++)
+
+    {{App\Models\UserData::where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->count()}},
+            @endfor
+
+             ],
+
+ fill: false,
+    borderColor:'rgba(54, 162, 235, 1)',
+    tension: 0.1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>        
+
+
+<canvas id="myChart4" width="400" height="100"></canvas>
+            {{--Data Sources--}}
+
+<script>
+var ctx = document.getElementById('myChart4');
+var myChart4 = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [      
+            @for ($i = 0; $i < 30; $i++)
+            {{Carbon\Carbon::today()->subDays(30-$i)->format('d')}},
+            @endfor
+            ],
+        datasets: [{
+            label: 'Daily Watched Ads',
+            data:
+
+             [
+            @for ($i = 0; $i < 30; $i++)
+
+    {{App\Models\UserData::where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('watched_ads')}},
+            @endfor
+
+             ],
+
+ fill: false,
+    borderColor: 'rgba(153, 102, 255, 0.2)',
+    tension: 0.1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+ 
+
+
+</div>
+<div class="col-lg-4">
+        <canvas id="myChart3" width="100%" height="80"></canvas>
+            {{--Data Sources--}}
+
+<script>
+var ctx = document.getElementById('myChart3');
+var myChart3 = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+   labels: [
+    'Android',
+    'UnSupported/Editor',
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: [{{App\Models\UserData::where('platform', 'GooglePlay')->count()}}, {{App\Models\UserData::where('platform', 'UnSupported/Editor')->count()}}],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
     },
     options: {
         scales: {

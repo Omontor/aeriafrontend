@@ -83,34 +83,36 @@ class HomeController
 
 
 public function ResyncData()
-
 {                      
     $client = new Client([
     'base_uri' => env('REMOTE_URL'),
     'verify' => false
 
 ]);
-                $pool = Pool::create();
-                $pool2 = Pool::create();
-
+            $pool = Pool::create();
               /*Fill User Data*/
         
                 foreach (Cohort::all() as $key => $value2) {
-
-
-$pool2->add(function () use ($value2) {
                 
                 $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
                 $userdata = json_decode($userdataresponse->getBody()->getContents());
                 $userdataarray = [];
 
-
-
                 foreach ($userdata as $key => $value3) {
 
-                $pool->add(function () use ($value3) {
 
-                $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
+                      $pool->add(function () use ($value3) {
+
+                    $newuserdata = UserData::where('remote_id', $value3->id)->first();
+                    if ($newuserdata != null) {
+                     
+       
+                    }
+
+                    else{
+                        
+                        $newuserdata = new Userdata();
+                        dd($newuserdata);
                 $newuserdata->cohort_id = $value2->remote_id;
                 $newuserdata->remote_id = $value3->id;
                 $newuserdata->platform = $value3->platform;
@@ -133,8 +135,6 @@ $pool2->add(function () use ($value2) {
                 $newuserdata->first_time = $value3->firsTime;
                 $newuserdata->save();
 
-
-       
                 $date =  collect($value3->customData)->first();
                 $index = collect($value3->customData)->flip()->first();
 
@@ -145,35 +145,25 @@ $pool2->add(function () use ($value2) {
                 $newCustomData->user_data_id = $value3->id;
                 $newCustomData->index = $index;
                 $newCustomData->save();
-}
-
-                    })->then(function ($output) {
-                        
-                    })->catch(function (Throwable $exception) {
-                        // Handle exception
-                    });
-
-
-                
+                        }
                     }
+                        })->then(function ($output) {
+                            // Handle success
+                        })->catch(function (Throwable $exception) {
+                            // Handle exception
+                        });
 
+
+                }
                 $pool->wait();
-    })->then(function ($output) {
-      
-    })->catch(function (Throwable $exception) {
-        // Handle exception
-    });
-
-
-
             }
-$pool2->wait();
-    /*Fill Players */ 
+                /*Fill Players */ 
                 $this->FillPlayers();
             /*Fill Custom Keys */ 
                 $this->fillCustomKeys();
             /* Fill Level Interfaces */ 
                 $this->fillLevelInterfaces();
+
   return redirect()->back()->withSuccess('Success');               
 
 }
