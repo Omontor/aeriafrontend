@@ -44,9 +44,50 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
+
+<div class="col-xs-12">
+          <div class="box box-default">
+            <div class="box-header with-border">
+              <h3 class="box-title">Modal Examples</h3>
+            </div>
+            <div class="box-body">
+              <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
+                Launch Default Modal
+              </button>
+              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-info">
+                Launch Info Modal
+              </button>
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger">
+                Launch Danger Modal
+              </button>
+              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-warning">
+                Launch Warning Modal
+              </button>
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-success">
+                Launch Success Modal
+              </button>
+            </div>
+          </div>
+        </div>
+
+
         <div class="col-lg-12">
             <h1>{{$game->name}}</h1>
-        <div class="box box-info">
+         <div class="box box-default collapsed-box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Filter Options</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+
+
+<div class="box box-info">
                 <div class="box-header with-border">
                   <h3 class="box-title">Filters</h3>
                 </div>
@@ -83,88 +124,10 @@
 
                 </div>
                 
-                <div class="box-body box-profile">
-                    <div class="col-lg-4">   
-                    <div class="row">  
-                    <div class="col-lg-9">   
-                        <select class="form-control" control-id="ControlID-24">
-                        <option>Star Groups   </option> 
-                        </select>
-                        </div>   
-                        <div class="col-lg-3">
-                            <a href="" class="btn btn-block btn-primary"> Filter</a>
-                        </div>
-                    </div>
-                        
-</div>
-                      
-<div class="col-lg-4">   
-    <div class="row">
-        <div class="col-lg-9">   
-            <select class="form-control" control-id="ControlID-24">
-                <option>Age Groups   </option> 
-            </select>
-        </div>   
-        <div class="col-lg-3">
-            <a href="" class="btn btn-block btn-primary"> Filter</a>
-        </div>
-    </div>                      
-</div> 
 
-
-
- <div class="col-lg-4">   
-    <div class="row">  
-        <div class="col-lg-9">   
-            <select class="form-control" control-id="ControlID-24">
-                <option>Segments  </option> 
-            </select>
-        </div>   
-        <div class="col-lg-3">
-            <a href="" class="btn btn-block btn-primary"> Filter</a>
-        </div>
-    </div>                  
-</div>     
-        
-         </div>
-        </div>
-
-
-        <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Compare Cohorts</h3>
             </div>
-                <div class="box-body box-profile">
-                    <div class="col-lg-6">   
-                        <select class="form-control" control-id="ControlID-24">
-                             @forelse($cohorts as $data)
-                          <option>
-                              {{$data->name}}
-                          </option>
-                            @empty
-                            No data to show
-                            @endforelse
-                        </select>
-                        </div>       
-                        <div class="col-lg-6">   
-                        <select class="form-control" control-id="ControlID-24">
-
-                        @forelse($cohorts as $data)
-                          <option>
-                                {{$data->name}}
-                          </option>
-                            @empty
-                            No data to show
-                            @endforelse
-                        </select>
-                        </div>  
-                        <br>
-                        <br>
-                        
-                        <div class="col-lg-12"><a href="{{route('admin.games.compare')}}" class="btn btn-md btn-primary">Compare Cohorts</a></div>    
-                        <br>
-                        <br>
-                </div>
+            <!-- /.box-body -->
+          </div>
         </div>
       </div>
     </div>
@@ -704,6 +667,7 @@ $tutorialend = (\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->w
 
 
 @section('scripts')
+
 <script>
  $(document).ready(function() {
     $('#example').DataTable( {

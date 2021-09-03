@@ -89,7 +89,7 @@ public function ResyncData()
     'verify' => false
 
 ]);
-            $pool = Pool::create();
+          
               /*Fill User Data*/
         
                 foreach (Cohort::all() as $key => $value2) {
@@ -99,20 +99,8 @@ public function ResyncData()
                 $userdataarray = [];
 
                 foreach ($userdata as $key => $value3) {
-
-
-                      $pool->add(function () use ($value3) {
-
-                    $newuserdata = UserData::where('remote_id', $value3->id)->first();
-                    if ($newuserdata != null) {
-                     
-       
-                    }
-
-                    else{
-                        
-                        $newuserdata = new Userdata();
-                        dd($newuserdata);
+        
+                $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
                 $newuserdata->cohort_id = $value2->remote_id;
                 $newuserdata->remote_id = $value3->id;
                 $newuserdata->platform = $value3->platform;
@@ -133,6 +121,7 @@ public function ResyncData()
                 $newuserdata->sessions_played = $value3->sessionsPlayed;
                 $newuserdata->days_played = $value3->daysPlayed;
                 $newuserdata->first_time = $value3->firsTime;
+
                 $newuserdata->save();
 
                 $date =  collect($value3->customData)->first();
@@ -146,16 +135,8 @@ public function ResyncData()
                 $newCustomData->index = $index;
                 $newCustomData->save();
                         }
-                    }
-                        })->then(function ($output) {
-                            // Handle success
-                        })->catch(function (Throwable $exception) {
-                            // Handle exception
-                        });
-
-
+                    
                 }
-                $pool->wait();
             }
                 /*Fill Players */ 
                 $this->FillPlayers();
@@ -175,7 +156,7 @@ public function secondsync (){
                /*Fill Level Progression*/
              $this->fillLevelProgression();
 
- return redirect()->back()->withSuccess('Level progression synced');
+
 }
 
 public function fillDeaths (){
@@ -219,12 +200,7 @@ $pool = Pool::create();
                         {
 
                             $testdeaths[] = $value3;
-
-
-
-
-
-                                           
+                             
             $newDeath = CohortDeath::find('date', $value3->creationDate)->first();
 
             if (!$newDeath) {
@@ -361,22 +337,16 @@ $pool = Pool::create();
 
         ]);
 
-    $pool = Pool::create();
-    $pool2 = Pool::create();
-
-
+        $pool = Pool::create();
+        $pool2 = Pool::create();
         $allcohorts = Cohort::all();
+
                 foreach ($allcohorts as $key => $value2) {
 
                 $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
                 $userdata = json_decode($userdataresponse->getBody()->getContents());
 
                 foreach ($userdata as $key => $value3) {
-
-                 
-                     $pool2->add(function () use ($value3) {
-
-
                
 
                 $newworld = UserData::firstOrNew(['remote_id' => $value3->id]);
@@ -401,7 +371,7 @@ $pool = Pool::create();
                 $newuserdata->days_played = $value3->daysPlayed;
                 $newuserdata->first_time = $value3->firsTime;
                 $newuserdata->save();
-dd($newuserdata);    
+
 
        
                 $date =  collect($value3->customData)->first();
@@ -417,22 +387,11 @@ dd($newuserdata);
 
                  }
 
-            
-                    })->then(function ($output) {
-                        // Handle success
-                    })->catch(function (Throwable $exception) {
-                        // Handle exception
-                    });   
-
-
-
         }
-        $pool2->wait();
-                  
+  
     }
 
-
-    return redirect()->back()->withSuccess('Success');
+    return redirect()->back()->withSuccess('Level Proggression synced');
   
 }
 
@@ -501,27 +460,36 @@ $localanalytics = Analytic::all();
 
  /*TODO EXTRACT THIS LOOPS TO COHORTS AND INTERFACES IN ORDER TO GET RID OF THIS FUNCTION*/
 
-    public function fillLevelProgression(){
-                      $client = new Client([
+    public function fillLevelProgression()
+    {
+
+            $client = new Client([
             'base_uri' => env('REMOTE_URL'),
             'verify' => false
-
         ]);
-           $allleveldifs = LevelDif::all();
+
+        $allleveldifs = LevelDif::all();
         $alllevelinterfaces =  LevelInterface::all();
         $testarray = [];
         $allcohorts = Cohort::all();
-$pool = Pool::create();
+        $pool = Pool::create();
 
+        $pool2 = Pool::create();
 
         foreach ($allleveldifs as $key => $value) {
                 foreach ($allcohorts as $key => $value2) {
-                    foreach ($alllevelinterfaces as $key => $value3) {     
+                    foreach ($alllevelinterfaces as $key => $value3) {   
+
+
         $testurl = $value->remote_id."/".$value2->remote_id.'/'.$value3->remote_id;
         $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$value->remote_id."/".$value2->remote_id."/".$value3->remote_id);
+
         $levelinterfaces = $secondinterfacesresponse->getBody()->getContents();                       
         $interfaces = array($levelinterfaces);
         $interfacescollect = json_decode($levelinterfaces);
+
+         $pool2->add(function () use ($value3) {
+ 
            if($levelinterfaces != "{}")
                 {
                 foreach ($interfacescollect as $key => $value4) {
@@ -558,10 +526,24 @@ $pool = Pool::create();
                     }
                      $pool->wait();
                 }
+
+
+
+
+            })->then(function ($output) {
+                // Handle success
+            })->catch(function (Throwable $exception) {
+                // Handle exception
+            });
+                              
+
+
             }
+            $pool2->wait();
         }
     
     }
+    return redirect()->back()->withSuccess('Level progression synced');
 }
 
    

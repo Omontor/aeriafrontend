@@ -144,16 +144,14 @@ var myChart = new Chart(ctx, {
         </div>        
 
 
-
-
-    <div class="col-lg-8">
-        <canvas id="myChart2" width="400" height="100"></canvas>
+<div class="col-lg-7">
+<canvas id="myChart2" width="400" height="300"></canvas>
             {{--Data Sources--}}
 
 <script>
 var ctx = document.getElementById('myChart2');
 var myChart2 = new Chart(ctx, {
-    type: 'line',
+    type: 'bar',
     data: {
         labels: [      
             @for ($i = 0; $i < 30; $i++)
@@ -172,8 +170,12 @@ var myChart2 = new Chart(ctx, {
 
              ],
 
- fill: false,
-    borderColor:'rgba(54, 162, 235, 1)',
+ fill: true,
+   backgroundColor: [
+
+                'rgba(54, 162, 235, 1)'
+            ],
+    borderColor:'rgba(255, 159, 64, 1)',
     tension: 0.1
         }]
     },
@@ -185,7 +187,135 @@ var myChart2 = new Chart(ctx, {
         }
     }
 });
-</script>        
+</script>  
+
+</div>
+
+<div class="col-lg-5">
+
+    <canvas id="myChart6" width="400" height="100"></canvas>
+            {{--Data Sources--}}
+
+<script>
+var ctx = document.getElementById('myChart6');
+var myChart6 = new Chart(ctx, {
+    type: 'bubble',
+    data: {
+        labels: [      
+            @for ($i = 0; $i < 30; $i++)
+            {{Carbon\Carbon::today()->subDays(30-$i)->format('d')}},
+            @endfor
+            ],
+        datasets: [{
+            label: 'Daily in app purchases',
+            data:
+
+             [
+            @for ($i = 0; $i < 30; $i++)
+
+    {{App\Models\UserData::where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('iap')}},
+            @endfor
+
+             ],
+
+ fill: false,
+    borderColor:'rgba(255, 159, 64, 1)',
+    tension: 0.1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script> 
+
+ <canvas id="myChart7" width="400" height="300"></canvas>
+            {{--Data Sources--}}
+
+<script>
+var ctx = document.getElementById('myChart7');
+var myChart7 = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [      
+            @for ($i = 0; $i < 30; $i++)
+            {{Carbon\Carbon::today()->subDays(30-$i)->format('d')}},
+            @endfor
+            ],
+        datasets: [{
+            label: 'Daily Sessions',
+            data:
+
+             [
+            @for ($i = 0; $i < 30; $i++)
+
+    {{App\Models\UserData::where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('sessions_played')}},
+            @endfor
+
+             ],
+
+ fill: false,
+    backgroundColor:'rgba(75, 192, 192, 1)',
+    tension: 0.1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>  
+</div>
+
+
+    <div class="col-lg-8">
+        <canvas id="myChart5" width="400" height="100"></canvas>
+            {{--Data Sources--}}
+
+<script>
+var ctx = document.getElementById('myChart5');
+var myChart5 = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [      
+            @for ($i = 0; $i < 30; $i++)
+            {{Carbon\Carbon::today()->subDays(30-$i)->format('d')}},
+            @endfor
+            ],
+        datasets: [{
+            label: 'Daily Showed Ads',
+            data:
+
+             [
+            @for ($i = 0; $i < 30; $i++)
+
+    {{App\Models\UserData::where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('showed_ads')}},
+            @endfor
+
+             ],
+
+ fill: false,
+    borderColor: 'rgba(255, 206, 86, 1)',
+    tension: 0.1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+       
 
 
 <canvas id="myChart4" width="400" height="100"></canvas>
@@ -214,7 +344,7 @@ var myChart4 = new Chart(ctx, {
              ],
 
  fill: false,
-    borderColor: 'rgba(153, 102, 255, 0.2)',
+    borderColor: 'rgba(153, 102, 255, 1)',
     tension: 0.1
         }]
     },
