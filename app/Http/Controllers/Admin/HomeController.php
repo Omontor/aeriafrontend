@@ -16,6 +16,7 @@ use App\Models\CustomData;
 use App\Models\LevelInterface;
 use App\Models\LevelProg;
 use App\Models\LevelDif;
+use App\Models\BoxDay;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use App\Models\ShowedAd;
@@ -81,9 +82,19 @@ class HomeController
         return view('home', compact('games', 'gamescount', 'users', 'userscount', 'today', 'today1', 'today2', 'today3', 'today4','today5', 'today6', 'today7', 'cohorts', 'records'));
     }
 
+    public function testCreation() {
+
+        $newvalue = new BoxDay;
+        $newvalue->save();
+
+
+    }
+
 
 public function ResyncData()
-{                      
+{          
+$pool = Pool::create();
+
     $client = new Client([
     'base_uri' => env('REMOTE_URL'),
     'verify' => false
@@ -99,8 +110,12 @@ public function ResyncData()
                 $userdataarray = [];
 
                 foreach ($userdata as $key => $value3) {
-        
-                $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
+
+                $newuserdata = UserData::where('remote_id',$value3->id)->first();
+                if (!$newuserdata) {
+
+                    $pool->add(function () use ($value3) {
+                $newuserdata = new UserData;
                 $newuserdata->cohort_id = $value2->remote_id;
                 $newuserdata->remote_id = $value3->id;
                 $newuserdata->platform = $value3->platform;
@@ -135,8 +150,24 @@ public function ResyncData()
                 $newCustomData->index = $index;
                 $newCustomData->save();
                         }
+    })->then(function ($output) {
+        // Handle success
+    })->catch(function (Throwable $exception) {
+        // Handle exception
+    });
+          
+
+
+                              
+                }
+
+                else
+                {
+                    continue;
+                }
                     
                 }
+                $pool->wait();
             }
                 /*Fill Players */ 
                 $this->FillPlayers();
