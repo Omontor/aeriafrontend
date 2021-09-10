@@ -10,8 +10,8 @@
                 </a>
             </li>
 
-        <li class="{{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
-            <a href="{{ route("admin.users.index") }}">
+        <li class="{{ request()->is("admin/notifications") || request()->is("admin/notifications/*") ? "active" : "" }}">
+            <a href="{{ route("admin.notifications.index") }}">
                 <i class="fa-fw fas fa-bell">
 
                 </i>

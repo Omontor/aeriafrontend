@@ -69,6 +69,18 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     
     Route::delete('custom-keys/destroy', 'CustomKeyController@massDestroy')->name('custom-keys.massDestroy');
     Route::resource('custom-keys', 'CustomKeyController');
+
+//notifications
+     Route::get('notifications', 'NotificationController@index')->name('notifications.index');
+     Route::get('notifications/create', 'NotificationController@create')->name('notifications.create');
+     Route::post('notifications/store', 'NotificationController@store')->name('notifications.store');
+
+//Leaderboards
+     Route::get('leaderboards', 'LeaderboardController@index')->name('leaderboards.index');
+     Route::get('leaderboards/game/{id}', 'LeaderboardController@game')->name('leaderboards.create');
+     Route::get('leaderboards/show/{id}', 'LeaderboardController@show')->name('leaderboards.show');
+
+
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password
