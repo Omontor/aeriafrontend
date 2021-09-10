@@ -39,15 +39,15 @@ class HomeController
 
  public function index()
     {
-         /* Fill Games*/
+        /*
                 $this->FillGames();
-            /* Fill Worlds*/
+
                 $this->fillWorlds();
-            /*Fill Analytics */ 
+
                 $this->fillAnalytics();
-            /* Fill Cohorts  */
+
                 $this->fillCohorts();
-       
+       */
         $games = Game::All();
         $gamescount = $games->count();
         $users = Player::all();
@@ -82,7 +82,7 @@ class HomeController
         return view('home', compact('games', 'gamescount', 'users', 'userscount', 'today', 'today1', 'today2', 'today3', 'today4','today5', 'today6', 'today7', 'cohorts', 'records'));
     }
 
-    public function testCreation() {
+    public function autosync() {
 
         $newvalue = new BoxDay;
         $newvalue->save();

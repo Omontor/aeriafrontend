@@ -38,6 +38,7 @@ class GameController extends Controller
 {
     public function index()
     {       
+        /* Old version, when games were called from the API
         $client = new Client([
             'base_uri' => env('REMOTE_URL'),
             'verify' => false
@@ -46,11 +47,21 @@ class GameController extends Controller
 
         $response = $client->request('GET', '/api/Game/AllGames');
         $games = json_decode($response->getBody()->getContents());
-
+        */
+        /*Now we have them locally*/
+        $games = Game::all();
         return view('admin.games.index', compact('games'));
     }
 
 
+    public function edit($index) {
+
+        $game = Game::where('remote_id', $index)->first();
+
+        return view('admin.games.edit', compact('game'));
+
+
+    }
 
 
 

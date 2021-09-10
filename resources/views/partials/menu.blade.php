@@ -12,6 +12,26 @@
 
         <li class="{{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
             <a href="{{ route("admin.users.index") }}">
+                <i class="fa-fw fas fa-bell">
+
+                </i>
+                <span>Notifications</span>
+
+            </a>
+        </li>           
+
+        <li class="{{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
+            <a href="{{ route("admin.users.index") }}">
+                <i class="fa-fw fas fa-trophy">
+
+                </i>
+                <span>Leaderboards</span>
+
+            </a>
+        </li>   
+
+        <li class="{{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
+            <a href="{{ route("admin.users.index") }}">
                 <i class="fa-fw fas fa-user">
 
                 </i>

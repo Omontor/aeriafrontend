@@ -41,6 +41,6 @@ class SyncInfo extends Command
     {
         Log::info("Automatically Syncing info");
         $controller = new HomeController(); // make sure to import the controller
-       $controller->testCreation();
+       $controller->autosync();
     }
 }
