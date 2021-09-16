@@ -41,8 +41,8 @@
                   <div class="row">
                       
                       <a href="{{route('admin.games.edit', $game->remote_id)}}" class="btn btn-success btn-sm"> Edit</a>
-                        <a href="{{route('admin.games.view', $game->id)}}" class="btn btn-sm btn-primary">Data</a>
-                        <a href="{{route('admin.worlds.view', $game->id)}}" class="btn btn-sm btn-primary">Worlds</a>
+                        <a href="{{route('admin.games.view', $game->remote_id)}}" class="btn btn-sm btn-primary">Data</a>
+                        <a href="{{route('admin.worlds.view', $game->remote_id)}}" class="btn btn-sm btn-primary">Worlds</a>
             
                 
 

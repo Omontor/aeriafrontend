@@ -14,6 +14,8 @@ class CreateGamesTable extends Migration
             $table->string('appid');
             $table->string('secret')->nullable();
             $table->string('remote_id');
+            $table->text('api_key')->nullable();
+            $table->text('onesignal_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

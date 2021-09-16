@@ -39,7 +39,7 @@ class HomeController
 
  public function index()
     {
-        /*
+        
                 $this->FillGames();
 
                 $this->fillWorlds();
@@ -47,7 +47,7 @@ class HomeController
                 $this->fillAnalytics();
 
                 $this->fillCohorts();
-       */
+       
         $games = Game::All();
         $gamescount = $games->count();
         $users = Player::all();
@@ -86,8 +86,6 @@ class HomeController
 
         $newvalue = new BoxDay;
         $newvalue->save();
-
-
     }
 
 
@@ -103,27 +101,32 @@ $pool = Pool::create();
           
               /*Fill User Data*/
         
-                foreach (Cohort::all() as $key => $value2) {
+                foreach (Cohort::orderBy("id", "desc")->get() as $key => $value2) {
                 
                 $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
                 $userdata = json_decode($userdataresponse->getBody()->getContents());
                 $userdataarray = [];
 
                 foreach ($userdata as $key => $value3) {
+                $newuserdata = UserData::firstOrNew(['remote_id' => $value3->id]);
 
-                $newuserdata = UserData::where('remote_id',$value3->id)->first();
-                if (!$newuserdata) {
+                if ( $newuserdata->exists) {
+                    Log::info("Skipping existing data");
+                   continue;
+                }
+                else{
 
-                    $pool->add(function () use ($value3) {
-                $newuserdata = new UserData;
+
                 $newuserdata->cohort_id = $value2->remote_id;
+                Log::info("creating data ".$newuserdata->id);
+
                 $newuserdata->remote_id = $value3->id;
                 $newuserdata->platform = $value3->platform;
                 $newuserdata->last_activity = $value3->lastActivity;
                 $newuserdata->days_playing = $value3->daysPlaying;
                 $newuserdata->iap = $value3->iap;
                 $newuserdata->watched_ads = $value3->watchedAds;
-               $watched_ads = WatchedAd::firstOrNew(['cohort_id' => $value2->remote_id]);
+                $watched_ads = WatchedAd::firstOrNew(['cohort_id' => $value2->remote_id]);
                         $watched_ads->value += $newuserdata->watched_ads;
                         $watched_ads->save();
                 
@@ -138,36 +141,25 @@ $pool = Pool::create();
                 $newuserdata->first_time = $value3->firsTime;
 
                 $newuserdata->save();
+                Log::info("saved ".$value3->id);
 
                 $date =  collect($value3->customData)->first();
                 $index = collect($value3->customData)->flip()->first();
 
-                 $newCustomData = CustomData::where('date',$date)->first();
-                 if (!$newCustomData) {
-                     $newCustomData = new CustomData;
-                     $newCustomData->date = $date;
+                $newCustomData = CustomData::firstOrNew(['date' => $date]);
+                $newCustomData->date = $date;
                 $newCustomData->user_data_id = $value3->id;
                 $newCustomData->index = $index;
-                $newCustomData->save();
-                        }
-    })->then(function ($output) {
-        // Handle success
-    })->catch(function (Throwable $exception) {
-        // Handle exception
-    });
-          
-
-
-                              
+                $newCustomData->save(); 
                 }
 
-                else
-                {
-                    continue;
+                
+
+                        
+                    Log::info("Saved ".$newuserdata->remote_id);
+  
                 }
-                    
-                }
-                $pool->wait();
+              
             }
                 /*Fill Players */ 
                 $this->FillPlayers();
@@ -494,46 +486,42 @@ $localanalytics = Analytic::all();
     public function fillLevelProgression()
     {
 
-            $client = new Client([
-            'base_uri' => env('REMOTE_URL'),
-            'verify' => false
-        ]);
+    $client = new Client([
+    'base_uri' => env('REMOTE_URL'),
+    'verify' => false
 
+]);
+$allcohorts = Cohort::all();
         $allleveldifs = LevelDif::all();
         $alllevelinterfaces =  LevelInterface::all();
         $testarray = [];
-        $allcohorts = Cohort::all();
-        $pool = Pool::create();
-
-        $pool2 = Pool::create();
-
+        LevelProg::truncate();
+         Log::info("Truncated table succesfully ");
         foreach ($allleveldifs as $key => $value) {
+                    
                 foreach ($allcohorts as $key => $value2) {
-                    foreach ($alllevelinterfaces as $key => $value3) {   
-
-
-        $testurl = $value->remote_id."/".$value2->remote_id.'/'.$value3->remote_id;
-        $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$value->remote_id."/".$value2->remote_id."/".$value3->remote_id);
+                    
+                    foreach ($alllevelinterfaces as $key => $value3) {
+                        
+$testurl = $value->remote_id."/".$value2->remote_id.'/'.$value3->remote_id;
+$secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$value->remote_id."/".$value2->remote_id."/".$value3->remote_id);
 
         $levelinterfaces = $secondinterfacesresponse->getBody()->getContents();                       
         $interfaces = array($levelinterfaces);
         $interfacescollect = json_decode($levelinterfaces);
-
-         $pool2->add(function () use ($value3) {
- 
            if($levelinterfaces != "{}")
                 {
+                 
                 foreach ($interfacescollect as $key => $value4) {
-
-                    /*async operation*/
-                    $pool->add(function () use ($value4) {
-                    $testarray[] = $value4;
-                 $levelprogdate = Str::substr(Arr::flatten($interfaces)[0], 2 , 10);
+                $testarray[] = $value4;
+        $levelprogdate = Str::substr(Arr::flatten($interfaces)[0], 2 , 10);
                 $newLevelProg = new LevelProg;
+               Log::info("created levelprog ".$newLevelProg->id);
                 $newLevelProg->level_dif = $value->remote_id;
                 $newLevelProg->cohort_id = $value2->remote_id;
                 $newLevelProg->interface_id = $value3->remote_id;
                 $newLevelProg->date = $levelprogdate;
+
                     $index = 1;
                      foreach ($value4 as $key => $value5) {
                         if($index == 1){
@@ -546,36 +534,21 @@ $localanalytics = Analytic::all();
                         
                         $index ++;
                     }
+
+
                 $newLevelProg->save();
-                        })->then(function ($output) {
-                          
-                        })->catch(function (Throwable $exception) {
-                            // Handle exception
-                        });
-               
-                /* end async operation*/
-                    }
-                     $pool->wait();
+                Log::info("Saved level prog".$newLevelProg->id);
+                
+                            }
                 }
-
-
-
-
-            })->then(function ($output) {
-                // Handle success
-            })->catch(function (Throwable $exception) {
-                // Handle exception
-            });
-                              
-
-
             }
-            $pool2->wait();
         }
-    
+     
     }
+ Log::info("Finished");
+
     return redirect()->back()->withSuccess('Level progression synced');
-}
+    }
 
    
 }

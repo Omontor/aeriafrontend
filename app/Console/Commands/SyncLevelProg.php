@@ -6,14 +6,14 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Admin\HomeController;
 
-class SyncInfo extends Command
+class SyncLevelProg extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'info:sync';
+    protected $signature = 'levels:sync';
 
     /**
      * The console command description.
@@ -39,8 +39,8 @@ class SyncInfo extends Command
      */
     public function handle()
     {
-        Log::info("Automatically Syncing info");
+        Log::info("Automatically Syncing Level Progs");
         $controller = new HomeController();
-        $controller->ResyncData();
+        $controller->fillLevelProgression();
     }
 }

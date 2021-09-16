@@ -30,17 +30,14 @@ class NotificationController extends Controller
 
     if ($game->onesignal_id == null) {
 
-         return redirect()->route('admin.notifications.index')->with('error','This game does not have a One Signal ID registered');
+         return redirect()->route('admin.notifications.index')->with('error','This game does not have OneSignal configuration');
     }
     else{
 
     }
 
     try {
-
-
         $content = ["en" => $request->message];
-
         $fields = [
             'app_id' => $game->onesignal_id,
             'included_segments' => ['All'],
