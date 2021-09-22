@@ -21,9 +21,9 @@ class StoreGameRequest extends FormRequest
                 'string',
                 'required',
             ],
-            'app' => [
+            'appid' => [
                 'string',
-                'required',
+                'nullable',
             ],
             'secret' => [
                 'string',

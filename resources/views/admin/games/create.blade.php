@@ -19,6 +19,36 @@
                             @endif
                             <span class="help-block">{{ trans('cruds.game.fields.name_helper') }}</span>
                         </div>
+
+                              
+
+<br>
+  <h3 class="">OneSignal Configuration</h3>
+  <br>
+
+                        <div class="row">
+                         
+
+                        <div class="form-group col-lg-6 {{ $errors->has('apikey') ? 'has-error' : '' }}">
+                            <label class="" for="apikey">OneSignal Api Key</label>
+                            <input class="form-control" type="text" name="apikey" id="apikey" value="{{ old('apikey', '') }}" >
+                            @if($errors->has('apikey'))
+                                <span class="help-block" role="alert">{{ $errors->first('apikey') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.game.fields.name_helper') }}</span>
+                        </div>      
+
+                        <div class="form-group col-lg-6 {{ $errors->has('onesingalid') ? 'has-error' : '' }}">
+                            <label class="" for="onesingalid">OneSignal Api Key</label>
+                            <input class="form-control" type="text" name="onesingalid" id="onesingalid" value="{{ old('onesingalid', '') }}" >
+                            @if($errors->has('onesingalid'))
+                                <span class="help-block" role="alert">{{ $errors->first('onesingalid') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.game.fields.name_helper') }}</span>
+                        </div>   
+
+                        </div>
+
                
                         
                         <div class="form-group">

@@ -10,11 +10,12 @@
             </div>
         </div>
     @endcan
-    <div class="row">
+
+        <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {{ trans('cruds.user.title_singular') }} {{ trans('global.list') }}
+                    Games List
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -23,9 +24,11 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Remote ID</th>
                 <th>Name</th>
                 <th>APP ID</th>
                 <th>OneSignal ID</th>
+                <th>OneSignal API</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -33,9 +36,11 @@
           @forelse($games as $game)
             <tr>
                 <td>{{$game->id}}</td>
+                <td>{{$game->remote_id}}</td>
                 <td>{{$game->name}}</td>
                 <td>{{$game->appid}}</td>
                 <td>{{$game->onesignal_id ? $game->onesignal_id : "Not added"}}</td>
+                <td>{{$game->api_key ? $game->api_key : "Not added"}}</td>
                 <td>
 
                   <div class="row">

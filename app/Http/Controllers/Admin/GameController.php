@@ -370,6 +370,8 @@ $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$
 
  public function create()
     {
+
+
         abort_if(Gate::denies('game_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('admin.games.create');
@@ -377,7 +379,6 @@ $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$
 
     public function store (Request $request) {
          
-
 
             $client = new Client([
                         'base_uri' => env('REMOTE_URL'),
@@ -389,11 +390,47 @@ $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$
             $response = $client->request('POST', '/api/Game/Create', 
                 ['json' => 
                     [
-                    'name' => $request->name   
+                     'name' => $request->name,
+                     'appID' => $request->appid,
+                     'secret' => $request->secret,
                     ]
 
                  ]);
+        
+
+            $client = new Client([
+            'base_uri' => env('REMOTE_URL'),
+            'verify' => false
+
+        ]);
+
+        $response = $client->request('GET', '/api/Game/AllGames');
+        $games = json_decode($response->getBody()->getContents());
+
+        foreach ($games as $key => $value) {
+
+            $currentgame = Game::where('name',$value->name)->first();
+            if (!$currentgame) {
+            $game = new Game;
+            $game->name = $request->name;
+            $game->remote_id = $value->id;
+            $game->appid = $value->appID;
+            $game->secret = $value->secret;
+            $game->api_key = $request->apikey;
+            $game->onesignal_id = $request->onesingalid;
+            $game->save();
+
             return redirect::route('admin.games.index')->with('success', 'Game Created Successfully');
+            }
+            else
+            {
+
+            continue;
+            }
+        }
+
+
+         
             } 
             catch (Exception $e) {
                 
@@ -404,9 +441,19 @@ $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$
   
     }
 
+    public function destroy($id){   
+
+    }
+
+    public function update(Request $request, $id){
+        $game = Game::find($id);
+        $game->update($request->all());
+
+        return redirect()->route('admin.games.index')->with('success', 'App data updated successfully'); 
+    }
+
 
     public function filterByDate (Request $request){
-
     
     $gameid = $request->id;
     $game = Game::where('remote_id', $gameid)->first();

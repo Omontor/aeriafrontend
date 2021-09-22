@@ -20,30 +20,48 @@
                             @endif
                             <span class="help-block">{{ trans('cruds.game.fields.name_helper') }}</span>
                         </div>
-                        <div class="form-group {{ $errors->has('app') ? 'has-error' : '' }}">
-                            <label class="required" for="app">{{ trans('cruds.game.fields.app') }}</label>
-                            <input class="form-control" type="text" name="app" id="app" value="{{ old('app', $game->app) }}" required>
-                            @if($errors->has('app'))
-                                <span class="help-block" role="alert">{{ $errors->first('app') }}</span>
+                        <div class="form-group {{ $errors->has('appid') ? 'has-error' : '' }}">
+                            <label class="required" for="appid">App ID</label>
+                            <input class="form-control" type="text" name="appid" id="appid" value="{{ old('appid', $game->appid) }}" required readonly="">
+                            @if($errors->has('appid'))
+                                <span class="help-block" role="alert">{{ $errors->first('appid') }}</span>
                             @endif
                             <span class="help-block">{{ trans('cruds.game.fields.app_helper') }}</span>
                         </div>
                         <div class="form-group {{ $errors->has('secret') ? 'has-error' : '' }}">
                             <label for="secret">{{ trans('cruds.game.fields.secret') }}</label>
-                            <input class="form-control" type="text" name="secret" id="secret" value="{{ old('secret', $game->secret) }}">
+                            <input class="form-control" type="text" name="secret" id="secret" value="{{ old('secret', $game->secret) }}" readonly="">
                             @if($errors->has('secret'))
                                 <span class="help-block" role="alert">{{ $errors->first('secret') }}</span>
                             @endif
                             <span class="help-block">{{ trans('cruds.game.fields.secret_helper') }}</span>
                         </div>
-                        <div class="form-group {{ $errors->has('status') ? 'has-error' : '' }}">
-                            <label for="status">{{ trans('cruds.game.fields.status') }}</label>
-                            <input class="form-control" type="text" name="status" id="status" value="{{ old('status', $game->status) }}">
-                            @if($errors->has('status'))
-                                <span class="help-block" role="alert">{{ $errors->first('status') }}</span>
+             <br>
+  <h3 class="">OneSignal Configuration</h3>
+  <br>
+
+                        <div class="row">
+                         
+
+                        <div class="form-group col-lg-6 {{ $errors->has('api_key') ? 'has-error' : '' }}">
+                            <label class="" for="api_key">OneSignal Api Key</label>
+                            <input class="form-control" type="text" name="api_key" id="api_key" value="{{$game->api_key }}" >
+                            @if($errors->has('api_key'))
+                                <span class="help-block" role="alert">{{ $errors->first('api_key') }}</span>
                             @endif
-                            <span class="help-block">{{ trans('cruds.game.fields.status_helper') }}</span>
+                            <span class="help-block">{{ trans('cruds.game.fields.name_helper') }}</span>
+                        </div>      
+                        <div class="form-group col-lg-6 {{ $errors->has('onesignal_id') ? 'has-error' : '' }}">
+                            <label class="" for="onesignal_id">OneSignal ID</label>
+                            <input class="form-control" type="text" name="onesignal_id" id="onesignal_id" value="{{$game->onesignal_id}}" >
+                            @if($errors->has('onesignal_id'))
+                                <span class="help-block" role="alert">{{ $errors->first('onesignal_id') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.game.fields.name_helper') }}</span>
+                        </div>   
+
                         </div>
+          
                         <div class="form-group">
                             <button class="btn btn-danger" type="submit">
                                 {{ trans('global.save') }}
