@@ -20,8 +20,8 @@
             </a>
         </li>           
 
-        <li class="{{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
-            <a href="{{ route("admin.users.index") }}">
+        <li class="{{ request()->is("admin/leaderboards") || request()->is("admin/leaderboards/*") ? "active" : "" }}">
+            <a href="{{ route("admin.leaderboards.index") }}">
                 <i class="fa-fw fas fa-trophy">
 
                 </i>
