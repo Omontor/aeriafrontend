@@ -11,37 +11,29 @@ use App\Models\World;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use GuzzleHttp\Client;
+use Log;
 class LevelController extends Controller
 {
 
 
     public function view ($value) {
 
-
-        $client = new Client([
-            'base_uri' => env('REMOTE_URL'),
-            'timeout'  => 2.0,
-            'verify' => false
-
-        ]);
-
-        $response = $client->request('GET', '/api/World/GetAllWorldPerGame/'.$value);
-        $worlds = json_decode($response->getBody()->getContents());
-
-        $response2 = $client->request('GET', '/api/Game/'.$value);
-        $game = json_decode($response2->getBody()->getContents());
-
-
-         return view('admin.levels.view', compact('worlds', 'game'));
+        $this->levelSync();
+        $levels = Level::all();
+        return view('admin.levels.view', compact('levels'));
+       
     }
+
+
+
 
     public function index()
     {
+
+
         abort_if(Gate::denies('level_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
         $levels = Level::with(['world'])->get();
-
         $worlds = World::get();
 
         return view('admin.levels.index', compact('levels', 'worlds'));
@@ -104,5 +96,42 @@ class LevelController extends Controller
         Level::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+
+    public function levelSync(){
+
+        $client = new Client([
+        'base_uri' => env('REMOTE_URL'),
+        'timeout'  => 2.0,
+        'verify' => false
+
+        ]);
+        $worlds = World::all();
+        foreach ($worlds as $key => $value) {
+   
+        $response = $client->request('GET', '/api/level/GetAllLevelsPerWorld/'.$value->remote_id);
+        $remotelevels = json_decode($response->getBody()->getContents());
+        if ($remotelevels != null) {
+            //if there are records in the database we go through them one by one to clone in local db
+                foreach ($remotelevels as $key => $value) {
+                $newlevel = Level::firstOrNew(['remote_id' => $value->id]);
+                if ( $newlevel->exists) {
+                    Log::info("Skipping existing level");
+                }
+                else{
+                Log::info("Creating level ".$value->name);
+                    $newlevel->remote_id = $value->id;
+                    $newlevel->name = $value->name;
+                    $newlevel->name_in_build = $value->nameInBuild;
+                    $newlevel->world_id = $value->worldId;
+                    $newlevel->save();
+                    }
+                }
+            }
+        }   
+
+         Log::info("Levels Synced Successfully");     
+
     }
 }

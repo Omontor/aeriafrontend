@@ -29,7 +29,7 @@
 
                                     </th>
                                     <th>
-                                        {{ trans('cruds.world.fields.id') }}
+                                     Local {{ trans('cruds.world.fields.id') }}
                                     </th>
                                     <th>
                                         Game
@@ -57,10 +57,11 @@
                                             {{ $world->id ?? '' }}
                                         </td>
                                         <td>
-                                            {{$game->name}}
+                                            {{$world->game->name}}
                                         </td>
                                         <td>
-                                               <a class="btn btn-xs btn-success" href="{{ route('admin.levels.show', $world->id) }}">
+
+                                               <a class="btn btn-xs btn-success" href="{{ route('admin.levels.view', $world->id) }}">
                                                     Levels
                                                 </a>
                                         </td>

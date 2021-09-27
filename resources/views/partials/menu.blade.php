@@ -73,6 +73,27 @@
                                     <span>Games</span>
 
                                 </a>
+                            </li>  
+
+                            <li class="{{ request()->is("admin/worlds") || request()->is("admin/worlds/*") ? "active" : "" }}">
+                    <a href="{{ route("admin.worlds.index") }}">
+                                    <i class="fa-fw fas fa-gamepad">
+
+                                    </i>
+                                    <span>Worlds</span>
+
+                                </a>
+                            </li> 
+
+
+                            <li class="{{ request()->is("admin/levels") || request()->is("admin/levels/*") ? "active" : "" }}">
+                    <a href="{{ route("admin.levels.index") }}">
+                                    <i class="fa-fw fas fa-gamepad">
+
+                                    </i>
+                                    <span>Levels</span>
+
+                                </a>
                             </li>
 
                     </ul>

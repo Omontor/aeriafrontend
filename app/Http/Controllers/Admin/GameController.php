@@ -33,23 +33,15 @@ use Illuminate\Support\Arr;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Http;
+use Log;
+
 
 class GameController extends Controller
 {
     public function index()
     {       
-        /* Old version, when games were called from the API
-        $client = new Client([
-            'base_uri' => env('REMOTE_URL'),
-            'verify' => false
-
-        ]);
-
-        $response = $client->request('GET', '/api/Game/AllGames');
-        $games = json_decode($response->getBody()->getContents());
-        */
-        /*Now we have them locally*/
-        $games = Game::all();
+        $this->gameSync();
+        $games = Game::all();      
         return view('admin.games.index', compact('games'));
     }
 
@@ -59,8 +51,6 @@ class GameController extends Controller
         $game = Game::where('remote_id', $index)->first();
 
         return view('admin.games.edit', compact('game'));
-
-
     }
 
 
@@ -471,4 +461,116 @@ $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$
     return view('admin.games.filterdate', compact('game', 'cohorts', 'analytics', 'worlds', 'customkeys', 'userdata', 'levelinterfaces', 'cohortdeaths','start', 'end'));
     
     }
+
+
+    public function gameSync(){
+
+       Log::info("Games Synced Start"); 
+        $client = new Client([
+        'base_uri' => env('REMOTE_URL'),
+        'timeout'  => 2.0,
+        'verify' => false
+
+        ]);
+
+
+        $response = $client->request('GET', '/api/game/AllGames');
+        $remotegames = json_decode($response->getBody()->getContents());
+        if ($remotegames != null) {
+
+            //if there are records in the database we go through them one by one to clone in local db
+                foreach ($remotegames as $key => $value) {
+                $newgame = Game::firstOrNew(['remote_id' => $value->id]);
+                if ( $newgame->exists) {
+                    Log::info("Skipping existing game");
+                }
+                else{
+                Log::info("Creating game ".$value->name);
+                    $newgame->remote_id = $value->id;
+                    $newgame->name = $value->name;
+                    $newgame->appid = $value->appID;
+                    $newgame->save();
+                    }
+                }
+            }
+                    
+        Log::info("Games Synced Successfully"); 
+        $this->worldSync();
+
+    }
+
+
+    public function worldSync(){
+
+        Log::info("Worlds Synced Start"); 
+        $client = new Client([
+        'base_uri' => env('REMOTE_URL'),
+        'timeout'  => 2.0,
+        'verify' => false
+
+        ]);
+        $games = Game::all();
+
+        foreach ($games as $key => $value) {
+   
+        $response = $client->request('GET', '/api/World/GetAllWorldPerGame/'.$value->remote_id);
+        $remoteworlds = json_decode($response->getBody()->getContents());
+        if ($remoteworlds != null) {
+
+            //if there are records in the database we go through them one by one to clone in local db
+                foreach ($remoteworlds as $key => $value2) {
+                $newworld = World::firstOrNew(['remote_id' => $value2->id]);
+                if ( $newworld->exists) {
+                    Log::info("Skipping existing world");
+                }
+                else{
+                Log::info("Creating world ".$value2->name);
+                    $newworld->remote_id = $value2->id;
+                    $newworld->name = $value2->name;
+                    $newworld->game_id = $value->remote_id;
+                    $newworld->save();
+                    }
+                }
+            }
+        }              
+  Log::info("Worlds Synced Successfully"); 
+        $this->levelSync();
+    }
+
+    public function levelSync(){
+
+        $client = new Client([
+        'base_uri' => env('REMOTE_URL'),
+        'timeout'  => 2.0,
+        'verify' => false
+
+        ]);
+        $worlds = World::all();
+        foreach ($worlds as $key => $value) {
+   
+        $response = $client->request('GET', '/api/level/GetAllLevelsPerWorld/'.$value->remote_id);
+        $remotelevels = json_decode($response->getBody()->getContents());
+        if ($remotelevels != null) {
+            //if there are records in the database we go through them one by one to clone in local db
+                foreach ($remotelevels as $key => $value) {
+                $newlevel = Level::firstOrNew(['remote_id' => $value->id]);
+                if ( $newlevel->exists) {
+                    Log::info("Skipping existing level");
+                }
+                else{
+                Log::info("Creating level ".$value->name);
+                    $newlevel->remote_id = $value->id;
+                    $newlevel->name = $value->name;
+                    $newlevel->name_in_build = $value->nameInBuild;
+                    $newlevel->world_id = $value->worldId;
+                    $newlevel->save();
+                    }
+                }
+            }
+        }   
+
+         Log::info("Levels Synced Successfully");     
+
+    }
+
 }

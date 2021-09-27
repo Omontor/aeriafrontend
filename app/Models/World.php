@@ -11,6 +11,9 @@ class World extends Model
 {
 
     protected $guarded = [];
-
+       public function game()
+    {
+        return $this->belongsTo('App\Models\Game', 'game_id', 'remote_id');
+    }
     
 }

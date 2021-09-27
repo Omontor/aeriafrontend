@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Level extends Model
 {
-
+protected $guarded = [];
 
   public function world()
-    {
-        return $this->belongsTo('\App\Models\World','WorldID');
+
+    { 
+        return $this->belongsTo('\App\Models\World','world_id', 'remote_id');
     }
    
 }

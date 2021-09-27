@@ -8,36 +8,31 @@ use App\Http\Requests\StoreWorldRequest;
 use App\Http\Requests\UpdateWorldRequest;
 use App\Models\Game;
 use App\Models\World;
+use App\Models\Level;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Redirect;
-
+use Log;
 
 class WorldController extends Controller
 {
 
-public function view($value)
-    {
-      
-        $client = new Client([
-            'base_uri' => env('REMOTE_URL'),
-            'timeout'  => 2.0,
-            'verify' => false
 
-        ]);
+    public function index(){
 
-        $response = $client->request('GET', '/api/World/GetAllWorldPerGame/'.$value);
-        $worlds = json_decode($response->getBody()->getContents());
-        $response2 = $client->request('GET', '/api/Game/'.$value);
-        $game = json_decode($response2->getBody()->getContents());
-
-        return view('admin.worlds.index', compact('worlds', 'game'));
+        $this->worldSync();
+        $worlds= World::all();
+        return view('admin.worlds.index', compact('worlds'));
     }
 
-
-
+public function view($value)
+    {
+        $this->worldSync();
+        $worlds = World::where('game_id', $value)->get();
+        return view('admin.worlds.index', compact('worlds'));
+    }
 
 
     public function create()
@@ -148,10 +143,77 @@ public function view($value)
         return back();
     }
 
-    public function massDestroy(MassDestroyWorldRequest $request)
-    {
-        World::whereIn('id', request('ids'))->delete();
 
-        return response(null, Response::HTTP_NO_CONTENT);
+public function worldSync(){
+
+        Log::info("Worlds Synced Start"); 
+        $client = new Client([
+        'base_uri' => env('REMOTE_URL'),
+        'timeout'  => 2.0,
+        'verify' => false
+
+        ]);
+        $games = Game::all();
+
+        foreach ($games as $key => $value) {
+   
+        $response = $client->request('GET', '/api/World/GetAllWorldPerGame/'.$value->remote_id);
+        $remoteworlds = json_decode($response->getBody()->getContents());
+        if ($remoteworlds != null) {
+
+            //if there are records in the database we go through them one by one to clone in local db
+                foreach ($remoteworlds as $key => $value2) {
+                $newworld = World::firstOrNew(['remote_id' => $value2->id]);
+                if ( $newworld->exists) {
+                    Log::info("Skipping existing world");
+                }
+                else{
+                Log::info("Creating world ".$value2->name);
+                     $newworld->remote_id = $value2->id;
+                    $newworld->name = $value2->name;
+                    $newworld->game_id = $value->remote_id;
+                    $newworld->save();
+                    }
+                }
+            }
+        }              
+  Log::info("Worlds Synced Successfully"); 
+        $this->levelSync();
+    }
+
+    public function levelSync(){
+
+        $client = new Client([
+        'base_uri' => env('REMOTE_URL'),
+        'timeout'  => 2.0,
+        'verify' => false
+
+        ]);
+        $worlds = World::all();
+        foreach ($worlds as $key => $value) {
+   
+        $response = $client->request('GET', '/api/level/GetAllLevelsPerWorld/'.$value->remote_id);
+        $remotelevels = json_decode($response->getBody()->getContents());
+        if ($remotelevels != null) {
+            //if there are records in the database we go through them one by one to clone in local db
+                foreach ($remotelevels as $key => $value) {
+                $newlevel = Level::firstOrNew(['remote_id' => $value->id]);
+                if ( $newlevel->exists) {
+                    Log::info("Skipping existing level");
+                }
+                else{
+                Log::info("Creating level ".$value->name);
+                    $newlevel->remote_id = $value->id;
+                    $newlevel->name = $value->name;
+                    $newlevel->name_in_build = $value->nameInBuild;
+                    $newlevel->world_id = $value->worldId;
+                    $newlevel->save();
+                    }
+                }
+            }
+        }   
+
+         Log::info("Levels Synced Successfully");     
+
     }
 }

@@ -16,6 +16,7 @@ use App\Models\CustomData;
 use App\Models\LevelInterface;
 use App\Models\LevelProg;
 use App\Models\LevelDif;
+use App\Models\Level;
 use App\Models\BoxDay;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
@@ -87,6 +88,8 @@ class HomeController
         $newvalue = new BoxDay;
         $newvalue->save();
     }
+
+
 
 
 public function ResyncData()
@@ -292,7 +295,7 @@ $pool = Pool::create();
         $games = json_decode($response->getBody()->getContents());
         foreach ($games as $game => $value) {
 
-        $worldsresponse = $client->request('GET', '/api/World/GetAllWorldPerGame/'.$value->id);
+        $worldsresponse = $client->request('GET', ' '.$value->id);
         $worlds = json_decode($worldsresponse->getBody()->getContents());
             foreach ($worlds as $world => $value2) {
         $newworld = World::firstOrNew(['remote_id' => $value2->id]);
