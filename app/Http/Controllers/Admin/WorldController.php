@@ -58,7 +58,6 @@ public function view($value)
     {
 
 
-
     $client = new Client([
                 'base_uri' => env('REMOTE_URL'),
                 'timeout'  => 2.0,

@@ -61,7 +61,7 @@
                                         </td>
                                         <td>
 
-                                               <a class="btn btn-xs btn-success" href="{{ route('admin.levels.view', $world->id) }}">
+                                               <a class="btn btn-xs btn-success" href="{{ route('admin.levels.view', $world->remote_id) }}">
                                                     Levels
                                                 </a>
                                         </td>

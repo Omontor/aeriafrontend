@@ -15,5 +15,10 @@ class World extends Model
     {
         return $this->belongsTo('App\Models\Game', 'game_id', 'remote_id');
     }
+
+    public function levels(){
+
+         return $this->hasMany('App\Models\Level', 'world_id', 'remote_id');
+    }
     
 }

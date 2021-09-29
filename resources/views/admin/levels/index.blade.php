@@ -6,6 +6,10 @@
             <div class="col-lg-12">
                 <a class="btn btn-success" href="{{ route('admin.levels.create') }}">
                     {{ trans('global.add') }} {{ trans('cruds.level.title_singular') }}
+                </a>                
+
+                <a class="btn btn-primary" href="{{ route('admin.worlds.index') }}">
+                    Back to all worlds
                 </a>
             </div>
         </div>
@@ -26,6 +30,10 @@
                                     </th>
                                     <th>
                                         {{ trans('cruds.level.fields.id') }}
+                                    </th>                                
+
+                                    <th>
+                                       Game
                                     </th>
                                     <th>
                                         {{ trans('cruds.level.fields.name') }}
@@ -45,17 +53,15 @@
                                     </td>
                                     <td>
                                         <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                                    </td>                           
+                                    <td>
+                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                                     </td>
                                     <td>
                                         <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                                     </td>
                                     <td>
-                                        <select class="search">
-                                            <option value>{{ trans('global.all') }}</option>
-                                            @foreach($worlds as $key => $item)
-                                                <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
+                                       
                                     </td>
                                     <td>
                                         <input class="search" type="text" placeholder="{{ trans('global.search') }}">
@@ -72,6 +78,9 @@
                                         </td>
                                         <td>
                                             {{ $level->id ?? '' }}
+                                        </td>                                        
+                                        <td>
+                                            {{ $level->world->game->name ?? '' }}
                                         </td>
                                         <td>
                                             {{ $level->name ?? '' }}

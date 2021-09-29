@@ -17,27 +17,27 @@ class LevelController extends Controller
 {
 
 
-    public function view ($value) {
-
-        $this->levelSync();
-        $levels = Level::all();
-        return view('admin.levels.view', compact('levels'));
-       
-    }
-
-
-
-
     public function index()
     {
 
 
-        abort_if(Gate::denies('level_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $levels = Level::with(['world'])->get();
-        $worlds = World::get();
-
-        return view('admin.levels.index', compact('levels', 'worlds'));
+        $this->levelSync();
+        $levels = Level::all();
+        return view('admin.levels.index', compact('levels'));
+       
     }
+
+    public function view ($value) {
+
+
+        $this->levelSync();
+        $world = World::where('remote_id', $value)->first();
+        $levels = $world->levels;
+        return view('admin.levels.index', compact('levels'));
+       
+    }
+
+
 
     public function create()
     {
@@ -50,9 +50,38 @@ class LevelController extends Controller
 
     public function store(StoreLevelRequest $request)
     {
-        $level = Level::create($request->all());
+       
 
-        return redirect()->route('admin.levels.index');
+
+    $client = new Client([
+                'base_uri' => env('REMOTE_URL'),
+                'timeout'  => 2.0,
+                'verify' => false
+
+            ]);
+
+    try {
+        
+    $response = $client->request('POST', '/api/Level/Create', 
+        ['json' => 
+            [
+            'name' => $request->name,
+            'WorldId' => $request->world_id, 
+            'NameInBuild' => $request->name_in_build 
+            ]
+
+         ]);
+    return redirect::to(url('/admin/worlds/'.$request->game))->with('success', 'Level Created Successfully');
+
+    } 
+
+    catch (Exception $e) {
+        
+         return redirect::to(url('/admin/worlds/'.$request->game))->with('error', $e);
+
+    }
+
+
     }
 
     public function edit(Level $level)

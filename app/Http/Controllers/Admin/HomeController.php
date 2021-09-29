@@ -285,28 +285,39 @@ $pool = Pool::create();
     }
 
     public function fillWorlds() {
-                      $client = new Client([
-            'base_uri' => env('REMOTE_URL'),
-            'verify' => false
+                     
+       Log::info("Worlds Synced Start"); 
+        $client = new Client([
+        'base_uri' => env('REMOTE_URL'),
+        'timeout'  => 2.0,
+        'verify' => false
 
         ]);
+        $games = Game::all();
 
-        $response = $client->request('GET', '/api/Game/AllGames');
-        $games = json_decode($response->getBody()->getContents());
-        foreach ($games as $game => $value) {
+        foreach ($games as $key => $value) {
+   
+        $response = $client->request('GET', '/api/World/GetAllWorldPerGame/'.$value->remote_id);
+        $remoteworlds = json_decode($response->getBody()->getContents());
+        if ($remoteworlds != null) {
 
-        $worldsresponse = $client->request('GET', ' '.$value->id);
-        $worlds = json_decode($worldsresponse->getBody()->getContents());
-            foreach ($worlds as $world => $value2) {
-        $newworld = World::firstOrNew(['remote_id' => $value2->id]);
-        $newworld->name = $value2->name;
-        $newworld->remote_id = $value2->id;
-        $newworld->game_id = $value2->gameId;
-        $newworld->save();
+            //if there are records in the database we go through them one by one to clone in local db
+                foreach ($remoteworlds as $key => $value2) {
+                $newworld = World::firstOrNew(['remote_id' => $value2->id]);
+                if ( $newworld->exists) {
+                    Log::info("Skipping existing world");
+                }
+                else{
+                Log::info("Creating world ".$value2->name);
+                     $newworld->remote_id = $value2->id;
+                    $newworld->name = $value2->name;
+                    $newworld->game_id = $value->remote_id;
+                    $newworld->save();
+                    }
+                }
             }
-
-           }
-
+        }              
+  Log::info("Worlds Synced Successfully"); 
 
     }
 
