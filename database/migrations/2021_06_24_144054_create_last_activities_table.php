@@ -15,6 +15,7 @@ class CreateLastActivitiesTable extends Migration
     {
         Schema::create('last_activities', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('game_id')->default('1');
             $table->timestamps();
         });
     }

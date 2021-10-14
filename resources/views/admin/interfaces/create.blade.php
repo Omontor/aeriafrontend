@@ -21,10 +21,9 @@
                         </div>
                         <div class="form-group {{ $errors->has('world') ? 'has-error' : '' }}">
                             <label for="world_id">{{ trans('cruds.level.fields.world') }}</label>
-                            <br>
                             <select class="form-control select2" name="world_id" id="world_id">
-                                @foreach($worlds as $world)
-                                    <option value="{{ $world->remote_id }}" {{ old('world_id') == $world->id ? 'selected' : '' }}>{{ $world->name}} - {{$world->game->name}}</option>
+                                @foreach($worlds as $id => $entry)
+                                    <option value="{{ $id }}" {{ old('world_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
                                 @endforeach
                             </select>
                             @if($errors->has('world'))

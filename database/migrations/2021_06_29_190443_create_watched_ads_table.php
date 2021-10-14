@@ -15,9 +15,11 @@ class CreateWatchedAdsTable extends Migration
     {
         Schema::create('watched_ads', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('game_id')->default('1');
             $table->string('cohort_id');
             $table->bigInteger('value');
             $table->timestamps();
+
         });
     }
 

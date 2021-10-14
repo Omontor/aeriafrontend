@@ -30,14 +30,20 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('users', 'UsersController');
 
     // Game
+
+    
+     Route::get('games', 'GameController@index')->name('games.index');   
+     Route::get('games/create', 'GameController@create')->name('games.create');
+     Route::get('games/dashboard/{id}', 'GameController@dashboard')->name('games.dashboard');
+     Route::get('games/edit/{game}', 'GameController@edit')->name('games.edit');
+     Route::get('games/{game}', 'GameController@view')->name('games.view');
+     Route::get('games/delete/{id}', 'GameController@destroy')->name('games.destroy');
      Route::get('games/compare', 'GameController@compare')->name('games.compare');
      Route::post('games/filterbydate', 'GameController@filterByDate')->name('games.filterbydate');
-
-    Route::get('games/resync', 'GameController@resync')->name('games.resync');
-    Route::delete('games/destroy', 'GameController@massDestroy')->name('games.massDestroy');
-    Route::resource('games', 'GameController');
-    Route::get('games/{game}', 'GameController@view')->name('games.view');
-    Route::get('games/delete/{id}', 'GameController@destroy')->name('games.destroy');
+     Route::get('games/resync', 'GameController@resync')->name('games.resync');
+     Route::delete('games/massdestroy', 'GameController@massDestroy')->name('games.massDestroy');
+   
+  
    
 
     // Message
@@ -83,6 +89,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
      Route::get('leaderboards', 'LeaderboardController@index')->name('leaderboards.index');
      Route::get('leaderboards/game/{id}', 'LeaderboardController@game')->name('leaderboards.create');
      Route::get('leaderboards/show/{id}', 'LeaderboardController@show')->name('leaderboards.show');
+
+//Level interfaces
+
+
+      Route::get('levelinterfaces/create', 'LevelInterfaceController@create')->name('levelinterfaces.create');
+     Route::get('levelinterfaces', 'LevelInterfaceController@index')->name('levelinterfaces.index');
+      Route::get('levelinterfaces/{id}', 'LevelInterfaceController@view')->name('levelinterfaces.view');      
+
+
 
 
 });

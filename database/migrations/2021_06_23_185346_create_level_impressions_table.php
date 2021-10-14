@@ -15,7 +15,7 @@ class CreateLevelImpressionsTable extends Migration
     {
         Schema::create('level_impressions', function (Blueprint $table) {
             $table->id();
-            $table->string('game_id');
+            $table->unsignedBigInteger('game_id')->default('1');
             $table->string('cohort_id');
             $table->string('user_id')->nullable();
             $table->string('last_activity'); 

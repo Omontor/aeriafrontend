@@ -20,5 +20,13 @@ class World extends Model
 
          return $this->hasMany('App\Models\Level', 'world_id', 'remote_id');
     }
+
+
+    public function levelinterfaces(){
+
+         return $this->hasMany('App\Models\LevelInterface', 'world_id', 'remote_id');
+    }
+
+
     
 }

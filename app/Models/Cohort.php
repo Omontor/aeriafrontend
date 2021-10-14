@@ -15,7 +15,7 @@ class Cohort extends Model
 
     public function game()
     {
-        return $this->belongsTo('App\Models\Game', 'id');
+        return $this->belongsTo('App\Models\Game', 'gameid','remote_id');
     }
 
     public function userdata()

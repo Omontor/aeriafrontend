@@ -1,15 +1,15 @@
 @extends('layouts.admin')
 @section('content')
 <div class="content">
-    @can('world_create')
+    @can('level_create')
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route('admin.worlds.create') }}">
-                    {{ trans('global.add') }} {{ trans('cruds.world.title_singular') }}
-                </a>  
+                <a class="btn btn-success" href="{{ route('admin.levelinterfaces.create') }}">
+                   Add Level Interface
+                </a>                
 
-                <a class="btn btn-primary" href="{{ route('admin.games.index') }}">
-                    Back to Games
+                <a class="btn btn-primary" href="{{ route('admin.worlds.index') }}">
+                    Back to all worlds
                 </a>
             </div>
         </div>
@@ -18,69 +18,94 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {{ trans('cruds.world.title_singular') }} {{ trans('global.list') }}
+                    {{ trans('cruds.level.title_singular') }} {{ trans('global.list') }}
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
-                        <table class=" table table-bordered table-striped table-hover datatable datatable-World">
+                        <table class=" table table-bordered table-striped table-hover datatable datatable-Level">
                             <thead>
                                 <tr>
                                     <th width="10">
 
                                     </th>
                                     <th>
-                                     Local {{ trans('cruds.world.fields.id') }}
+                                        {{ trans('cruds.level.fields.id') }}
+                                    </th>                                
+
+                                    <th>
+                                       Original ID
                                     </th>
                                     <th>
-                                        Game
+                                        {{ trans('cruds.level.fields.name') }}
                                     </th>
                                     <th>
-                                       Levels
+                                        {{ trans('cruds.level.fields.world') }}
                                     </th>
                                     <th>
-                                        {{ trans('cruds.world.fields.name') }}
+                                       Game
                                     </th>
                                     <th>
                                         &nbsp;
                                     </th>
                                 </tr>
-                                
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                                    </td>                           
+                                    <td>
+                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                                    </td>
+                                    <td>
+                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                                    </td>
+                                    <td>
+                                       
+                                    </td>
+                                    <td>
+                                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
                             </thead>
                             <tbody>
-                           
-                                @foreach($worlds as $key => $world)
-                                    <tr data-entry-id="{{ $world->id }}">
+                                @foreach($interfaces as $key => $interface)
+                                    <tr data-entry-id="{{ $interface->id }}">
                                         <td>
 
                                         </td>
                                         <td>
-                                            {{ $world->id ?? '' }}
+                                            {{ $interface->id ?? '' }}
+                                        </td>                                        
+                                        <td>
+                                            {{ $interface->original_id ?? '' }}
                                         </td>
                                         <td>
-                                            {{$world->game->name}}
+                                            {{ $interface->name ?? '' }}
                                         </td>
                                         <td>
+                                            {{ $interface->world->name ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $interface->world->game->name ?? '' }}
+                                        </td>
+                                        <td>
+                                            @can('level_show')
+                                                <a class="btn btn-xs btn-primary" href="">
+                                                    {{ trans('global.view') }}
+                                                </a>
+                                            @endcan
 
-                                               <a class="btn btn-xs btn-success" href="{{ route('admin.levels.view', $world->remote_id) }}">
-                                                    Levels
-                                                </a>
-                                               <a class="btn btn-xs btn-info" href="{{ route('admin.levelinterfaces.view', $world->remote_id) }}">
-                                                    Level Interfaces
-                                                </a>
-                                        </td>
-                                        <td>
-                                            {{ $world->name ?? '' }}
-                                        </td>
-                                        <td>
-                                            
-                                            @can('world_edit')
-                                                <a class="btn btn-xs btn-info" href="{{ route('admin.worlds.edit', $world->id) }}">
+                                            @can('level_edit')
+                                                <a class="btn btn-xs btn-info" href="">
                                                     {{ trans('global.edit') }}
                                                 </a>
                                             @endcan
 
-                                            @can('world_delete')
-                                                <form action="{{ route('admin.worlds.destroy', $world->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            @can('level_delete')
+                                                <form action="" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                     <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -108,11 +133,11 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('world_delete')
+@can('level_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.worlds.massDestroy') }}",
+    url: "{{ route('admin.levels.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -143,7 +168,7 @@
     order: [[ 1, 'desc' ]],
     pageLength: 100,
   });
-  let table = $('.datatable-World:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  let table = $('.datatable-Level:not(.ajaxTable)').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();

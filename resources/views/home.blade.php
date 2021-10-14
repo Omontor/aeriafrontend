@@ -5,15 +5,7 @@
     <div class="row">
 
         <div class="col-lg-12">
-      <div class="col-lg-12">
-                   <a class="btn btn-success" href="{{ route('admin.homeresync') }}">
-                   Resync All Data
-                </a>                   
 
-                <a class="btn btn-primary" href="{{ route('admin.secondsync') }}">
-                   Resync Level Proggression
-                </a>
-      </div>
       <br>
       <br>
 <!-- Main content -->
@@ -85,7 +77,9 @@
         <div class="col-lg-4 col-xs-12">
         <div class="small-box" style="background-color:gray; color:white;">
             <div class="inner">
-              <h3>{{$today->sum('sessions_played')}}</h3>
+                
+              <h3> {{\App\Models\UserData::where('last_activity', Carbon\Carbon::today()->format('Y-m-d')."T00:00:00")->count()}} </h3>
+                
 
               <p>Sessions Today</p>
             </div>
@@ -108,10 +102,23 @@ var ctx = document.getElementById('myChart');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['{{Carbon\Carbon::today()->subDays(7)->format('l')}}','{{Carbon\Carbon::today()->subDays(6)->format('l')}}','{{Carbon\Carbon::today()->subDays(5)->format('l')}}', '{{Carbon\Carbon::today()->subDays(4)->format('l')}}', '{{Carbon\Carbon::today()->subDays(3)->format('l')}}', '{{Carbon\Carbon::today()->subDays(2)->format('l')}}', '{{Carbon\Carbon::today()->subDays(1)->format('l')}}', 'Today'],
+        labels: [
+             @for ($i = 0; $i < 7; $i++)
+            '{{Carbon\Carbon::today()->subDays(7-$i)->format('l')}}',
+            @endfor
+
+        ],
         datasets: [{
             label: 'Players in all games',
-            data: [{{$today7->count()}},{{$today6->count()}},{{$today5->count()}}, {{$today4->count()}}, {{$today3->count()}}, {{$today2->count()}}, {{$today1->count()}}, {{$today->count()}}],
+            data: [
+
+            @for ($i = 0; $i < 7; $i++)
+
+            {{\App\Models\UserData::where('last_activity', Carbon\Carbon::today()->subDays(7-$i)->format('Y-m-d')."T00:00:00")->count()}},
+            @endfor
+           
+
+            ],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

@@ -8,5 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class LevelInterface extends Model
 {
     use HasFactory;
-     protected $guarded = [];
+    protected $guarded = [];
+
+      public function world()
+
+    { 
+        return $this->belongsTo('\App\Models\World','world_id', 'remote_id');
+    }
+   
 }

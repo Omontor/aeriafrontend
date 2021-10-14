@@ -86,7 +86,7 @@
                                             {{ $level->name ?? '' }}
                                         </td>
                                         <td>
-                                            {{ $level->world->name ?? '' }}
+                                            {{ $level->world->name ?? '' }} 
                                         </td>
                                         <td>
                                             {{ $level->name_in_build ?? '' }}

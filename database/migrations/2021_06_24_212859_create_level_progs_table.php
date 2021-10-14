@@ -15,6 +15,7 @@ class CreateLevelProgsTable extends Migration
     {
         Schema::create('level_progs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('game_id')->default('1');
             $table->string('level_dif');
             $table->string('cohort_id');
             $table->string('interface_id');

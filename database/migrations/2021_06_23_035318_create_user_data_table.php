@@ -27,6 +27,7 @@ class CreateUserDataTable extends Migration
             $table->bigInteger('sessions_played');
             $table->bigInteger('days_played');
             $table->string('first_time');
+            $table->unsignedBigInteger('game_id')->default('1');
             $table->timestamps();
         });
     }

@@ -48,6 +48,7 @@ class HomeController
                 $this->fillAnalytics();
 
                 $this->fillCohorts();
+
        
         $games = Game::All();
         $gamescount = $games->count();
@@ -56,31 +57,8 @@ class HomeController
         $cohorts = Cohort::count();
         $records= UserData::count();
 
-        $todaydate = Carbon::today()->format('Y-m-d')."T00:00:00";
-        $today =     UserData::where('last_activity', $todaydate);
-
-        $today1date = Carbon::today()->subDays(1)->format('Y-m-d')."T00:00:00";
-        $today1 =    UserData::where('last_activity', $today1date);
-
-        $today2date = Carbon::today()->subDays(2)->format('Y-m-d')."T00:00:00";
-        $today2 =    UserData::where('last_activity', $today2date);      
-
-        $today3date = Carbon::today()->subDays(3)->format('Y-m-d')."T00:00:00";
-        $today3 =    UserData::where('last_activity', $today3date);        
-
-        $today4date = Carbon::today()->subDays(4)->format('Y-m-d')."T00:00:00";
-        $today4 =    UserData::where('last_activity', $today4date);
-
-        $today5date = Carbon::today()->subDays(5)->format('Y-m-d')."T00:00:00";
-        $today5 =    UserData::where('last_activity', $today5date);        
-
-        $today6date = Carbon::today()->subDays(6)->format('Y-m-d')."T00:00:00";
-        $today6 =    UserData::where('last_activity', $today6date);
-
-        $today7date = Carbon::today()->subDays(7)->format('Y-m-d')."T00:00:00";
-        $today7 =    UserData::where('last_activity', $today7date);
-
-        return view('home', compact('games', 'gamescount', 'users', 'userscount', 'today', 'today1', 'today2', 'today3', 'today4','today5', 'today6', 'today7', 'cohorts', 'records'));
+      
+        return view('home', compact('games', 'gamescount', 'users', 'userscount','cohorts', 'records'));
     }
 
     public function autosync() {
@@ -90,21 +68,18 @@ class HomeController
     }
 
 
-
-
 public function ResyncData()
 {          
-$pool = Pool::create();
 
+    $cohorts = Cohort::all();
     $client = new Client([
     'base_uri' => env('REMOTE_URL'),
     'verify' => false
 
 ]);
-          
-              /*Fill User Data*/
+            /*Fill User Data*/
         
-                foreach (Cohort::orderBy("id", "desc")->get() as $key => $value2) {
+                foreach ($cohorts as $key => $value2) {
                 
                 $userdataresponse = $client->request('GET', '/api/user/GetAllUserData/'.$value2->remote_id);
                 $userdata = json_decode($userdataresponse->getBody()->getContents());
@@ -131,17 +106,20 @@ $pool = Pool::create();
                 $newuserdata->watched_ads = $value3->watchedAds;
                 $watched_ads = WatchedAd::firstOrNew(['cohort_id' => $value2->remote_id]);
                         $watched_ads->value += $newuserdata->watched_ads;
+                        $watched_ads->game_id = $value2->game->remote_id;
                         $watched_ads->save();
                 
                 $newuserdata->showed_ads = $value3->showedAds;
                                $showed_ads = ShowedAd::firstOrNew(['cohort_id' => $value2->remote_id]);
                         $showed_ads->value += $newuserdata->showed_ads;
+                        $showed_ads->game_id = $value2->game->remote_id;
                         $showed_ads->save();
                 
                 $newuserdata->star_group = $value3->starGroup;
                 $newuserdata->sessions_played = $value3->sessionsPlayed;
                 $newuserdata->days_played = $value3->daysPlayed;
                 $newuserdata->first_time = $value3->firsTime;
+                $newuserdata->game_id = $value2->game->remote_id;
 
                 $newuserdata->save();
                 Log::info("saved ".$value3->id);
@@ -164,12 +142,13 @@ $pool = Pool::create();
                 }
               
             }
-                /*Fill Players */ 
-                $this->FillPlayers();
+
+            /*Fill Players */ 
+            $this->FillPlayers();
             /*Fill Custom Keys */ 
-                $this->fillCustomKeys();
+            $this->fillCustomKeys();
             /* Fill Level Interfaces */ 
-                $this->fillLevelInterfaces();
+            $this->fillLevelInterfaces();
 
   return redirect()->back()->withSuccess('Success');               
 
@@ -276,11 +255,19 @@ $pool = Pool::create();
         $games = json_decode($response->getBody()->getContents());
         foreach ($games as $game => $value) {
         $newgame = Game::firstOrNew(['remote_id' => $value->id]);
+            if ($newgame->exists) {
+                continue;
+            }
+            else
+            {
+
            $newgame->name = $value->name;
            $newgame->remote_id = $value->id;
            $newgame->appid = $value->appID;
            $newgame->secret = $value->secret;
-           $newgame->save();
+           $newgame->save();  
+            }
+
            }
     }
 
@@ -333,11 +320,18 @@ $pool = Pool::create();
             $analytics = json_decode($analyticresponse->getBody('analytics')->getContents());
             foreach ($analytics->analytics as $analytic => $anvalue) {
             $newanalytic = Analytic::firstOrNew(['remote_id' => $anvalue->id]);
-            $newanalytic->remote_id = $anvalue->id;
+            if ($newanalytic->exists) {
+                continue;
+            }
+            else
+            {
+                            $newanalytic->remote_id = $anvalue->id;
             $newanalytic->name = $anvalue->name;
             $newanalytic->name = $anvalue->name;
             $newanalytic->game_id = $value->remote_id;
             $newanalytic->save();
+            }
+
                 }
         }
     }
@@ -354,12 +348,20 @@ $pool = Pool::create();
         $cohortresponse = $client->request('GET', $url);
         $cohorts = json_decode($cohortresponse->getBody()->getContents());
         foreach ($cohorts as $cohort => $value) {
-        $newcohort = Cohort::firstOrNew(['remote_id' => $value->id]);
+            $newcohort = Cohort::firstOrNew(['remote_id' => $value->id]);
+            if ($newcohort->exists) {
+               continue;
+            }
+            else
+            {
+
         $newcohort->gameid = $value->gameId;
         $newcohort->amount = $value->amount;
         $newcohort->name = $value->nameId;
         $newcohort->status = $value->status;
-        $newcohort->save();
+        $newcohort->save();   
+            }
+   
             }  
         }
     }

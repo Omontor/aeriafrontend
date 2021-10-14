@@ -43,7 +43,7 @@ class LevelController extends Controller
     {
         abort_if(Gate::denies('level_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $worlds = World::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $worlds = World::all();
 
         return view('admin.levels.create', compact('worlds'));
     }

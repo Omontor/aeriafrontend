@@ -15,6 +15,7 @@ class CreateShowedAdsTable extends Migration
     {
         Schema::create('showed_ads', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('game_id')->default('1');
             $table->string('cohort_id');
             $table->bigInteger('value');
             $table->timestamps();

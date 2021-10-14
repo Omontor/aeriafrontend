@@ -71,6 +71,20 @@ class GameController extends Controller
     
     }
 
+    public function dashboard ($id){
+
+
+        $game = Game::where('remote_id', $id)->first();
+        $cohorts = $game->cohorts;
+        $userdata = Userdata::where('game_id', $id)->get();
+        $todaysessions = UserData::where('game_id', $id)->where('last_activity', Carbon::today()->format('Y-m-d')."T00:00:00")->count();        
+        $showedads = ShowedAd::where('game_id', $id)->get();
+        $watchedads = WatchedAd::where('game_id', $id)->get();
+        
+
+        return view('admin.games.dashboard', compact('game', 'cohorts', 'userdata', 'todaysessions', 'showedads', 'watchedads'));
+    }
+
 
     public function compare () {
 
@@ -173,7 +187,7 @@ class GameController extends Controller
             }  
         }
 
-        $allcohorts = Cohort::all();
+        $allcohorts = Cohort::orderByDesc('id')->take(20)->get();
 
               /*Fill User Data*/
         
@@ -193,7 +207,7 @@ class GameController extends Controller
                 $newuserdata->days_playing = $value3->daysPlaying;
                 $newuserdata->iap = $value3->iap;
                 $newuserdata->watched_ads = $value3->watchedAds;
-               $watched_ads = WatchedAd::firstOrNew(['cohort_id' => $value2->remote_id]);
+                $watched_ads = WatchedAd::firstOrNew(['cohort_id' => $value2->remote_id]);
                         $watched_ads->value += $newuserdata->watched_ads;
                         $watched_ads->save();
                 

@@ -83,6 +83,16 @@
                                     <span>Worlds</span>
 
                                 </a>
+                            </li>                             
+
+                            <li class="{{ request()->is("admin/levelinterfaces") || request()->is("admin/levelinterfaces/*") ? "active" : "" }}">
+                    <a href="{{ route("admin.levelinterfaces.index") }}">
+                                    <i class="fa-fw fas fa-gamepad">
+
+                                    </i>
+                                    <span>Level Interfaces</span>
+
+                                </a>
                             </li> 
 
 
