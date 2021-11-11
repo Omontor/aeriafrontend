@@ -39,7 +39,7 @@
                         </div>      
 
                         <div class="form-group col-lg-6 {{ $errors->has('onesingalid') ? 'has-error' : '' }}">
-                            <label class="" for="onesingalid">OneSignal Api Key</label>
+                            <label class="" for="onesingalid">OneSignal Secret</label>
                             <input class="form-control" type="text" name="onesingalid" id="onesingalid" value="{{ old('onesingalid', '') }}" >
                             @if($errors->has('onesingalid'))
                                 <span class="help-block" role="alert">{{ $errors->first('onesingalid') }}</span>

@@ -19,37 +19,8 @@
 
             </a>
         </li>           
+       
 
-        <li class="{{ request()->is("admin/leaderboards") || request()->is("admin/leaderboards/*") ? "active" : "" }}">
-            <a href="{{ route("admin.leaderboards.index") }}">
-                <i class="fa-fw fas fa-trophy">
-
-                </i>
-                <span>Leaderboards</span>
-
-            </a>
-        </li>   
-
-        <li class="{{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
-            <a href="{{ route("admin.users.index") }}">
-                <i class="fa-fw fas fa-user">
-
-                </i>
-                <span>Admins</span>
-
-            </a>
-        </li>        
-
-
-        <li class="{{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
-            <a href="{{ route("admin.users.players") }}">
-                <i class="fa-fw fas fa-users">
-
-                </i>
-                <span>Players</span>
-
-            </a>
-        </li>
 
 
             @can('game_access')
@@ -120,6 +91,8 @@
                     </a>
                     <ul class="treeview-menu">
         
+
+
                             <li class="{{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "active" : "" }}">
                                 <a href="{{ route("admin.analytics.index") }}">
                                     <i class="fa-fw fas fa-puzzle-piece">
@@ -149,6 +122,17 @@
                     </a>
                     <ul class="treeview-menu">
                         @can('permission_access')
+
+ <li class="{{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
+            <a href="{{ route("admin.users.index") }}">
+                <i class="fa-fw fas fa-user">
+
+                </i>
+                <span>Admins</span>
+
+            </a>
+        </li>        
+                        
                             <li class="{{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "active" : "" }}">
                                 <a href="{{ route("admin.permissions.index") }}">
                                     <i class="fa-fw fas fa-unlock-alt">
@@ -159,6 +143,9 @@
                                 </a>
                             </li>
                         @endcan
+
+
+
                         @can('role_access')
                             <li class="{{ request()->is("admin/roles") || request()->is("admin/roles/*") ? "active" : "" }}">
                                 <a href="{{ route("admin.roles.index") }}">

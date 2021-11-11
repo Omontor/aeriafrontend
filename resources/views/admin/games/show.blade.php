@@ -41,73 +41,6 @@
       </h1>
     </section>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-
-
-        <div class="col-lg-12">
-            <h1>{{$game->name}}</h1>
-         <div class="box box-default collapsed-box">
-            <div class="box-header with-border">
-              <h3 class="box-title">Filter Options</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-                </button>
-              </div>
-              <!-- /.box-tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-
-
-<div class="box box-info">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Filters</h3>
-                </div>
-                <form method="POST" action="{{route('admin.games.filterbydate')}}">
-                    @csrf
-
-                    <input type="text" hidden value="{{$game->remote_id}}" name="id">
-                <div class="box-body box-profile">
-                 <div class="col-lg-5">
-                    From:
-                    <div class="input-group date" data-provide="datepicker">
-                        <input type="text" class="form-control" name="start_date">
-                        <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-th"></span>
-                        </div>
-                    </div>
-                </div>                              
-                <div class="col-lg-5">  
-                To:
-                <div class="input-group date" data-provide="datepicker2">
-                    <input type="text" class="form-control" name="end_date">
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                    </div>
-                </div>
-                </div> 
-
-
-<div class="col-lg-2">  
-    <br>
-    <button type="submit" class="btn btn-md btn-primary">Filter By Date</button>
-</div> 
-</form>
-
-                </div>
-                
-
-            </div>
-            <!-- /.box-body -->
-          </div>
-        </div>
-      </div>
-    </div>
-</section>
-
 
 <div class="content">
     <div class="row">
@@ -175,9 +108,15 @@
                 @forelse($game->levelinterfaces as $world)
                 @if($world->name == "Menu" || $world->name == "LogoScreen" || $world->name == "Tutorial" ||  $world->name == "Tutorial End" )
                 @else
+
+                    @if($game->level_interfaces ==1)
                     @foreach(\App\Models\LevelDif::all() as $leveldif)
                      <th style="background-color: lightblue; color: black;">{{$world->name}} <br>{{$leveldif->name}} </th>
                     @endforeach
+                    @else
+                       <th style="background-color: lightblue; color: black;">{{$world->name}} </th>
+                    @endif
+
                 @endif
                 @empty
                 @endforelse
@@ -248,14 +187,18 @@
                    @else
                   0
                    @endif</td>
-      
+        
+                @if($game->level_interfaces == 1)
+
+
+
                 @php
                 $loopindex = 0;
                 @endphp
 
                 @forelse($game->levelinterfaces as $world)
                 @if($world->name == "Menu" || $world->name == "LogoScreen" || $world->name == "Tutorial" ||  $world->name == "Tutorial End" )
-                @else
+                @else    
                     @foreach(\App\Models\LevelDif::all() as $leveldif)
                     <td>
                 @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()  != "[]")
@@ -277,9 +220,53 @@
                    @endif
                     </td>
                     @endforeach
+
+
                 @endif
                 @empty
                 @endforelse
+
+                @else
+
+
+
+                @php
+                $loopindex = 0;
+                @endphp
+
+                @forelse($game->levelinterfaces as $world)
+                @if($world->name == "Menu" || $world->name == "LogoScreen" || $world->name == "Tutorial" ||  $world->name == "Tutorial End" )
+                @else    
+                   
+                    <td>
+                @if( \App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->get()  != "[]")
+            
+
+                @php
+                if ($loopindex > 2) {
+                    $loopindex = 0;
+                }
+
+                @endphp
+                   {{\App\Models\LevelProg::where('cohort_id', $cohort->remote_id)->where('interface_id', $world->remote_id)->where('level_dif', $loopindex)->get()->sum('users') }}
+                @php
+                $loopindex ++;
+                @endphp
+
+                   @else
+                  0
+                   @endif
+                    </td>
+              
+
+
+                @endif
+                @empty
+                @endforelse
+
+
+                @endif
+
 
                 <!-- Dynamic columns-->
 

@@ -40,7 +40,7 @@ class GameController extends Controller
 {
     public function index()
     {       
-        $this->gameSync();
+   
         $games = Game::all();      
         return view('admin.games.index', compact('games'));
     }
@@ -59,7 +59,7 @@ class GameController extends Controller
 
     $gameid = $index;
     $game = Game::where('remote_id', $index)->first();
-    $cohorts = Cohort::where('gameid', $index)->where('status', 1)->get();
+    $cohorts = Cohort::where('gameid', $index)->where('status', 1)->take(10)->get();
     $userdata = Cohort::where('gameid', $index)->with('userdata')->get();
     $worlds = World::where('game_id', $index)->get();
     $analytics = Analytic::where('game_id', $game->remote_id)->get();
@@ -187,7 +187,8 @@ class GameController extends Controller
             }  
         }
 
-        $allcohorts = Cohort::orderByDesc('id')->take(20)->get();
+           //$allcohorts = Cohort::latest()->take(20)->get();
+           $allcohorts = Cohort::all();
 
               /*Fill User Data*/
         
@@ -311,8 +312,6 @@ $userdataarray[] = $value3;
         }
 
     
-$testresponse = $client->request('GET', '/api/user/getcohortprog/2/2fc59b70-81e9-4d20-8ee1-b8f28ea2a766/TutorialInterfaceEnd');
-        $testvalue = json_decode($testresponse->getBody()->getContents());
 
     
           $allleveldifs = LevelDif::all();

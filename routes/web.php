@@ -33,6 +33,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     
      Route::get('games', 'GameController@index')->name('games.index');   
+     Route::get('games/store', 'GameController@store')->name('games.store');   
      Route::get('games/create', 'GameController@create')->name('games.create');
      Route::get('games/dashboard/{id}', 'GameController@dashboard')->name('games.dashboard');
      Route::get('games/edit/{game}', 'GameController@edit')->name('games.edit');

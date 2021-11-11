@@ -40,7 +40,7 @@ class HomeController
 
  public function index()
     {
-        
+        /*
                 $this->FillGames();
 
                 $this->fillWorlds();
@@ -48,7 +48,7 @@ class HomeController
                 $this->fillAnalytics();
 
                 $this->fillCohorts();
-
+*/
        
         $games = Game::All();
         $gamescount = $games->count();
@@ -509,7 +509,7 @@ $localanalytics = Analytic::all();
 ]);
 $allcohorts = Cohort::all();
         $allleveldifs = LevelDif::all();
-        $alllevelinterfaces =  LevelInterface::all();
+        $alllevelinterfaces =  LevelInterface::where('game_id', 10)->get();
         $testarray = [];
         LevelProg::truncate();
          Log::info("Truncated table succesfully ");
@@ -521,8 +521,13 @@ $allcohorts = Cohort::all();
                         
 $testurl = $value->remote_id."/".$value2->remote_id.'/'.$value3->remote_id;
 $secondinterfacesresponse = $client->request('GET', '/api/user/getcohortprog/'.$value->remote_id."/".$value2->remote_id."/".$value3->remote_id);
+ Log::info('/api/user/getcohortprog/'.$value->remote_id."/".$value2->remote_id."/".$value3->remote_id);
+        $levelinterfaces = $secondinterfacesresponse->getBody()->getContents();    
 
-        $levelinterfaces = $secondinterfacesresponse->getBody()->getContents();                       
+        if ($levelinterfaces == "{}") {
+            continue;
+        }
+
         $interfaces = array($levelinterfaces);
         $interfacescollect = json_decode($levelinterfaces);
            if($levelinterfaces != "{}")

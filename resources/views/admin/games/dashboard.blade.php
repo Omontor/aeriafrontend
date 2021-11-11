@@ -9,42 +9,6 @@
         <div class="col-lg-12">
         <h1>  {{$game->name}}</h1>
 
-    <a href="#" onclick="addData(barChart, 'Daily Showed Ads', '#ff0000', [
-            @for ($i = 0; $i < 30; $i++)
-
-
-    {{App\Models\UserData::where('game_id', $game->remote_id)->where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('showed_ads')}},
-            @endfor
-
-             ]);" class="btn btn-xs btn-primary">Showed Ads</a>
-
-
-    <a href="#" onclick="addData(barChart, 'Daily Watched Ads', '#0e7fe1', [
-            @for ($i = 0; $i < 30; $i++)
-
-
-
-    {{App\Models\UserData::where('game_id', $game->remote_id)->where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('watched_ads')}},
-            @endfor
-
-             ]);" class="btn btn-xs btn-primary">Watched Ads</a>    
-
-
-
-    <a href="#" onclick="addData(barChart, 'Daily Watched Ads', '#ffc83d', [
-            @for ($i = 0; $i < 30; $i++)
-
-
-
-   
-    {{App\Models\UserData::where('game_id', $game->remote_id)->where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('iap')}},
-            @endfor
-
-             ]);" class="btn btn-xs btn-primary">In App Purchases</a>
-
-
-
-
 
 <canvas id="barChart" width="400" height="200"></canvas>
 
@@ -93,6 +57,123 @@ function addData(chart, label, color, data) {
     });
     chart.update();
 }
+
+setTimeout(
+
+addData(barChart, 'Daily Showed Ads', '#ff0000', [
+            @for ($i = 0; $i < 30; $i++)
+
+
+    {{App\Models\UserData::where('game_id', $game->remote_id)->where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('showed_ads')}},
+            @endfor
+
+             ])
+
+    , 3000);
+
+setTimeout(addData(barChart, 'Daily Watched Ads', '#0e7fe1', [
+            @for ($i = 0; $i < 30; $i++)
+
+
+
+    {{App\Models\UserData::where('game_id', $game->remote_id)->where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('watched_ads')}},
+            @endfor
+
+             ]), 3000);
+
+setTimeout(addData(barChart, 'Daily Watched Ads', '#ffc83d', [
+            @for ($i = 0; $i < 30; $i++)
+
+
+
+   
+    {{App\Models\UserData::where('game_id', $game->remote_id)->where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('iap')}},
+            @endfor
+
+             ]), 3000);
+
+</script>
+
+
+<script>
+    
+    var ctx = document.getElementById("barChart2");
+    
+    var barChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [      
+            @for ($i = 0; $i < 30; $i++)
+            {{Carbon\Carbon::today()->subDays(30-$i)->format('d')}},
+            @endfor
+            ],
+        datasets: [{
+            label: 'Players launching app',
+            data:
+
+             [
+            @for ($i = 0; $i < 30; $i++)
+
+    {{App\Models\UserData::where('game_id', $game->remote_id)->where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->count()}},
+            @endfor
+
+             ],
+
+ fill: true,
+   backgroundColor: [
+
+                'rgba(54, 162, 235, 0)'
+            ],
+    borderColor:'rgba(255, 159, 64, 1)',
+    tension: 0.1
+        }]
+    }
+});
+
+
+
+function addData(chart, label, color, data) {
+        chart.data.datasets.push({
+        label: label,
+      backgroundColor: color,
+      data: data
+    });
+    chart.update();
+}
+
+setTimeout(
+
+addData(barChart, 'Daily Showed Ads', '#ff0000', [
+            @for ($i = 0; $i < 30; $i++)
+
+
+    {{App\Models\UserData::where('game_id', $game->remote_id)->where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('showed_ads')}},
+            @endfor
+
+             ])
+
+    , 3000);
+
+setTimeout(addData(barChart, 'Daily Watched Ads', '#0e7fe1', [
+            @for ($i = 0; $i < 30; $i++)
+
+
+
+    {{App\Models\UserData::where('game_id', $game->remote_id)->where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('watched_ads')}},
+            @endfor
+
+             ]), 3000);
+
+setTimeout(addData(barChart, 'Daily Watched Ads', '#ffc83d', [
+            @for ($i = 0; $i < 30; $i++)
+
+
+
+   
+    {{App\Models\UserData::where('game_id', $game->remote_id)->where('last_activity', Carbon\Carbon::today()->subDays(30-$i)->format('Y-m-d')."T00:00:00")->sum('iap')}},
+            @endfor
+
+             ]), 3000);
 
 </script>
 
